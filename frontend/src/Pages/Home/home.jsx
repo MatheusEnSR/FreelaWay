@@ -6,7 +6,7 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <h2>Bem-vindo à Home</h2>
+      <h2>Bem-vindodadfddfsfd à Home</h2>
     </div>
   );
 }
