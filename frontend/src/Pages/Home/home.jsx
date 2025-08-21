@@ -1,13 +1,16 @@
 import React from "react";
 import Navbar from "../../Components/NavBar/navbar.jsx"; 
+import Footer from "../../Components/Footer/footer.jsx"; 
 import './home.css'
 
 function Home() {
   return (
-    <div>
+    <main>
       <Navbar />
       <h2>Bem-vindo à Home</h2>
-    </div>
+      <Footer />
+    </main>
+    
   );
 }
 

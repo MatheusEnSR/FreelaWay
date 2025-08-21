@@ -1,6 +1,105 @@
-header{
-  background: #891010;
+header {
+  background: #2E7CF6;
+  background: -webkit-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  background: -moz-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
+
+  display: flex;
+  justify-content: space-between; /* distribui uniformemente */
+  align-items: center;
   color: #fff;
-  padding: 10px;
-  text-align: center;
+  padding: 10px 20px;
+}
+
+.logo {
+  height: 86px;
+}
+
+.barra-pesquisa {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    max-width: 50px;
+    margin: 0px 0px;
+}
+
+.barra-pesquisa input {
+  flex: 1; /* ocupa todo o espaço da barra, mas respeita max-width do container */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.barra-pesquisa button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #555;
+  color: #fff;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+
+.hamburger {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 900;
+}
+
+/* Barra lateral */
+.sidebar {
+  background: #2E7CF6;
+  background: -webkit-linear-gradient(180deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  background: -moz-linear-gradient(180deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  background: linear-gradient(180deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  color: #000000;
+  padding: 20px;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.aberto {
+  transform: translateX(0);
+}
+
+/* Botão de fechar */
+.fechar {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #000000;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
 }
