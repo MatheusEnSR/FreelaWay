@@ -2,7 +2,7 @@ header {
   background: #2E7CF6;
   background: -webkit-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
   background: -moz-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, #00c26e 51%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
 
   display: flex;
@@ -26,19 +26,23 @@ header {
 
 .barra-pesquisa input {
   flex: 1; /* ocupa todo o espaço da barra, mas respeita max-width do container */
-  padding: 5px 10px;
+  padding: 9px 10px;
   border: none;
   border-radius: 4px 0 0 4px;
   outline: none;
 }
 
 .barra-pesquisa button {
-  padding: 5px 10px;
+  padding: 2px 10px;
   border: none;
-  background-color: #555;
-  color: #fff;
+  background-color: #ffffff;
+  color: #000000;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
+}
+
+button > svg{
+  margin-top: 2px;
 }
 
 
@@ -83,6 +87,12 @@ header {
 
 .aberto {
   transform: translateX(0);
+}
+
+
+a{
+  cursor: pointer;
+  color: #000000;
 }
 
 /* Botão de fechar */

@@ -1,7 +1,12 @@
-import React, { useState } from "react";
 import './navbar.css';
+import React, { useState } from "react";
 import Logo from '../../Assets/Logo/logo.png';
 import { Link } from "react-router-dom";
+
+//Aqui são os imports dos icons do react
+import { VscSearch } from "react-icons/vsc";
+import { VscAccount } from "react-icons/vsc";
+import { VscClose } from "react-icons/vsc";
 
 function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,10 +38,11 @@ function NavBar() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button type="submit"></button>
+          <button type="submit"><VscSearch size={24} /></button>
         </form>
 
-         <img src={Logo} alt="Logo" className="logo" />
+
+         <Link to="/"> <img src={Logo} alt="Logo" className="logo" /></Link>
 
         <button className="hamburger" onClick={toggleSidebar}>
           &#9776;
@@ -49,11 +55,11 @@ function NavBar() {
 
       {/* Barra lateral */}
       <div className={`sidebar ${sidebarOpen ? "aberto" : ""}`}>
-        <button className="fechar" onClick={closeSidebar}>×</button>
+        <button className="fechar" onClick={closeSidebar}><VscClose /></button>
         <h3>Menu</h3>
         <ul>
         <li>
-          <Link to="/login">Item 1</Link>
+          <Link to="/login"><VscAccount /></Link>
         </li>
         <li>Item 2</li>
         <li>Item 3</li>

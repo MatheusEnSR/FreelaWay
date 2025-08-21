@@ -1,0 +1,63 @@
+.card-container {
+  width: 400px;
+  height: 250px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* sombra suave */
+  margin: 50px auto; /* centralização vertical e horizontal */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid #e0e0e0; /* borda sutil */
+  flex-direction: column;
+}
+
+.card-container > .box-img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-descricao{
+  padding: 10px;
+  margin: 22px;
+    height: 25%;
+    width: 51%;
+    background-color: rgb(255, 254, 254);
+    border-radius: 12px;
+}
+
+.box-descricao > h4{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infos{
+  width: 100%;
+}
+
+.infos > svg{
+  display: flex;
+  flex-direction: column;
+  margin-left: 90%;
+}
+.infos > .salario{
+  color: #00c2af;
+  margin: 10px;
+}
+
+.card-container > a{
+  text-decoration: none;
+}
+
+.card {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  margin: 5;
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  border-radius: 20px;
+  transition: all 0.3s;
+}

@@ -89,7 +89,7 @@ const LoginPage = () => {
               value={formData.email}
               onChange={handleChange}
               className={errors.email ? 'error' : ''}
-              placeholder="seu@email.com"
+              placeholder="Digite seu email"
               disabled={isLoading}
             />
             {errors.email && <span className="error-message">{errors.email}</span>}
@@ -104,7 +104,7 @@ const LoginPage = () => {
               value={formData.password}
               onChange={handleChange}
               className={errors.password ? 'error' : ''}
-              placeholder="Sua senha"
+              placeholder="Digite sua senha"
               disabled={isLoading}
             />
             {errors.password && <span className="error-message">{errors.password}</span>}

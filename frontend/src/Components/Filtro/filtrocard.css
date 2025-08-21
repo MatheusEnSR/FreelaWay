@@ -1,0 +1,87 @@
+.filtro-container {
+  width: 280px;      /* largura reduzida */
+  height: 350px;     /* altura aumentada */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.filtro-box-descricao {
+  padding: 15px;
+  margin: 10px 0;
+  height: auto;
+  width: 90%;
+  background-color: rgb(255, 254, 254);
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.filtro-box-descricao > h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.filtro-box-descricao > h4 {
+  font-size: 0.9rem;
+  color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filtro-infos {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.filtro-salario {
+  color: #00c2af;
+  margin: 15px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.filtro-icons {
+  display: flex;
+  gap: 15px;
+  margin: 10px 0;
+}
+
+.filtro-icon {
+  font-size: 1.8rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.filtro-icon:hover {
+  color: #00c2af;
+}
+
+.filtro-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  margin-top: auto;
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.filtro-link:hover {
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+}

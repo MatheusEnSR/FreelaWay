@@ -1,0 +1,9 @@
+div > h2{
+    width: 100%;    
+    background: #2E7CF6;
+    background: -webkit-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+    background: -moz-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+    background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
+
+}

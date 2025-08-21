@@ -1,0 +1,54 @@
+/* Faz o main ocupar toda a tela e organizar conteúdo em coluna */
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Container principal com layout de duas colunas */
+.home-content {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Sidebar esquerda com FiltroCard */
+.sidebar-left {
+  flex: 0 0 300px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Conteúdo principal com Card */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Footer fixado no rodapé */
+.footer {
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .home-content {
+    flex-direction: column;
+  }
+  
+  .sidebar-left {
+    flex: none;
+    margin-bottom: 20px;
+  }
+}
