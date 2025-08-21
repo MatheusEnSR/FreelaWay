@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import './navbar.css';
 import Logo from '../../Assets/Logo/logo.png';
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -51,10 +52,13 @@ function NavBar() {
         <button className="fechar" onClick={closeSidebar}>×</button>
         <h3>Menu</h3>
         <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>
+        <li>
+          <Link to="/login">Item 1</Link>
+        </li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ul> 
+
       </div>
     </>
   );
