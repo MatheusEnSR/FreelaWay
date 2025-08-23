@@ -1,50 +1,125 @@
 header {
-  background: #2E7CF6;
-  background: -webkit-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: -moz-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, #00c26e 51%);
+  background-color: #004d26;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
-
+  height: 70px;
   display: flex;
-  justify-content: space-between; /* distribui uniformemente */
+  justify-content: space-between;
   align-items: center;
   color: #fff;
   padding: 10px 20px;
+  position: relative;
 }
 
 .logo {
   height: 86px;
 }
 
-.barra-pesquisa {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    max-width: 50px;
-    margin: 0px 0px;
+/* Links de navegação */
+.navbar-links {
+  display: flex;
+  gap: 30px;
+  margin: 0 auto;
 }
 
-.barra-pesquisa input {
-  flex: 1; /* ocupa todo o espaço da barra, mas respeita max-width do container */
-  padding: 9px 10px;
-  border: none;
-  border-radius: 4px 0 0 4px;
-  outline: none;
+.nav-link {
+  color: #b6b6b6;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  position: relative;
+  padding: 5px 0;
+  transition: color 0.3s ease;
 }
 
-.barra-pesquisa button {
-  padding: 2px 10px;
-  border: none;
-  background-color: #ffffff;
+.nav-link:hover {
+  color: #004d26;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #000000;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: #004d26;
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  width: 100%;
+  background-color: #004d26;
+}
+
+/* Seletor de idioma */
+.language-selector {
+  position: relative;
+  margin-right: 20px;
+}
+
+.language-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 6px 12px;
   color: #000000;
-  border-radius: 0 4px 4px 0;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-button > svg{
-  margin-top: 2px;
+.language-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
+.chevron {
+  transition: transform 0.3s ease;
+}
+
+.chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  min-width: 120px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.language-dropdown button {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: #333;
+  font-weight: 500;
+}
+
+.language-dropdown button:hover {
+  background-color: #f0f0f0;
+}
 
 .hamburger {
   font-size: 24px;
@@ -67,10 +142,9 @@ button > svg{
 
 /* Barra lateral */
 .sidebar {
-  background: #2E7CF6;
-  background: -webkit-linear-gradient(180deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: -moz-linear-gradient(180deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: linear-gradient(180deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  background: -webkit-linear-gradient(135deg, #69dfa4, #00b359);
+  background: -moz-linear-gradient(135deg, #69dfa4, #00b359);
+  background: linear-gradient(135deg, #69dfa4, #00b359);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
 
   position: fixed;
@@ -89,10 +163,10 @@ button > svg{
   transform: translateX(0);
 }
 
-
 a{
   cursor: pointer;
   color: #000000;
+  text-decoration: none;
 }
 
 /* Botão de fechar */
@@ -112,4 +186,32 @@ a{
 
 .sidebar li {
   margin: 15px 0;
+}
+
+.sidebar li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.sidebar li a:hover {
+  color: #004d26;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+  
+  .language-selector {
+    margin-right: 10px;
+  }
+  
+  .language-toggle {
+    padding: 5px 8px;
+    font-size: 0.9rem;
+  }
 }

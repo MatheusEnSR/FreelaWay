@@ -1,9 +1,11 @@
-div > h2{
+div > h4{
     width: 100%;    
     background: #2E7CF6;
-    background: -webkit-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-    background: -moz-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-    background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+    background: -webkit-linear-gradient(135deg,#00b359, #69dfa4);
+    background: -moz-linear-gradient(135deg,#00b359, #69dfa4 );
+    background: linear-gradient(135deg,#00b359, #69dfa4 );
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
-
+    text-align: center;
+    text-decoration-color: #b4b4b4;
+    text-size-adjust: 2px;
 }

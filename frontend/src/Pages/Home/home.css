@@ -1,54 +1,378 @@
+/* hero section/seção informativa com barra de pesquisa */
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #004d26, #90dd9d);
+  color: #fff;
+  padding: 60px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-pesquisa {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin: 25px 0;
+}
+
+.hero-pesquisa input {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  outline: none;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero-pesquisa button {
+  padding: 0 20px;
+  border: none;
+  background-color: #004d26;
+  color: #ffffff;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-pesquisa button:hover {
+  background-color: #003d1f;
+}
+
 /* Faz o main ocupar toda a tela e organizar conteúdo em coluna */
 main {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: #f7f7f7; /* fundo claro igual referência */
+}
+
+
+header {
+  background: #fff; /* branco puro, verde da imagem 2 :#98bba9 */
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: transparent;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 2px solid white;
+  transition: all 0.2s;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 2px solid white;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: rgb(5, 223, 139);
+  color: var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background: rgb(5, 223, 139);
+  color: var(--primary-color);
+}
+
+/* FUNDO GERAL */
+body {
+  background-color: #f9f9f9;
+  color: #333;
+  font-family: "Inter", sans-serif;
+}
+
+/* AJUSTE NO FOOTER */
+footer {
+  background: #004d26; /* verde escuro */
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-weight: 500;
 }
 
 /* Container principal com layout de duas colunas */
 .home-content {
-  display: flex;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr); /* Sidebar + conteúdo */
+  gap: 40px; /* <-- aumenta o espaço entre filtro e cards */
+  padding: 24px 40px;
   flex: 1;
-  gap: 20px;
-  padding: 20px;
+  align-items: start;
 }
 
-/* Sidebar esquerda com FiltroCard */
+/* Sidebar esquerda */
 .sidebar-left {
-  flex: 0 0 300px;
-  display: flex;
-  justify-content: center;
+  display: block;
+  position: sticky;
+  top: 100px; /* fica "fixo" quando rola */
 }
 
-/* Conteúdo principal com Card */
+/* Conteúdo principal */
 .main-content {
-  flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 10px; /* garante respiro entre filtro e cards */
 }
 
+/* Grid de cards */
 .card-wrapper {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px;
   width: 100%;
 }
 
-/* Footer fixado no rodapé */
-.footer {
-  width: 100%;
+.expanding-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Ocupa toda a largura */
+  height: 220px; /* Altura fixa */
+  transition: all 0.3s ease;
+}
+
+.normal-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Largura normal */
+  height: 160px; /* Altura menor que a do card expandido */
+  transition: all 0.3s ease;
+}
+
+.expanding-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.normal-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.expanding-card .card-header h3 {
+  font-size: 1.3rem;
+  color: #004d26;
+  margin: 0;
+  flex: 1;
+  margin-right: 15px;
+}
+
+.normal-card .card-header h3 {
+  font-size: 1.1rem;
+  color: #2f2f2f;
+  margin: 0;
+  flex: 1;
+  margin-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expanding-card .budget {
+  font-weight: 700;
+  color: #00b359;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.normal-card .budget {
+  font-weight: 700;
+  color: #004d26;
+  white-space: nowrap;
+}
+
+.expanding-card .card-description {
+  color: #5b5b5b;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.normal-card .card-description {
+  color: #5b5b5b;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.expanding-card .card-details {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.expanding-card .category, 
+.expanding-card .location,
+.expanding-card .deadline {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.expanding-card .category {
+  background: rgba(0, 194, 175, 0.15);
+  color: #00c2af;
+}
+
+.expanding-card .location {
+  background: rgba(0, 77, 38, 0.15);
+  color: #004d26;
+}
+
+.expanding-card .deadline {
+  background: rgba(255, 165, 0, 0.15);
+  color: #ff8c00;
+}
+
+.expanding-card .card-footer,
+.normal-card .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: auto;
 }
 
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
+.expanding-card .card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.expanding-card .time-ago,
+.normal-card .time-ago {
+  font-size: 0.85rem;
+  color: #777777;
+}
+
+.expanding-card .btn-card,
+.normal-card .btn-card {
+  background: #004d26;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.expanding-card .btn-card.secondary {
+  background: transparent;
+  color: #004d26;
+  border: 1px solid #004d26;
+}
+
+.expanding-card .btn-card:hover,
+.normal-card .btn-card:hover {
+  background: #00b359;
+}
+
+.expanding-card .btn-card.secondary:hover {
+  background: rgba(0, 77, 38, 0.1);
+}
+
+/* Destaque visual para o card expandido */
+.expanding-card {
+  border-left: 5px solid #00b359;
+  position: relative;
+}
+
+.expanding-card::before {
+  content: "Destaque";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: #00b359;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
   .home-content {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  .sidebar-left {
+    position: static;
+    margin-bottom: 20px;
+  }
+}
+
+/* Adicione responsividade para a barra de pesquisa na hero section */
+@media (max-width: 768px) {
+  .hero-pesquisa {
+    max-width: 90%;
   }
   
-  .sidebar-left {
-    flex: none;
-    margin-bottom: 20px;
+  .hero-section {
+    padding: 40px 20px;
+  }
+  
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-section p {
+    font-size: 1rem;
   }
 }

@@ -1,19 +1,124 @@
-/* Faz o main ocupar toda a tela e organizar conteúdo em coluna */
-main {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Container principal para empurrar o footer para baixo */
-.cardpage-content {
+/* cardpage.css */
+.cardpage-container {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 40px;
 }
 
-/* Footer fixado no rodapé */
-.footer {
-  width: 100%;
-  margin-top: auto;
+.project-detail {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.project-header h1 {
+  font-size: 1.8rem;
+  color: var(--text-dark);
+  margin: 0;
+  margin-right: 20px;
+}
+
+.project-budget {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+.project-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.project-meta span {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.project-description h2 {
+  color: var(--text-dark);
+  margin: 24px 0 12px;
+}
+
+.project-description h3 {
+  color: var(--text-dark);
+  margin: 20px 0 10px;
+}
+
+.project-description p, .project-description li {
+  color: var(--text-medium);
+  line-height: 1.6;
+}
+
+.project-description ul {
+  padding-left: 20px;
+}
+
+.project-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.client-info {
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.client-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.client-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #e6e6e6;
+  margin: 0 auto 16px;
+}
+
+.client-details h3 {
+  margin: 0 0 8px;
+  color: var(--text-dark);
+}
+
+.client-details p {
+  margin: 4px 0;
+  color: var(--text-medium);
+}
+
+@media (max-width: 900px) {
+  .cardpage-container {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+  
+  .project-header {
+    flex-direction: column;
+  }
+  
+  .project-budget {
+    margin-top: 12px;
+  }
 }

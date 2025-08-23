@@ -6,8 +6,6 @@ import Home from './Pages/Home/home.jsx';
 import Login from './Pages/Login/login.jsx';
 import CardPage from './Pages/CardPage/cardpage.jsx';
 
-
-
 function App() {
   return (
     <Router>  
