@@ -19,7 +19,7 @@ function Home() {
     <main>
       <Navbar />
         <section className="hero-section">
-        <h1>Vagas Sustentáveis</h1>
+        <h1>Vagas</h1>
         <p>
           Conectando profissionais e oportunidades que impulsionam um futuro
           mais verde e consciente.

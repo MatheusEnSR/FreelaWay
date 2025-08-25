@@ -4,9 +4,9 @@ import './footer.css'
 
 function Footer() {
   return (
-    <div>
+    <footer>
         <h4>Todos os direitos reservados © Freelaway™</h4>
-    </div>
+    </footer>
   );
 }
 

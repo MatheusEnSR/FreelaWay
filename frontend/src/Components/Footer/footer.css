@@ -1,11 +1,7 @@
-div > h4{
-    width: 100%;    
-    background: #2E7CF6;
-    background: -webkit-linear-gradient(135deg,#00b359, #69dfa4);
-    background: -moz-linear-gradient(135deg,#00b359, #69dfa4 );
-    background: linear-gradient(135deg,#00b359, #69dfa4 );
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
-    text-align: center;
-    text-decoration-color: #b4b4b4;
-    text-size-adjust: 2px;
+footer{
+  background: #004d26;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-weight: 500;
 }
