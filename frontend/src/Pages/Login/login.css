@@ -3,11 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #2E7CF6;
-  background: -webkit-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: -moz-linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  background: linear-gradient(266deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2E7CF6", endColorstr="#00C26E", GradientType=0);
+  background: linear-gradient(135deg, #004d26, #90dd9d);
   padding: 20px;
 }
 
@@ -35,7 +31,7 @@
   background-origin: border-box;
   background-clip: content-box, border-box;
   background-image: linear-gradient(#fff, #fff),
-    linear-gradient(90deg, rgba(46, 124, 246, 1) 6%, rgba(0, 194, 110, 1) 51%);
+  linear-gradient(180deg, #004d26, #90dd9d);
   z-index: -1; /* fica atrás do card */
 }
 
@@ -130,7 +126,7 @@
 .login-button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(90deg, #00c853, #2962ff); /* gradiente igual ao header */
+  background: linear-gradient(90deg, #2A7A3A, #2FA37C); /* gradiente igual ao header */
   color: white;
   border: none;
   border-radius: 10px;

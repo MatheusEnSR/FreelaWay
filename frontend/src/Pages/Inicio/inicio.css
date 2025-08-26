@@ -1,0 +1,135 @@
+main{
+    min-height: 100vh; /* garante que o main ocupe pelo menos a tela inteira */
+    display: flex;
+    flex-direction: column;
+}
+
+
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #004d26, #90dd9d);
+    min-height: 50vh; /* altura mínima, mas deixa o conteúdo crescer */
+}
+
+
+.banner-text {
+    flex: 1;
+    padding: 20px;
+}
+
+.banner-carousel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel img {
+  width: 500px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.escolha {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0;
+}
+
+.card-escolha {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;
+}
+
+.card-escolha h2 {
+  margin-bottom: 15px;
+}
+
+.card-escolha p {
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.botoes-escolha {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-escolha {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #004d26;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-escolha:hover {
+  background-color: #90dd9d;
+  color: #000;
+}
+
+.comentarios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px 0 50px 0; /* margem inferior maior */
+}
+
+
+.comentarios-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.comentarios-header h1 {
+  color: #004d26;
+  margin-bottom: 10px;
+}
+
+.comentarios-header p {
+  color: #555;
+  max-width: 600px;
+}
+
+.comentarios-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.comentario-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 250px;
+  text-align: center;
+}
+
+.comentario-card p {
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.comentario-card span {
+  font-weight: bold;
+  color: #004d26;
+}
+
+
+footer{
+    margin-top: 69px;
+}

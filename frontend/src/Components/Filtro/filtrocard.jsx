@@ -26,6 +26,16 @@ function FiltroCard() {
       </div>
 
       <div className="filtro-item">
+        <label htmlFor="tipo">Filtrar por Idiomas</label>
+        <select id="tipo">
+          <option>Todos os Tipos</option>
+          <option>Português</option>
+          <option>Francês</option>
+          <option>Espanhol</option>
+        </select>
+      </div>
+
+      <div className="filtro-item">
         <label htmlFor="tipo">Tipo de Trabalho</label>
         <select id="tipo">
           <option>Todos os Tipos</option>
@@ -34,6 +44,7 @@ function FiltroCard() {
           <option>Presencial</option>
         </select>
       </div>
+
 
       <div className="filtro-item">
         <label>Orçamento (R$)</label>

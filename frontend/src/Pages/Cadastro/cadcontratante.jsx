@@ -31,7 +31,7 @@ const CadastroContratante = () => {
       if (!response.ok) throw new Error(data.message || 'Erro no cadastro');
 
       alert('Cadastro de contratante realizado com sucesso!');
-      setFormData({ nomeEmpresa: '', cnpj: '', email: '', senha: '' });
+      setFormData({ nome: '', cnpj: '', email: '', senha: '' });
 
     } catch (error) {
       alert(error.message);
@@ -50,23 +50,29 @@ const CadastroContratante = () => {
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label>Nome da Empresa</label>
-            <input type="text" name="nomeEmpresa" value={formData.nomeEmpresa} onChange={handleChange} required />
+            <label>Nome Completo</label>
+            <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder='Escreva seu nome' required />
+          
           </div>
 
           <div className="form-group">
-            <label>CNPJ</label>
-            <input type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} required />
+            <label>Idiomas</label>
+            <input type="text" name="idioma" value={formData.nome} onChange={handleChange} placeholder='Idiomas falados' required />
+          </div>
+
+          <div className="form-group">
+            <label>CPF</label>
+            <input type="text" name="cpf" value={formData.cpf} onChange={handleChange} placeholder='Seu cpf' required />
           </div>
 
           <div className="form-group">
             <label>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder='Seu email' required />
           </div>
 
           <div className="form-group">
             <label>Senha</label>
-            <input type="password" name="senha" value={formData.senha} onChange={handleChange} required />
+            <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder='Sua senha' required />
           </div>
 
           <button type="submit" className="login-button" disabled={isLoading}>

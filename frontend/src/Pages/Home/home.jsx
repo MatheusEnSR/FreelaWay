@@ -14,7 +14,6 @@ function Home() {
     e.preventDefault();
     console.log("Buscando:", searchTerm); // aqui você pode integrar com API ou filtro
   };
-
   return (
     <main>
       <Navbar />

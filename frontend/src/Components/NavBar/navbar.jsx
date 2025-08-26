@@ -4,9 +4,7 @@ import Logo from '../../Assets/Logo/logo.png';
 import { Link, useLocation } from "react-router-dom";
 
 // Ícones do react
-import { VscAccount } from "react-icons/vsc";
-import { VscClose } from "react-icons/vsc";
-import { VscChevronDown } from "react-icons/vsc";
+import { VscAccount, VscClose, VscChevronDown, VscMenu } from "react-icons/vsc";
 
 function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -14,21 +12,41 @@ function NavBar() {
   const [selectedLanguage, setSelectedLanguage] = useState('PT-BR');
   const location = useLocation();
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const closeSidebar = () => setSidebarOpen(false);
+  const toggleLanguageDropdown = () => setLanguageOpen(!languageOpen);
+
+  // Função para traduzir texto usando LibreTranslate
+  const traduzirTexto = async (texto, idiomaDestino) => {
+    try {
+      const res = await fetch('https://libretranslate.de/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          q: texto,
+          source: 'pt',  // idioma original
+          target: idiomaDestino,
+          format: 'text'
+        })
+      });
+      const data = await res.json();
+      return data.translatedText;
+    } catch (err) {
+      console.error("Erro ao traduzir:", err);
+      return texto;
+    }
   };
 
-  const closeSidebar = () => {
-    setSidebarOpen(false);
-  };
-
-  const toggleLanguageDropdown = () => {
-    setLanguageOpen(!languageOpen);
-  };
-
-  const selectLanguage = (lang) => {
+  const selectLanguage = async (lang) => {
     setSelectedLanguage(lang);
     setLanguageOpen(false);
+
+    // Aqui você pode traduzir textos principais do site
+    // Exemplo: traduzindo "Início" para o idioma selecionado
+    const textoTraduzido = await traduzirTexto("Início", lang.toLowerCase());
+    console.log("Texto tradu极zido:", textoTraduzido);
+
+    // Depois você pode guardar isso em Context ou State global
   };
 
   return (
@@ -38,23 +56,13 @@ function NavBar() {
           <img src={Logo} alt="Logo" className="logo" />
         </Link>
 
-        {/* Links de navegação */}
         <nav className="navbar-links">
-          <Link 
-            to="/inicio" 
-            className={location.pathname === '/inicio' ? 'nav-link active' : 'nav-link'}
-          >
-            Início
-          </Link>
-          <Link 
-            to="/" 
-            className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}
-          >
+          <Link to="/inicio">Início</Link>
+          <Link to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>
             Vagas
           </Link>
         </nav>
 
-        {/* Seletor de idioma */}
         <div className="language-selector">
           <button className="language-toggle" onClick={toggleLanguageDropdown}>
             {selectedLanguage}
@@ -70,15 +78,11 @@ function NavBar() {
           )}
         </div>
 
-        <button className="hamburger" onClick={toggleSidebar}>
-          &#9776;
-        </button>
+        <button className="hamburger" onClick={toggleSidebar}><VscMenu /></button>
       </header>
 
-      {/* Fundo semitransparente */}
       {sidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
 
-      {/* Barra lateral */}
       <div className={`sidebar ${sidebarOpen ? "aberto" : ""}`}>
         <button className="fechar" onClick={closeSidebar}><VscClose /></button>
         <h3>Menu</h3>

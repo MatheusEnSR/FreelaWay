@@ -32,7 +32,7 @@ const LoginPage = () => {
 
     if (!formData.email) {
       newErrors.email = 'Email é obrigatório';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.极\S+/.test(formData.email)) {
       newErrors.email = 'Email inválido';
     }
 
@@ -113,7 +113,7 @@ const LoginPage = () => {
           </div>
 
           <div className="form-options">
-            <label className="checkbox-container">
+           极<label className="checkbox-container">
               <input type="checkbox" />
               <span className="checkmark"></span>
               Lembrar-me
@@ -136,6 +136,7 @@ const LoginPage = () => {
 
         <div className="login-footer">
           <Link to="/cadastroa"> Cadastre-se como aplicante</Link>
+          <br />
           <Link to="/cadastroc"> Cadastre-se como contratante</Link>
         </div>
 
