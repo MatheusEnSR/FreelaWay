@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { Link} from "react-router-dom";
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -133,7 +135,8 @@ const LoginPage = () => {
         </form>
 
         <div className="login-footer">
-          <p>Não tem uma conta? <a href="#register">Cadastre-se</a></p>
+          <Link to="/cadastroa"> Cadastre-se como aplicante</Link>
+          <Link to="/cadastroc"> Cadastre-se como contratante</Link>
         </div>
 
         <div className="social-login">
