@@ -47,8 +47,8 @@ const Inicio = () => {
             <h2>Explore o site!</h2>
             <p>Escolha uma das visões abaixo para navegar:</p>
             <div className="botoes-escolha">
-              <Link to="/home" className="btn-escolha">Aplicante</Link>
-              <Link to="/home" className="btn-escolha">Contratante</Link>
+              <Link to="/vagas" className="btn-escolha">Aplicante</Link>
+              <Link to="/vagas" className="btn-escolha">Contratante</Link>
             </div>
           </div>
         </div>
