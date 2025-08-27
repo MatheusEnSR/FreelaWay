@@ -18,12 +18,12 @@ function App() {
       <Router>
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={< Inicio/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/card" element={<CardPage />} />
             <Route path="/cadastroc" element={<CadastroContratante />} />
             <Route path="/cadastroa" element={<CadastroAplicante />} />
-            <Route path="/inicio" element={<Inicio />} />
+            <Route path="/vagas" element={< Home/>} />
           </Routes>
         </main>
       </Router>

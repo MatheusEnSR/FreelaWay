@@ -57,8 +57,10 @@ function NavBar() {
         </Link>
 
         <nav className="navbar-links">
-          <Link to="/inicio">Início</Link>
           <Link to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>
+            Início
+          </Link>
+          <Link to="/vagas" className={location.pathname === '/vagas' ? 'nav-link active' : 'nav-link'}>
             Vagas
           </Link>
         </nav>
