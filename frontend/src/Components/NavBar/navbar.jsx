@@ -1,6 +1,6 @@
 import './navbar.css';
 import React, { useState } from "react";
-import Logo from '../../Assets/Logo/logo.png';
+import Logo from '../../Assets/Logo/Logo.png';
 import { Link, useLocation } from "react-router-dom";
 
 // Ícones do react

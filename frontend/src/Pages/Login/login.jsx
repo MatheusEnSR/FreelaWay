@@ -87,19 +87,16 @@ const LoginPage = () => {
             <label htmlFor="email">
               <FaEnvelope className="input-icon" /> Email
             </label>
-            <div className="input-with-icon">
-              <FaEnvelope className="input-icon-inside" />
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={errors.email ? 'error' : ''}
-                placeholder="Digite seu email"
-                disabled={isLoading}
-              />
-            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`form-input ${errors.email ? 'error' : ''}`}
+              placeholder="Digite seu email"
+              disabled={isLoading}
+            />
             {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
 
@@ -107,24 +104,21 @@ const LoginPage = () => {
             <label htmlFor="password">
               <FaLock className="input-icon" /> Senha
             </label>
-            <div className="input-with-icon">
-              <FaLock className="input-icon-inside" />
-              <input
+            <input
               type="password"
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={errors.password ? 'error' : ''}
+              className={`form-input ${errors.password ? 'error' : ''}`}
               placeholder="Digite sua senha"
               disabled={isLoading}
             />
-            </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
 
           <div className="form-options">
-           极<label className="checkbox-container">
+            <label className="checkbox-container">
               <input type="checkbox" />
               <span className="checkmark"></span>
               Lembrar-me

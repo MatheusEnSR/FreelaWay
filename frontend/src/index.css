@@ -1,4 +1,6 @@
 /* index.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
   --primary-color: #004d26;
   --secondary-color: #00b359;
@@ -21,7 +23,7 @@
 body {
   background: var(--light-bg);
   color: var(--text-dark);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: 'Inter', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   line-height: 1.6;
 }
 
@@ -63,6 +65,3 @@ button {
 .btn-primary:hover {
   background: var(--secondary-color);
 }
-
-/* Adicione a fonte Inter (ou use uma alternativa) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');

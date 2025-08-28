@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../Components/NavBar/navbar.jsx"; 
 import Footer from "../../Components/Footer/footer.jsx"; 
 
+// Importando as imagens
 import Estacao from '../../Assets/Belem/Estação.png';
 import Teatro from '../../Assets/Belem/Teatro.png';
 import Veropeso from '../../Assets/Belem/Ver-o-peso.png';
@@ -43,7 +44,7 @@ const Inicio = () => {
         </div>
 
         <div className="escolha">
-          <div className极="card-escolha">
+          <div className="card-escolha">
             <h2>Explore o site!</h2>
             <p>Escolha uma das visões abaixo para navegar:</p>
             <div className="botoes-escolha">
