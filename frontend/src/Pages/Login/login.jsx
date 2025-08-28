@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FaEnvelope, FaLock, FaUser, FaIdCard, FaBriefcase } from 'react-icons/fa';
 
 
 const LoginPage = () => {
@@ -83,23 +84,32 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={errors.email ? 'error' : ''}
-              placeholder="Digite seu email"
-              disabled={isLoading}
-            />
+            <label htmlFor="email">
+              <FaEnvelope className="input-icon" /> Email
+            </label>
+            <div className="input-with-icon">
+              <FaEnvelope className="input-icon-inside" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={errors.email ? 'error' : ''}
+                placeholder="Digite seu email"
+                disabled={isLoading}
+              />
+            </div>
             {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Senha</label>
-            <input
+            <label htmlFor="password">
+              <FaLock className="input-icon" /> Senha
+            </label>
+            <div className="input-with-icon">
+              <FaLock className="input-icon-inside" />
+              <input
               type="password"
               id="password"
               name="password"
@@ -109,6 +119,7 @@ const LoginPage = () => {
               placeholder="Digite sua senha"
               disabled={isLoading}
             />
+            </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
 

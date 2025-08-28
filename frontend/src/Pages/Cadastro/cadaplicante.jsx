@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../Login/login.css';
+import './cadastro.css';
+import { FaUser, FaLanguage, FaIdCard, FaEnvelope, FaLock } from 'react-icons/fa';
 
 const CadastroAplicante = () => {
   const [formData, setFormData] = useState({
@@ -50,29 +52,88 @@ const CadastroAplicante = () => {
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label>Nome Completo</label>
-            <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder='Escreva seu nome' required />
-          
+            <label>
+              <FaUser className="input-icon" /> Nome Completo
+            </label>
+            <div className="input-with-icon">
+              <FaUser className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="nome" 
+                value={formData.nome} 
+                onChange={handleChange} 
+                placeholder='Digite seu nome completo' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Idiomas</label>
-            <input type="text" name="idioma" value={formData.nome} onChange={handleChange} placeholder='Idiomas falados' required />
+            <label>
+              <FaLanguage className="input-icon" /> Idiomas
+            </label>
+            <div className="input-with-icon">
+              <FaLanguage className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="idioma" 
+                value={formData.idioma} 
+                onChange={handleChange} 
+                placeholder='Ex: Português, Inglês, Espanhol' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>CPF</label>
-            <input type="text" name="cpf" value={formData.cpf} onChange={handleChange} placeholder='Seu cpf' required />
+            <label>
+              <FaIdCard className="input-icon" /> CPF
+            </label>
+            <div className="input-with-icon">
+              <FaIdCard className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="cpf" 
+                value={formData.cpf} 
+                onChange={handleChange} 
+                placeholder='Apenas números' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder='Seu email' required />
+            <label>
+              <FaEnvelope className="input-icon" /> Email
+            </label>
+            <div className="input-with-icon">
+              <FaEnvelope className="input-icon-inside" />
+              <input 
+                type="email" 
+                name="email" 
+                value={formData.email} 
+                onChange={handleChange} 
+                placeholder='seu@email.com' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Senha</label>
-            <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder='Sua senha' required />
+            <label>
+              <FaLock className="input-icon" /> Senha
+            </label>
+            <div className="input-with-icon">
+              <FaLock className="input-icon-inside" />
+              <input 
+                type="password" 
+                name="senha" 
+                value={formData.senha} 
+                onChange={handleChange} 
+                placeholder='Crie uma senha segura' 
+                required 
+              />
+            </div>
           </div>
 
           <button type="submit" className="login-button" disabled={isLoading}>

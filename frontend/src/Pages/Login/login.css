@@ -62,10 +62,34 @@
 }
 
 .form-group label {
-  display: block;
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
   color: #333;
   font-weight: 500;
+  gap: 8px;
+}
+
+.input-icon {
+  color: #2A7A3A;
+  font-size: 16px;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-inside {
+  position: absolute;
+  left: 12px;
+  color: #777;
+  font-size: 16px;
+}
+
+.input-with-icon input {
+  padding-left: 40px !important;
 }
 
 .form-group input {

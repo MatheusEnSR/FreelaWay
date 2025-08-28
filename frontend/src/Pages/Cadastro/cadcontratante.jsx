@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import '../Login/login.css';
+import './cadastro.css';
+import { FaBuilding, FaUserTie, FaIdCard, FaEnvelope, FaLock, FaGlobeAmericas } from 'react-icons/fa';
 
 const CadastroContratante = () => {
   const [formData, setFormData] = useState({
     nomeEmpresa: '',
+    nomeResponsavel: '',
     cnpj: '',
     email: '',
     senha: '',
+    idiomas: ''
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +35,7 @@ const CadastroContratante = () => {
       if (!response.ok) throw new Error(data.message || 'Erro no cadastro');
 
       alert('Cadastro de contratante realizado com sucesso!');
-      setFormData({ nome: '', cnpj: '', email: '', senha: '' });
+      setFormData({ nomeEmpresa: '', nomeResponsavel: '', cnpj: '', email: '', senha: '', idiomas: '' });
 
     } catch (error) {
       alert(error.message);
@@ -50,29 +54,105 @@ const CadastroContratante = () => {
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
-            <label>Nome Completo</label>
-            <input type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder='Escreva seu nome' required />
-          
+            <label>
+              <FaBuilding className="input-icon" /> Nome da Empresa
+            </label>
+            <div className="input-with-icon">
+              <FaBuilding className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="nomeEmpresa" 
+                value={formData.nomeEmpresa} 
+                onChange={handleChange} 
+                placeholder='Digite o nome da empresa' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Idiomas</label>
-            <input type="text" name="idioma" value={formData.nome} onChange={handleChange} placeholder='Idiomas falados' required />
+            <label>
+              <FaUserTie className="input-icon" /> Nome do Responsável
+            </label>
+            <div className="input-with-icon">
+              <FaUserTie className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="nomeResponsavel" 
+                value={formData.nomeResponsavel} 
+                onChange={handleChange} 
+                placeholder='Seu nome completo' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>CPF</label>
-            <input type="text" name="cpf" value={formData.cpf} onChange={handleChange} placeholder='Seu cpf' required />
+            <label>
+              <FaIdCard className="input-icon" /> CNPJ
+            </label>
+            <div className="input-with-icon">
+              <FaIdCard className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="cnpj" 
+                value={formData.cnpj} 
+                onChange={handleChange} 
+                placeholder='Apenas números' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder='Seu email' required />
+            <label>
+              <FaGlobeAmericas className="input-icon" /> Idiomas da Empresa
+            </label>
+            <div className="input-with-icon">
+              <FaGlobeAmericas className="input-icon-inside" />
+              <input 
+                type="text" 
+                name="idiomas" 
+                value={formData.idiomas} 
+                onChange={handleChange} 
+                placeholder='Idiomas utilizados na empresa' 
+                required 
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label>Senha</label>
-            <input type="password" name="senha" value={formData.senha} onChange={handleChange} placeholder='Sua senha' required />
+            <label>
+              <FaEnvelope className="input-icon" /> Email
+            </label>
+            <div className="input-with-icon">
+              <FaEnvelope className="input-icon-inside" />
+              <input 
+                type="email" 
+                name="email" 
+                value={formData.email} 
+                onChange={handleChange} 
+                placeholder='Email corporativo' 
+                required 
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>
+              <FaLock className="input-icon" /> Senha
+            </label>
+            <div className="input-with-icon">
+              <FaLock className="input-icon-inside" />
+              <input 
+                type="password" 
+                name="senha" 
+                value={formData.senha} 
+                onChange={handleChange} 
+                placeholder='Crie uma senha segura' 
+                required 
+              />
+            </div>
           </div>
 
           <button type="submit" className="login-button" disabled={isLoading}>
