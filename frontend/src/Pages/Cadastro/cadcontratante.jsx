@@ -53,20 +53,6 @@ const CadastroContratante = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label>
-              <FaBuilding className="input-icon" /> Nome da Empresa
-            </label>
-            <input 
-              type="text" 
-              name="nomeEmpresa" 
-              value={formData.nomeEmpresa} 
-              onChange={handleChange} 
-              className="form-input"
-              placeholder='Digite o nome da empresa' 
-              required 
-            />
-          </div>
 
           <div className="form-group">
             <label>
@@ -100,7 +86,7 @@ const CadastroContratante = () => {
 
           <div className="form-group">
             <label>
-              <FaGlobeAmericas className="input-icon" /> Idiomas da Empresa
+              <FaGlobeAmericas className="input-icon" /> Idiomas
             </label>
             <input 
               type="text" 
@@ -108,7 +94,7 @@ const CadastroContratante = () => {
               value={formData.idiomas} 
               onChange={handleChange} 
               className="form-input"
-              placeholder='Idiomas utilizados na empresa' 
+              placeholder='Ex: Português, Inglês, Espanhol' 
               required 
             />
           </div>
