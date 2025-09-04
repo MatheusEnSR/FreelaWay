@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { Link } from "react-router-dom";
-import { FaEnvelope, FaLock, FaUser, FaIdCard, FaBriefcase } from 'react-icons/fa';
-
+import { Link, useNavigate } from "react-router-dom"; // 1. Importar useNavigate
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,64 +10,68 @@ const LoginPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // 2. Inicializar o hook de navegação
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    // Limpar erro do campo quando o usuário começar a digitar
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name] || errors.form) {
+      setErrors(prev => ({ ...prev, [name]: '', form: '' }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-
+    // 3. Regex do email corrigido
     if (!formData.email) {
       newErrors.email = 'Email é obrigatório';
-    } else if (!/\S+@\S+\.极\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email inválido';
     }
-
     if (!formData.password) {
       newErrors.password = 'Senha é obrigatória';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Senha deve ter pelo menos 6 caracteres';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // 4. Lógica de handleSubmit substituída pela chamada real à API
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsLoading(true);
-    
+    setErrors({}); // Limpa erros antigos
+
     try {
-      // Simulando uma requisição de login
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Login realizado com sucesso:', formData);
+      const payload = {
+        username: formData.email, // A API espera 'username', que é o nosso email
+        password: formData.password,
+      };
+
+      const response = await fetch('/api/token/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Se a resposta não for OK, lança um erro com a mensagem do backend
+        throw new Error(data.detail || 'Credenciais inválidas.');
+      }
+
+      // Sucesso!
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
       alert('Login realizado com sucesso!');
-      
-      // Limpar formulário após sucesso
-      setFormData({ email: '', password: '' });
-      
+      navigate('/vagas'); // Redireciona para o dashboard ou página principal
+
     } catch (error) {
       console.error('Erro no login:', error);
-      alert('Erro ao fazer login. Tente novamente.');
+      // Exibe o erro vindo da API no formulário
+      setErrors({ form: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +85,7 @@ const LoginPage = () => {
           <p>Faça login na sua conta</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} className="login-form" noValidate>
           <div className="form-group">
             <label htmlFor="email">
               <FaEnvelope className="input-icon" /> Email
@@ -126,16 +129,15 @@ const LoginPage = () => {
             <a href="#forgot" className="forgot-password">Esqueci minha senha</a>
           </div>
 
+          {/* Exibe erros gerais do formulário, como "Credenciais inválidas" */}
+          {errors.form && <span className="error-message">{errors.form}</span>}
+
           <button 
             type="submit" 
             className="login-button"
             disabled={isLoading}
           >
-            {isLoading ? (
-              <div className="loading-spinner"></div>
-            ) : (
-              'Entrar'
-            )}
+            {isLoading ? <div className="loading-spinner"></div> : 'Entrar'}
           </button>
         </form>
 

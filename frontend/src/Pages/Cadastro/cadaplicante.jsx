@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
-import '../Login/login.css';
-import './cadastro.css';
+import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLanguage, FaIdCard, FaEnvelope, FaLock } from 'react-icons/fa';
+
+// Lembre-se de ajustar o caminho para o seu arquivo CSS, se necessário
+import './cadastro.css'; 
 
 const CadastroAplicante = () => {
   const [formData, setFormData] = useState({
     nome: '',
+    idioma: '',
     cpf: '',
     email: '',
     senha: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,23 +24,43 @@ const CadastroAplicante = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("--- Formulário enviado, iniciando processo ---");
+
+    // Mapeando os dados do formulário para o que a API do Django espera
+    const payload = {
+      username: formData.email,   // Usando email como username
+      email: formData.email,
+      password: formData.senha,   // O nome do campo no seu form é "senha"
+      first_name: formData.nome,  // O nome do campo no seu form é "nome"
+      last_name: "",              // Podemos enviar um sobrenome vazio por enquanto
+    };
+
+    console.log(">>> PAYLOAD A SER ENVIADO:", payload);
 
     try {
-      const response = await fetch('http://localhost:5000/api/aplicantes', {
+      const response = await fetch('/api/register/', { // Usando a URL relativa para o proxy do Vite
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
+      
+      const responseData = await response.json();
+      console.log("<<< RESPOSTA RECEBIDA DO SERVIDOR:", responseData);
 
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.message || 'Erro no cadastro');
-
+      if (!response.ok) {
+        const errorMessages = Object.entries(responseData).map(([key, value]) => `${key}: ${value[0]}`).join('\n');
+        throw new Error(errorMessages);
+      }
+      
+      console.log("✅ SUCESSO! Cadastro realizado.");
       alert('Cadastro de aplicante realizado com sucesso!');
-      setFormData({ nome: '', idioma: '', cpf: '', email: '', senha: '' });
+      navigate('/login');
 
     } catch (error) {
-      alert(error.message);
+      console.error("❌ ERRO NA REQUISIÇÃO:", error);
+      alert(`Ocorreu um erro no cadastro:\n${error.message}`);
     } finally {
       setIsLoading(false);
     }

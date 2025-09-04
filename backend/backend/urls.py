@@ -1,5 +1,5 @@
 """
-URL configuration for cadastro_back project.
+URL configuration for backend project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
@@ -14,9 +14,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# backend/backend/urls.py
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+# Importações para o login com JWT
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Sua rota de registro que já funciona
+    path('api/', include('api.urls')),
+
+    # VERIFIQUE SE ESTAS DUAS LINHAS EXISTEM. SE NÃO, ADICIONE-AS:
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
