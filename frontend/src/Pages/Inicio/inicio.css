@@ -1,135 +1,290 @@
-main{
+main {
     min-height: 100vh; /* garante que o main ocupe pelo menos a tela inteira */
     display: flex;
     flex-direction: column;
 }
 
-
+/* ================= Banner ================= */
 .banner {
+    position: relative; /* necessário para overlay */
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #004d26, #90dd9d);
-    min-height: 50vh; /* altura mínima, mas deixa o conteúdo crescer */
-}
-
-
-.banner-text {
-    flex: 1;
+    justify-content: center;
+    min-height: 80vh;
+    background-image: url('../../Assets/Belem/image.png');
+    background-repeat: no-repeat;
+    background-position: top center; /* mantém a imagem mais pra cima */
+    background-size: cover;
     padding: 20px;
 }
 
-.banner-carousel {
-    flex: 1;
+/* overlay centraliza o conteúdo sobre o banner */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* só horizontal */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centraliza verticalmente */
+    align-items: center;     /* centraliza horizontalmente */
+    height: 100%;            /* ocupa toda altura do banner */
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    gap: 20px; /* espaço entre frase e barra */
+}
+
+
+/* frase de efeito */
+.banner-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* barra de busca */
+.banner-search {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin: 25px 0;
+}
+
+.banner-search input {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  outline: none;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.banner-search button {
+  padding: 0 20px;
+  border: none;
+  background-color: #004d26;
+  color: #ffffff;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-search button:hover {
+  background-color: #003d1f;
+}
+
+/* ================= Media Queries ================= */
+
+/* tablets e notebooks */
+@media (max-width: 1199px) {
+    .banner-title {
+        font-size: 2rem;
+    }
+
+    .search-input {
+        width: 70%;
+    }
+}
+
+/* celulares */
+@media (max-width: 767px) {
+    .banner-title {
+        font-size: 1.5rem;
+    }
+
+    .search-input {
+        width: 80%;
+    }
+
+    .banner-overlay {
+        top: 25%;
+        transform: translate(-50%, -25%);
+    }
+}
+
+
+/* ================= Escolha ================= */
+.escolha {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.carousel img {
-  width: 500px;
-  height: 300px;
-  object-fit: cover;
-}
-
-.escolha {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 24px 0;
+    margin: 24px 0;
+    flex-wrap: wrap; /* responsivo */
 }
 
 .card-escolha {
-  background-color: #ffffff;
-  padding: 30px 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  text-align: center;
-  max-width: 400px;
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    max-width: 400px;
+    margin: 10px;
 }
 
 .card-escolha h2 {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .card-escolha p {
-  margin-bottom: 25px;
-  color: #555;
+    margin-bottom: 25px;
+    color: #555;
 }
 
 .botoes-escolha {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .btn-escolha {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #004d26;
-  color: white;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #004d26;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
 .btn-escolha:hover {
-  background-color: #90dd9d;
-  color: #000;
+    background-color: #90dd9d;
+    color: #000;
 }
 
+/* ================= Comentários ================= */
 .comentarios {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 24px 0 50px 0; /* margem inferior maior */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0 50px 0; /* margem inferior maior */
 }
-
 
 .comentarios-header {
-  text-align: center;
-  margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .comentarios-header h1 {
-  color: #004d26;
-  margin-bottom: 10px;
+    color: #004d26;
+    margin-bottom: 10px;
 }
 
 .comentarios-header p {
-  color: #555;
-  max-width: 600px;
+    color: #555;
+    max-width: 600px;
 }
 
 .comentarios-cards {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .comentario-card {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  max-width: 250px;
-  text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    max-width: 250px;
+    text-align: center;
 }
 
 .comentario-card p {
-  font-style: italic;
-  margin-bottom: 10px;
+    font-style: italic;
+    margin-bottom: 10px;
 }
 
 .comentario-card span {
-  font-weight: bold;
-  color: #004d26;
+    font-weight: bold;
+    color: #004d26;
 }
 
-
-footer{
+footer {
     margin-top: 69px;
+}
+
+/* ================= Media Queries ================= */
+
+/* Telas grandes (desktop) */
+@media (min-width: 1200px) {
+    .banner {
+        flex-direction: row;
+        min-height: 52vh;
+        padding: 40px;
+    }
+
+    .carousel img {
+        width: 600px;
+        height: 400px;
+    }
+
+    .card-escolha {
+        max-width: 350px;
+    }
+
+    .comentario-card {
+        max-width: 300px;
+    }
+}
+
+/* Telas médias (tablets) */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .banner {
+        flex-direction: column;
+        min-height: 70vh;
+        padding: 30px;
+    }
+
+    .carousel img {
+        width: 450px;
+        height: 250px;
+    }
+
+    .card-escolha {
+        max-width: 300px;
+    }
+
+    .comentario-card {
+        max-width: 220px;
+    }
+}
+
+/* Telas pequenas (celulares) */
+@media (max-width: 767px) {
+    .banner {
+        flex-direction: column;
+        min-height: 60vh;
+        padding: 20px;
+    }
+
+    .carousel img {
+        width: 100%;
+        height: auto;
+    }
+
+    .card-escolha {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .comentario-card {
+        width: 90%;
+        max-width: unset;
+    }
+
+    .botoes-escolha {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
