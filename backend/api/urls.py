@@ -19,7 +19,10 @@ Including another URLconf
 
 from django.urls import path
 from .views import RegisterView
+from . import views
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
+    path('overview/', views.overview_api, name='overview_api'),
+    path('employer/<int:pk>/', views.employer_profile_api, name='employer_profile_api'),
 ]
