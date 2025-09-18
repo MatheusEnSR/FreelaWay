@@ -1,35 +1,45 @@
+// Caminho: frontend/src/Pages/CentralDoEmpregador/CentralDoEmpregador.jsx
+
 import React, { useState } from 'react';
 import './CentralDoEmpregador.css';
 
-// Importando os ícones
 import { FaHome, FaBullhorn, FaUsers, FaQuestionCircle, FaUserCircle } from 'react-icons/fa';
 
-// Importando os componentes de cada aba
 import Inicio from './tabs/Inicio';
 import Anuncios from './tabs/Anuncios_temp';
 import Candidatos from './tabs/Candidatos';
 import Suporte from './tabs/Suporte';
+import Perfil from './tabs/Perfil';
 
 const CentralDoEmpregador = () => {
   const [activeTab, setActiveTab] = useState('inicio');
 
-  // Sistema de "roteamento" interno para renderizar o conteúdo da aba correta
+  // 1. O estado agora guarda os dados do empregador
+  const [dadosEmpregador, setDadosEmpregador] = useState({
+    nome: "Nome do Empregador",
+    email: "contato@minhaempresa.com",
+    cnpj: "12.345.678/0001-99",
+    descricao: "Somos uma empresa focada em inovação e desenvolvimento de soluções digitais."
+  });
+
+  // 2. Esta função será chamada pelo componente 'Perfil' para atualizar os dados
+  const handlePerfilSave = (novosDados) => {
+    setDadosEmpregador(dadosAntigos => ({ ...dadosAntigos, ...novosDados }));
+    alert('Perfil atualizado com sucesso!');
+  };
+
   const renderContent = () => {
     switch (activeTab) {
-      case 'inicio':
-        return <Inicio />;
-      case 'anuncios':
-        return <Anuncios />;
-      case 'candidatos':
-        return <Candidatos />;
-      case 'suporte':
-        return <Suporte />;
-      default:
-        return <Inicio />;
+      case 'inicio': return <Inicio />;
+      case 'anuncios': return <Anuncios />;
+      case 'candidatos': return <Candidatos />;
+      case 'suporte': return <Suporte />;
+      // 3. Passamos os dados e a função de guardar para o componente 'Perfil'
+      case 'perfil': return <Perfil dados={dadosEmpregador} onSave={handlePerfilSave} />;
+      default: return <Inicio />;
     }
   };
   
-  // Estrutura de dados para os itens da navegação da sidebar
   const navItems = [
     { id: 'inicio', label: 'Início', icon: <FaHome /> },
     { id: 'anuncios', label: 'Meus Anúncios', icon: <FaBullhorn /> },
@@ -39,7 +49,6 @@ const CentralDoEmpregador = () => {
 
   return (
     <div className="dashboard-layout">
-      {/* Coluna da Esquerda: Sidebar Fixa */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
           <h3>Central do Empregador</h3>
@@ -55,20 +64,19 @@ const CentralDoEmpregador = () => {
             </li>
           ))}
         </ul>
-
-        {/* Componente de Perfil no Rodapé da Sidebar */}
+        
         <div className="sidebar-footer">
-          <a href="#perfil" className="profile-preview">
+          <button className="profile-preview-button" onClick={() => setActiveTab('perfil')}>
             <FaUserCircle className="profile-icon" />
             <div className="profile-info">
-              <h4>Nome do Empregador</h4>
+              {/* 4. O nome aqui agora vem do estado, sendo dinâmico */}
+              <h4>{dadosEmpregador.nome}</h4>
               <p>Ver seu perfil</p>
             </div>
-          </a>
+          </button>
         </div>
       </aside>
 
-      {/* Coluna da Direita: Conteúdo Dinâmico */}
       <main className="dashboard-content">
         {renderContent()}
       </main>
