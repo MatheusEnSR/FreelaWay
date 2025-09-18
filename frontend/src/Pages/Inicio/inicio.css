@@ -10,7 +10,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 80vh;
+    min-height: 120vh; /* altura maior para o banner */
     background-image: url('../../Assets/Belem/image.png');
     background-repeat: no-repeat;
     background-position: top center; /* mantém a imagem mais pra cima */
@@ -36,7 +36,6 @@ main {
     text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
     gap: 20px; /* espaço entre frase e barra */
 }
-
 
 /* frase de efeito */
 .banner-title {
@@ -83,16 +82,6 @@ main {
 /* ================= Media Queries ================= */
 
 /* tablets e notebooks */
-@media (max-width: 1199px) {
-    .banner-title {
-        font-size: 2rem;
-    }
-
-    .search-input {
-        width: 70%;
-    }
-}
-
 /* celulares */
 @media (max-width: 767px) {
     .banner-title {
@@ -103,18 +92,19 @@ main {
         width: 80%;
     }
 
+    .banner {
+        min-height: 70vh; /* reduzido no mobile */
+    }
+
     .banner-overlay {
         top: 25%;
         transform: translate(-50%, -25%);
     }
 }
 
-
 footer {
     margin-top: 69px;
 }
-
-
 
 /* ======= Vagas ======= */
 .vagas {
@@ -127,13 +117,13 @@ footer {
   align-items: center;
   text-align: center; /* garante centralização do texto */
 }
+
 .vagas-title {
   font-size: 2rem;
   color: #004d26;
   margin: 40px 0 30px 0;
   text-align: center; /* garante que o texto fique centralizado */
 }
-
 
 .vagas-container {
   display: grid;
@@ -144,8 +134,6 @@ footer {
   max-width: 1200px;    /* largura máxima do container */
   margin: 0 auto;       /* centraliza o container na página */
 }
-
-
 
 .vagas-container::-webkit-scrollbar {
   height: 10px;
@@ -205,14 +193,13 @@ footer {
   font-style: italic;
 }
 
-
 /* ================= Media Queries ================= */
 
 /* Telas grandes (desktop) */
 @media (min-width: 1200px) {
     .banner {
         flex-direction: row;
-        min-height: 52vh;
+        min-height: 80vh; /* garante altura maior no desktop */
         padding: 40px;
     }
 
@@ -232,12 +219,6 @@ footer {
 
 /* Telas médias (tablets) */
 @media (max-width: 1199px) and (min-width: 768px) {
-    .banner {
-        flex-direction: column;
-        min-height: 70vh;
-        padding: 30px;
-    }
-
     .carousel img {
         width: 450px;
         height: 250px;
@@ -256,7 +237,7 @@ footer {
 @media (max-width: 767px) {
     .banner {
         flex-direction: column;
-        min-height: 60vh;
+        min-height: 70vh; /* altura ajustada pro mobile */
         padding: 20px;
     }
 
