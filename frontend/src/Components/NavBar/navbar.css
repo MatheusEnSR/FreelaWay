@@ -145,7 +145,11 @@ header {
 
 /* Barra lateral */
 .sidebar {
-  background: linear-gradient(135deg, #69dfa4, #00b359);
+  background: #fcfcfc;
+background: -webkit-linear-gradient(176deg, rgba(252, 252, 252, 1) 38%, rgba(255, 255, 255, 0.51) 69%);
+background: -moz-linear-gradient(176deg, rgba(252, 252, 252, 1) 38%, rgba(255, 255, 255, 0.51) 69%);
+background: linear-gradient(176deg, rgba(252, 252, 252, 1) 38%, rgba(255, 255, 255, 0.51) 69%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FCFCFC", endColorstr="#FFFFFF", GradientType=0);
   position: fixed;
   top: 0;
   right: 0;

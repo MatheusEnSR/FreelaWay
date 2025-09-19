@@ -68,7 +68,7 @@ const Inicio = () => {
       <main>
         <div className="banner">
           <div className="banner-overlay">
-            <h1 className="banner-title">Sua frase de efeito aqui</h1>
+            <h1 className="banner-title">Conectando profissionais comprometidos com o futuro.</h1>
 
             <form className="banner-search" onSubmit={handleSearch}>
               <input
