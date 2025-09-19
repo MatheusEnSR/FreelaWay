@@ -1,64 +1,64 @@
+// inicio.jsx
+
 import React, { useState } from 'react';
 import './inicio.css';
-import Navbar from "../../Components/NavBar/navbar.jsx"; 
-import Footer from "../../Components/Footer/footer.jsx"; 
+import Navbar from "../../Components/NavBar/navbar.jsx";
+import Footer from "../../Components/Footer/footer.jsx";
 import { VscSearch } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 
+// Dados iniciais que você já tinha. Podemos usar como um 'fallback' ou estado inicial.
+const vagasIniciais = [
+  {
+    id: 1,
+    titulo: "Desenvolvedor Frontend React",
+    local: "Remoto",
+    idioma: "Português / Inglês",
+    salario: "R$ 3.500 - R$ 5.000",
+    breve: "Trabalhe com React e integrações de APIs.",
+    detalhada: "Responsabilidades completas da vaga, tecnologias utilizadas, expectativas, benefícios, stack completa, jornada e expectativas de entrega..."
+  },
+  // ... (o resto dos seus dados estáticos)
+  {
+    id: 5,
+    titulo: "Engenheiro de Software",
+    local: "Belo Horizonte - MG",
+    idioma: "Português / Inglês",
+    salario: "R$ 6.000 - R$ 9.000",
+    breve: "Desenvolvimento fullstack e boas práticas de arquitetura.",
+    detalhada: "Desenvolvimento fullstack, revisão de código, implementação de arquitetura escalável, práticas de CI/CD, mentoring e integração com equipes ágeis."
+  }
+];
+
+
 const Inicio = () => {
-  const [recomendadas] = useState([
-    {
-      id: 1,
-      titulo: "Desenvolvedor Frontend React",
-      local: "Remoto",
-      idioma: "Português / Inglês",
-      salario: "R$ 3.500 - R$ 5.000",
-      breve: "Trabalhe com React e integrações de APIs.",
-      detalhada: "Responsabilidades completas da vaga, tecnologias utilizadas, expectativas, benefícios, stack completa, jornada e expectativas de entrega..."
-    },
-    {
-      id: 2,
-      titulo: "Estágio em Frontend",
-      local: "São Paulo - SP",
-      idioma: "Português",
-      salario: "R$ 1.500 - R$ 2.000",
-      breve: "Oportunidade para iniciantes em HTML, CSS e JS.",
-      detalhada: "Aprendizado completo em desenvolvimento frontend, acompanhamento de mentores, pequenas entregas semanais, foco em aprendizado de React e boas práticas de codificação."
-    },
-    {
-      id: 3,
-      titulo: "Desenvolvedor Backend Node.js",
-      local: "Remoto",
-      idioma: "Português / Inglês",
-      salario: "R$ 4.000 - R$ 6.000",
-      breve: "API REST, banco de dados e autenticação.",
-      detalhada: "Desenvolver e manter APIs escaláveis, integração com bancos de dados SQL e NoSQL, autenticação JWT, testes unitários e integração contínua."
-    },
-    {
-      id: 4,
-      titulo: "UX/UI Designer",
-      local: "Rio de Janeiro - RJ",
-      idioma: "Português",
-      salario: "R$ 3.000 - R$ 4.500",
-      breve: "Foque na experiência do usuário e prototipagem.",
-      detalhada: "Criação de wireframes, protótipos de alta fidelidade, pesquisas com usuários, testes de usabilidade e colaboração com times de desenvolvimento."
-    },
-    {
-      id: 5,
-      titulo: "Engenheiro de Software",
-      local: "Belo Horizonte - MG",
-      idioma: "Português / Inglês",
-      salario: "R$ 6.000 - R$ 9.000",
-      breve: "Desenvolvimento fullstack e boas práticas de arquitetura.",
-      detalhada: "Desenvolvimento fullstack, revisão de código, implementação de arquitetura escalável, práticas de CI/CD, mentoring e integração com equipes ágeis."
-    }
-  ]);
+  // MUDANÇA 1: Tornamos sua lista de vagas dinâmica.
+  // Ela começa com os dados iniciais, mas agora pode ser ATUALIZADA com os resultados da busca.
+  const [vagas, setVagas] = useState(vagasIniciais);
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (e) => {
+  // MUDANÇA 2: Atualizamos a função de busca para chamar a API.
+  // Trocamos o console.log pela chamada 'fetch' real.
+  const handleSearch = async (e) => {
     e.preventDefault();
-    console.log("Buscando:", searchTerm); // Pode integrar com API depois
+
+    if (!searchTerm.trim()) {
+      // Se a busca for vazia, restaura as vagas iniciais.
+      setVagas(vagasIniciais);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/vagas/?search=${searchTerm}`);
+      const data = await response.json();
+      setVagas(data); // ATUALIZA a lista de vagas na tela com os resultados da API!
+      console.log("Resultados da API:", data);
+    } catch (error) {
+      console.error('Erro ao buscar vagas:', error);
+      // Opcional: em caso de erro, você pode mostrar as vagas iniciais novamente.
+      setVagas(vagasIniciais);
+    }
   };
 
   return (
@@ -82,20 +82,23 @@ const Inicio = () => {
           </div>
         </div>
 
-        <h2 className="vagas-title">✨ Vagas Recomendadas</h2>
+        <h2 className="vagas-title"> Vagas Recomendadas</h2>
 
         <div className="vagas-container">
-          {recomendadas.map(vaga => (
+          {/* MUDANÇA 3: Alteramos de 'recomendadas.map' para 'vagas.map'. */}
+          {/* Agora, esta seção mostrará a lista que estiver no estado 'vagas', sejam as iniciais ou as da busca.*/}
+          {vagas.map(vaga => (
             <div key={vaga.id} className="vaga-card">
               <h3>{vaga.titulo}</h3>
-              <p><strong>Local:</strong> {vaga.local}</p>
-              <p><strong>Idioma:</strong> {vaga.idioma}</p>
-              <p><strong>Salário:</strong> {vaga.salario}</p>
-              <p>{vaga.breve}</p>
+              {/* Os campos do seu backend podem ser diferentes, ajuste se necessário */}
+              <p><strong>Local:</strong> {vaga.local || 'N/A'}</p> 
+              <p><strong>Idioma:</strong> {vaga.idioma || 'N/A'}</p>
+              <p><strong>Salário:</strong> {vaga.salario || 'N/A'}</p>
+              <p>{vaga.breve || vaga.descricao}</p>
               
-              <Link 
-                to="/card" 
-                state={{ vaga }} 
+              <Link
+                to="/card"
+                state={{ vaga }}
                 className="btn-candidatar"
               >
                 Mais detalhes
