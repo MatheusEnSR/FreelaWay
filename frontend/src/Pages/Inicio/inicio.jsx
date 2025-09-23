@@ -95,7 +95,6 @@ const Inicio = () => {
               <p><strong>Idioma:</strong> {vaga.idioma || 'N/A'}</p>
               <p><strong>Salário:</strong> {vaga.salario || 'N/A'}</p>
               
-              
               <Link
                 to="/card"
                 state={{ vaga }}
