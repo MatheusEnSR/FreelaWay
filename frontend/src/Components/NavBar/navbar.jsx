@@ -93,10 +93,10 @@ function NavBar() {
             <Link to="/login"><VscAccount /> Login</Link>
           </li>
           <li>
-            <Link to="/">Início</Link>
+            <Link to="/vagas">Vagas</Link>
           </li>
           <li>
-            <Link to="/vagas">Vagas</Link>
+            <Link to="/">Central do Contratante</Link>
           </li>
         </ul> 
       </div>

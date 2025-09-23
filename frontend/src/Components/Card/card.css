@@ -93,3 +93,7 @@
 .btn-card:hover {
   background: var(--secondary-color);
 }
+
+.btn-card > a{
+  color: white;
+}

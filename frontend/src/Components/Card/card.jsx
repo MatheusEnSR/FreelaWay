@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./card.css";
 
 function Card() {
@@ -17,7 +18,7 @@ function Card() {
       </div>
       <div className="card-footer">
         <span className="time-ago">Há 2 dias</span>
-        <button className="btn-card">Ver Detalhes</button>
+        <button className="btn-card"><Link to="/card">Mais detalhes</Link></button>
       </div>
     </div>
   );

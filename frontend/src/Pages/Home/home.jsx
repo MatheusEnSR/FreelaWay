@@ -34,11 +34,7 @@ function Home() {
           />
           <button type="submit"><VscSearch size={24} /></button>
         </form>
-        
-        <div className="hero-actions">
-          <button className="btn-primary">Buscar Projetos</button>
-          <button className="btn-secondary">Oferecer Serviços</button>
-        </div>
+      
       </section>
       <div className="home-content">
         <aside className="sidebar-left">

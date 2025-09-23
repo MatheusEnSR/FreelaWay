@@ -68,7 +68,7 @@ const Inicio = () => {
       <main>
         <div className="banner">
           <div className="banner-overlay">
-            <h1 className="banner-title">Sua frase de efeito aqui</h1>
+            <h1 className="banner-title">Conectando profissionais comprometidos com o futuro.</h1>
 
             <form className="banner-search" onSubmit={handleSearch}>
               <input
@@ -94,7 +94,7 @@ const Inicio = () => {
               <p><strong>Local:</strong> {vaga.local || 'N/A'}</p> 
               <p><strong>Idioma:</strong> {vaga.idioma || 'N/A'}</p>
               <p><strong>Salário:</strong> {vaga.salario || 'N/A'}</p>
-              <p>{vaga.breve || vaga.descricao}</p>
+              
               
               <Link
                 to="/card"

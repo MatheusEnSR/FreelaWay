@@ -27,9 +27,10 @@ function CardPage() {
           <div className="project-description">
             {vaga?.breve && <p><strong>Resumo:</strong> {vaga.breve}</p>}
             {vaga?.detalhada && <p><strong>Descrição detalhada:</strong> {vaga.detalhada}</p>}
+        <button className="btn-card">Candidatar-se</button>
+
           </div>
         </div>
-        
         {/* Cliente ou informações adicionais podem ir aqui */}
         <div className="client-info">
           {/* Placeholder caso queira adicionar informações do cliente */}
