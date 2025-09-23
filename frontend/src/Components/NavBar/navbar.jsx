@@ -4,7 +4,10 @@ import Logo from '../../Assets/Logo/Logo.png';
 import { Link, useLocation } from "react-router-dom";
 
 // Ícones do react
-import { VscAccount, VscClose, VscChevronDown, VscMenu } from "react-icons/vsc";
+import { VscAccount, VscClose, VscChevronDown, VscMenu  } from "react-icons/vsc";
+import { TfiBag } from "react-icons/tfi";
+import { TfiIdBadge } from "react-icons/tfi";
+import { SlUser } from "react-icons/sl";
 
 function NavBar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -93,10 +96,13 @@ function NavBar() {
             <Link to="/login"><VscAccount /> Login</Link>
           </li>
           <li>
-            <Link to="/vagas">Vagas</Link>
+            <Link to="/perfil"><SlUser />Perfil</Link>
           </li>
           <li>
-            <Link to="/">Central do Contratante</Link>
+            <Link to="/vagas"><TfiBag />Vagas</Link>
+          </li>
+          <li>
+            <Link to="/login"><TfiIdBadge />Central do Contratante</Link>
           </li>
         </ul> 
       </div>

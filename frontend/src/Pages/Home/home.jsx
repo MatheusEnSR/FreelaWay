@@ -20,8 +20,7 @@ function Home() {
         <section className="hero-section">
         <h1>Vagas</h1>
         <p>
-          Conectando profissionais e oportunidades que impulsionam um futuro
-          mais verde e consciente.
+          Conectando profissionais comprometidos com o futuro.
         </p>
         
         {/* Barra de pesquisa adicionada na hero section */}

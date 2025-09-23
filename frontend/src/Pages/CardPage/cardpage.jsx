@@ -26,7 +26,7 @@ function CardPage() {
           
           <div className="project-description">
             {vaga?.breve && <p><strong>Resumo:</strong> {vaga.breve}</p>}
-            {vaga?.detalhada && <p><strong>Descrição detalhada:</strong> {vaga.detalhada}</p>}
+            {vaga?.detalhada && <p><strong>Descrição:</strong> {vaga.detalhada}</p>}
         <button className="btn-card">Candidatar-se</button>
 
           </div>
