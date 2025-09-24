@@ -12,30 +12,44 @@ function CardPage() {
     <main>
       <Navbar />
       
-      <div className="cardpage-container">
-        <div className="project-detail">
-          <div className="project-header">
-            <h1>{vaga?.titulo}</h1>
-            {vaga?.salario && <span className="project-budget">{vaga.salario}</span>}
-          </div>
-          
-          <div className="project-meta">
-            {vaga?.local && <span className="location">{vaga.local}</span>}
-            {vaga?.idioma && <span className="idioma">{vaga.idioma}</span>}
-          </div>
-          
-          <div className="project-description">
-            {vaga?.breve && <p><strong>Resumo:</strong> {vaga.breve}</p>}
-            {vaga?.detalhada && <p><strong>Descrição:</strong> {vaga.detalhada}</p>}
-        <button className="btn-card">Candidatar-se</button>
+      
+      
 
-          </div>
-        </div>
-        {/* Cliente ou informações adicionais podem ir aqui */}
-        <div className="client-info">
-          {/* Placeholder caso queira adicionar informações do cliente */}
-        </div>
+    <div className="cardpage-container">
+  {/* Card lateral - Criador da vaga */}
+  <div className="client-info">
+    <div className="client-card">
+      <div className="client-avatar"></div>
+      <div className="client-details">
+        
+        <h3>{vaga?.criador || "Criador da vaga"}</h3>
+        {vaga?.local && <p><strong>Local:</strong> {vaga.local}</p>}
+        {vaga?.idioma && <p><strong>Idioma:</strong> {vaga.idioma}</p>}
+        {vaga?.salario && <p><strong>Salário:</strong> {vaga.salario}</p>}
+        {vaga?.dataPublicacao && <p><strong>Publicado em:</strong> {vaga.dataPublicacao}</p>}
+        {vaga?.dataFechamento && <p><strong>Fecha em:</strong> {vaga.dataFechamento}</p>}
+        
       </div>
+    </div>
+  </div>
+
+  {/* Card central - Descrição da vaga */}
+  <div className="project-detail">
+    <div className="project-header">
+      <h1>{vaga?.titulo}</h1>
+    </div>
+    
+    <div className="project-meta">
+    </div>
+    
+    <div className="project-description">
+      {vaga?.detalhada && <p><strong>Descrição:</strong> {vaga.detalhada}</p>}
+    </div>
+
+    <button className="btn-card">Candidatar-se</button>
+  </div>
+</div>
+
 
       {/* Botão voltar */}
       <Link to="/" className="btn-voltar">← Voltar para Início</Link>

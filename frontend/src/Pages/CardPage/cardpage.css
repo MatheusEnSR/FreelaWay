@@ -1,14 +1,17 @@
 /* cardpage.css */
+
+/* Container principal com grid */
 .cardpage-container {
   flex: 1;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 2fr; /* esquerda menor, direita maior */
   gap: 40px;
   max-width: 1200px;
-  margin: 40px auto;
+  margin-top: 40px;
   padding: 0 40px;
 }
 
+/* ================= Card da vaga (direita) ================= */
 .project-detail {
   background: var(--card-bg);
   border-radius: 12px;
@@ -49,6 +52,8 @@
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 500;
+  background: #f2f2f2;
+  color: var(--text-dark);
 }
 
 .project-description h2 {
@@ -56,12 +61,8 @@
   margin: 24px 0 12px;
 }
 
-.project-description h3 {
-  color: var(--text-dark);
-  margin: 20px 0 10px;
-}
-
-.project-description p, .project-description li {
+.project-description p, 
+.project-description li {
   color: var(--text-medium);
   line-height: 1.6;
 }
@@ -76,6 +77,23 @@
   margin-top: 30px;
 }
 
+.btn-card {
+  margin-top: 1.5rem;
+  padding: 12px 20px;
+  background-color:  #004d26;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-card:hover {
+  background-color:  #003d1f;
+}
+
+/* ================= Card lateral do criador (esquerda) ================= */
 .client-info {
   height: fit-content;
   position: sticky;
@@ -87,7 +105,7 @@
   border-radius: 12px;
   padding: 20px;
   box-shadow: var(--shadow);
-  text-align: center;
+  text-align: left;
 }
 
 .client-avatar {
@@ -101,29 +119,38 @@
 .client-details h3 {
   margin: 0 0 8px;
   color: var(--text-dark);
+  font-size: 1.2rem;
 }
 
 .client-details p {
-  margin: 4px 0;
+  margin: 6px 0;
   color: var(--text-medium);
+  font-size: 0.95rem;
 }
 
+/* ================= Responsividade ================= */
 @media (max-width: 900px) {
   .cardpage-container {
     grid-template-columns: 1fr;
     padding: 0 20px;
   }
-  
+
+  .client-info {
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+  }
+
   .project-header {
     flex-direction: column;
   }
-  
+
   .project-budget {
     margin-top: 12px;
   }
 }
 
-/* Botão voltar fixo no canto inferior esquerdo */
+/* ================= Botão voltar fixo ================= */
 .btn-voltar {
   position: fixed;
   bottom: 76px;
@@ -141,5 +168,6 @@
 
 .btn-voltar:hover {
   background-color: #003d1f;
+  color: #fff;
   transform: translateY(-2px);
 }
