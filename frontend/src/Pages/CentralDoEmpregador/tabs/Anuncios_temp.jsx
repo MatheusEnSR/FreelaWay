@@ -1,10 +1,7 @@
-// Em: frontend/src/Pages/CentralDoEmpregador/tabs/Anuncios.jsx
-
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaUsers, FaPlus } from 'react-icons/fa';
 
 // --- DADOS DE EXEMPLO ---
-// Estes dados virão da sua API no futuro.
 const mockAnuncios = [
   { id: 1, titulo: 'Desenvolvedor Frontend React (Pleno)', status: 'ativa', candidatos: 12 },
   { id: 2, titulo: 'UX/UI Designer com foco em Acessibilidade', status: 'ativa', candidatos: 8 },
@@ -12,13 +9,11 @@ const mockAnuncios = [
   { id: 4, titulo: 'Estágio em Marketing Digital', status: 'encerrada', candidatos: 58 }
 ];
 
-const Anuncios = () => {
+const Anuncios = ({ onPublicar }) => { // <-- Recebe a função onPublicar via props
   const [anuncios, setAnuncios] = useState([]);
 
   useEffect(() => {
     // TODO: Conectar com o Backend
-    // Aqui você fará a chamada à API para buscar os anúncios do empregador.
-    // Ex: api.get('/api/employer/anuncios').then(response => setAnuncios(response.data));
     setAnuncios(mockAnuncios);
   }, []);
 
@@ -32,7 +27,8 @@ const Anuncios = () => {
     <div>
       <div className="content-header">
         <h2>Gerencie seus Anúncios</h2>
-        <button className="btn-primary">
+        {/* Botão agora chama onPublicar */}
+        <button className="btn-primary" onClick={onPublicar}>
           <FaPlus /> Publicar Nova Vaga
         </button>
       </div>

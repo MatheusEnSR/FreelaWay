@@ -275,3 +275,88 @@
   margin-top: 30px;
   text-align: right;
 }
+/* Fundo do modal com blur */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px); /* blur no fundo */
+  background: rgba(0, 0, 0, 0.4); /* escurece levemente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Card centralizado */
+.modal-card {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-card h2 {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.modal-card input,
+.modal-card textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.modal-card textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-child {
+  background: #ccc;
+}
+
+.modal-buttons button:last-child {
+  background: #4CAF50;
+  color: white;
+}
+
+/* Animação de fade-in do modal */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.modal-card select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
