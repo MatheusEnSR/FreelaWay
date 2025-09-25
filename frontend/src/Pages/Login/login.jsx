@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react'; // useContext movido para o import principal
+import React, { useState, useContext } from 'react';
 import './login.css';
 import { Link, useNavigate } from "react-router-dom";
-import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { AuthContext } from '../../context/AuthContext'; // Ajustei o caminho do import
+import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa';
+// import { AuthContext } from '../../context/AuthContext'; // Descomente quando o Contexto estiver 100% pronto
 
 const LoginPage = () => {
-  // 1. Hooks são chamados AQUI, dentro do componente
-  const { loginUser, user } = useContext(AuthContext); 
+  // const { loginUser } = useContext(AuthContext); // Descomente quando for usar o Contexto
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -16,6 +15,7 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  // A lógica para lidar com as mudanças nos inputs permanece a mesma
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -24,6 +24,7 @@ const LoginPage = () => {
     }
   };
 
+  // A lógica de validação permanece a mesma
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email) {
@@ -38,7 +39,7 @@ const LoginPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // 2. A função handleSubmit está AQUI, dentro do componente
+  // A lógica de SUBMISSÃO para o backend permanece a mesma
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -52,7 +53,7 @@ const LoginPage = () => {
         password: formData.password,
       };
 
-      const response = await fetch('/api/token/', {
+      const response = await fetch('http://127.0.0.1:8000/api/token/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -61,22 +62,15 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Credenciais inválidas.');
+        throw new Error(data.detail || 'Credenciais inválidas. Verifique seu email e senha.');
       }
 
-      // 3. Sucesso! Usando a função do AuthContext
-      loginUser(data); // Isso salva os tokens e atualiza o estado global 'user'
-      
+      // Sucesso!
+      // loginUser(data); // No futuro, esta função salvará o token no AuthContext
+      console.log("Tokens recebidos:", data); 
       alert('Login realizado com sucesso!');
-
-      // 4. Redirecionamento Inteligente (Bônus!)
-      // O 'data.access' é o token JWT que contém o user_type que criamos no Django
-      const decodedToken = JSON.parse(atob(data.access.split('.')[1]));
-      if (decodedToken.user_type === 'contratante') {
-        navigate('/empregador/dashboard');
-      } else {
-        navigate('/vagas'); // Ou para o perfil do aplicante, etc.
-      }
+      
+      navigate('/'); // Redireciona para a home após o login
 
     } catch (error) {
       console.error('Erro no login:', error);
@@ -86,16 +80,66 @@ const LoginPage = () => {
     }
   };
 
-  // O resto do seu JSX continua exatamente o mesmo
+  // O JSX foi reconstruído para usar as SUAS classes CSS
   return (
     <div className="login-container">
       <div className="login-card">
-        {/* ... seu JSX do formulário ... */}
+        <div className="login-header">
+          <h1>Bem-vindo!</h1>
+          <p>Faça login para continuar</p>
+        </div>
+
         <form onSubmit={handleSubmit} className="login-form" noValidate>
-           {/* ... seus inputs e botões ... */}
-           {/* ... */}
+          <div className="form-group">
+            <label htmlFor="email"><FaEnvelope className="input-icon" /> Email</label>
+            <div className="input-with-icon">
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="exemplo@email.com"
+                value={formData.email}
+                onChange={handleChange}
+                className={errors.email ? 'error' : ''}
+              />
+            </div>
+            {errors.email && <span className="error-message">{errors.email}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password"><FaLock className="input-icon" /> Senha</label>
+            <div className="input-with-icon">
+              <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+                className={errors.password ? 'error' : ''}
+              />
+            </div>
+            {errors.password && <span className="error-message">{errors.password}</span>}
+          </div>
+          
+          {errors.form && <span className="error-message form-error" style={{textAlign: 'center', marginBottom: '15px'}}>{errors.form}</span>}
+
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? <div className="loading-spinner" /> : 'Entrar na Conta'}
+          </button>
         </form>
-        {/* ... */}
+
+        <div className="login-footer">
+          <p>Ainda não tem uma conta? <Link to="/cadastroa">Crie uma agora</Link></p>
+        </div>
+
+        <div className="social-login">
+          <p>Ou entre com</p>
+          <div className="social-buttons">
+            <button className="social-button google" disabled={isLoading}><FaGoogle /> Google</button>
+            <button className="social-button facebook" disabled={isLoading}><FaFacebook /> Facebook</button>
+          </div>
+        </div>
       </div>
     </div>
   );
