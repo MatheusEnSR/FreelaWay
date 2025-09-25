@@ -1,48 +1,36 @@
-# api/models.py
-from django.db import models
+# backend/api/models.py
 
+from django.db import models
+from django.contrib.auth.models import User
+
+# Modelo para o perfil de um Contratante
+class ContratanteProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='contratante_profile')
+    nome_empresa = models.CharField(max_length=255)
+    cnpj = models.CharField(max_length=14, unique=True)
+
+    def __str__(self):
+        return self.nome_empresa
+
+# Modelo para as Tags das vagas
+class Tag(models.Model):
+    nome = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.nome
+
+# Modelo para as Vagas
 class Vaga(models.Model):
-    titulo = models.CharField(max_length=200)
-    descricao = models.TextField()
-    habilidades = models.CharField(max_length=255, help_text="Habilidades separadas por vírgula")
-    empresa = models.CharField(max_length=100, blank=True, null=True)
-    
-    # CAMPOS NOVOS ADICIONADOS AQUI
-    local = models.CharField(max_length=100, blank=True, null=True)
-    salario = models.CharField(max_length=100, blank=True, null=True, help_text="Ex: R$ 3.000 - R$ 4.500")
-    idioma = models.CharField(max_length=100, blank=True, null=True)
-    
+    titulo = models.CharField(max_length=255)
+    contratante = models.ForeignKey(User, on_delete=models.CASCADE, related_name='vagas')
+    local = models.CharField(max_length=100)
+    salario = models.CharField(max_length=100, blank=True)
+    idioma = models.CharField(max_length=100)
+    descricao_breve = models.TextField()
+    descricao_detalhada = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name='vagas')
+    recomendada = models.BooleanField(default=False)
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.titulo
-
-
-# Create your models here.
-class Employer(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    company_name = models.CharField(max_length=100, blank=True, null=True)
-    # Adicione outros campos relevantes aqui
-    
-    def __str__(self):
-        return self.name
-
-
-class Freelancer(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    skills = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Project(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    employer = models.ForeignKey(Employer, on_delete=models.CASCADE, related_name="projects")
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title

@@ -1,0 +1,154 @@
+[
+{
+  "model": "api.tag",
+  "pk": 1,
+  "fields": {
+    "nome": "React"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 2,
+  "fields": {
+    "nome": "Frontend"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 3,
+  "fields": {
+    "nome": "Backend"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 4,
+  "fields": {
+    "nome": "QA"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 5,
+  "fields": {
+    "nome": "Presencial"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 6,
+  "fields": {
+    "nome": "Remoto"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 7,
+  "fields": {
+    "nome": "Pleno"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 8,
+  "fields": {
+    "nome": "JavaScript"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 9,
+  "fields": {
+    "nome": "Flutter"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 10,
+  "fields": {
+    "nome": "Python"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 11,
+  "fields": {
+    "nome": "Django"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 12,
+  "fields": {
+    "nome": "Sênior"
+  }
+},
+{
+  "model": "api.tag",
+  "pk": 13,
+  "fields": {
+    "nome": "Híbrido"
+  }
+},
+{
+  "model": "api.vaga",
+  "pk": 1,
+  "fields": {
+    "titulo": "Desenvolvedor Frontend React",
+    "contratante": 12,
+    "local": "Remoto",
+    "salario": "R$ 4.000 - R$ 6.000",
+    "idioma": "Português, Inglês",
+    "descricao_breve": "Preciso de ajudar para desenvolver um site para COP 30!",
+    "descricao_detalhada": "Trabalho será focado no desenvolvimento de um site/aplicativo voltado para o desenvolvimento sustentável de automóveis e a venda do mesmo usando as ferramentas do React e o que calhar melhor ao desenvolvedor.",
+    "recomendada": true,
+    "data_criacao": "2025-09-25T12:12:10.690Z",
+    "tags": [
+      2,
+      7
+    ]
+  }
+},
+{
+  "model": "api.vaga",
+  "pk": 2,
+  "fields": {
+    "titulo": "Desenvolvedor Frontend Pleno (Flutter)",
+    "contratante": 12,
+    "local": "Remoto",
+    "salario": "R$ 5.000 - R$ 7.000",
+    "idioma": "Português (Nativo), Inglês (Técnico)",
+    "descricao_breve": "Buscamos um desenvolvedor frontend com experiência em Flutter para criar interfaces de usuário incríveis e escaláveis.",
+    "descricao_detalhada": "Você será responsável por desenvolver e manter componentes de alta qualidade usando React.js, colaborar com designers de UI/UX para implementar layouts responsivos e interativos, e integrar com APIs RESTful do nosso backend. É necessário ter forte conhecimento em JavaScript, HTML5, CSS3 e ecossistema React (Hooks, Context API, etc.).",
+    "recomendada": true,
+    "data_criacao": "2025-09-25T12:16:36.670Z",
+    "tags": [
+      4,
+      6,
+      8,
+      9
+    ]
+  }
+},
+{
+  "model": "api.vaga",
+  "pk": 3,
+  "fields": {
+    "titulo": "Engenheiro de Backend Sênior (Python/Django)",
+    "contratante": 12,
+    "local": "São Paulo - SP (Híbrido)",
+    "salario": "R$ 9.000 - R$ 12.000",
+    "idioma": "Português (Nativo), Inglês (Avançado)",
+    "descricao_breve": "Procuramos um engenheiro de backend experiente para liderar o desenvolvimento da nossa API, garantindo performance e escalabilidade.",
+    "descricao_detalhada": "As responsabilidades incluem projetar e construir APIs robustas com Django REST Framework, otimizar consultas ao banco de dados (MySQL/PostgreSQL), implementar lógicas de negócio complexas e garantir a segurança da aplicação. Experiência com Docker, testes automatizados e arquitetura de microsserviços é um grande diferencial.",
+    "recomendada": true,
+    "data_criacao": "2025-09-25T12:18:02.700Z",
+    "tags": [
+      10,
+      11,
+      12,
+      13
+    ]
+  }
+}
+]

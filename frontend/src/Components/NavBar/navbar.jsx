@@ -47,7 +47,7 @@ function NavBar() {
     // Aqui você pode traduzir textos principais do site
     // Exemplo: traduzindo "Início" para o idioma selecionado
     const textoTraduzido = await traduzirTexto("Início", lang.toLowerCase());
-    console.log("Texto tradu极zido:", textoTraduzido);
+    console.log("Texto traduzido:", textoTraduzido);
 
     // Depois você pode guardar isso em Context ou State global
   };
