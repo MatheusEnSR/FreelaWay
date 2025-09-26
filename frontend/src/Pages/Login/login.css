@@ -270,3 +270,19 @@
     flex-direction: column;
   }
 }
+
+/* ========================================================== */
+/* TRECHO ADICIONADO PARA ORGANIZAR AS OPÇÕES DE CADASTRO     */
+/* ========================================================== */
+.signup-options {
+  display: flex;
+  flex-direction: column; /* Coloca os itens em uma coluna (um embaixo do outro) */
+  align-items: center;    /* Centraliza os itens horizontalmente */
+  gap: 8px;               /* Adiciona um espaço entre os itens */
+  margin-top: 8px;
+}
+
+.signup-options span {
+  color: #555;             /* Usa a mesma cor dos outros parágrafos */
+  font-size: 14px;
+}

@@ -67,9 +67,9 @@ const LoginPage = () => {
 
       // Sucesso!
       // loginUser(data); // No futuro, esta função salvará o token no AuthContext
-      console.log("Tokens recebidos:", data); 
+      console.log("Tokens recebidos:", data);
       alert('Login realizado com sucesso!');
-      
+
       navigate('/'); // Redireciona para a home após o login
 
     } catch (error) {
@@ -121,17 +121,30 @@ const LoginPage = () => {
             </div>
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
-          
-          {errors.form && <span className="error-message form-error" style={{textAlign: 'center', marginBottom: '15px'}}>{errors.form}</span>}
+
+          {errors.form && <span className="error-message form-error" style={{ textAlign: 'center', marginBottom: '15px' }}>{errors.form}</span>}
 
           <button type="submit" className="login-button" disabled={isLoading}>
             {isLoading ? <div className="loading-spinner" /> : 'Entrar na Conta'}
           </button>
         </form>
 
+        {/* ========================================================== */}
+        {/* ALTERAÇÃO IMPLEMENTADA AQUI                                */}
+        {/* ========================================================== */}
         <div className="login-footer">
-          <p>Ainda não tem uma conta? <Link to="/cadastroa">Crie uma agora</Link></p>
+          <p>Ainda não tem uma conta?</p>
+          <div className="signup-options">
+            <Link to="/cadastroa" className="signup-link">
+              Cadastre-se como Candidato
+            </Link>
+            <span>ou</span>
+            <Link to="/cadastroc" className="signup-link">
+              Cadastre-se como Contratante
+            </Link>
+          </div>
         </div>
+        {/* ========================================================== */}
 
         <div className="social-login">
           <p>Ou entre com</p>
