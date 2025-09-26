@@ -35,7 +35,7 @@
 
 
 /* ========================================================== */
-/* TRECHO ADICIONADO PARA OS BOTÕES DE SELEÇÃO PF/PJ         */
+/* TRECHO PARA OS BOTÕES DE SELEÇÃO PF/PJ                     */
 /* ========================================================== */
 .form-type-selector {
   display: flex;
@@ -62,4 +62,24 @@
   background: linear-gradient(90deg, #2A7A3A, #2FA37C); /* Gradiente do botão de login */
   color: white;
   font-weight: 600;
+}
+
+/* ========================================================== */
+/* TRECHO ADICIONADO PARA O BOTÃO DE VOLTAR                   */
+/* ========================================================== */
+.back-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 25px; /* Espaço acima do botão */
+  transition: color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #2A7A3A;
 }

@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import './login.css';
 import { Link, useNavigate } from "react-router-dom";
-import { FaEnvelope, FaLock, FaGoogle, FaFacebook } from 'react-icons/fa';
-// import { AuthContext } from '../../context/AuthContext'; // Descomente quando o Contexto estiver 100% pronto
+import { FaEnvelope, FaLock, FaGoogle, FaFacebook, FaArrowLeft } from 'react-icons/fa'; 
+import { AuthContext } from '../../context/AuthContext';
 
 const LoginPage = () => {
-  // const { loginUser } = useContext(AuthContext); // Descomente quando for usar o Contexto
+  const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // A lógica para lidar com as mudanças nos inputs permanece a mesma
+  // ... (toda a sua lógica handleChange, validateForm, handleSubmit continua a mesma)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -24,7 +24,6 @@ const LoginPage = () => {
     }
   };
 
-  // A lógica de validação permanece a mesma
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email) {
@@ -39,7 +38,6 @@ const LoginPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // A lógica de SUBMISSÃO para o backend permanece a mesma
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -53,7 +51,7 @@ const LoginPage = () => {
         password: formData.password,
       };
 
-      const response = await fetch('http://127.0.0.1:8000/api/token/', {
+      const response = await fetch('/api/token/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -62,15 +60,18 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Credenciais inválidas. Verifique seu email e senha.');
+        throw new Error(data.detail || 'Credenciais inválidas.');
       }
 
-      // Sucesso!
-      // loginUser(data); // No futuro, esta função salvará o token no AuthContext
-      console.log("Tokens recebidos:", data);
+      loginUser(data);
       alert('Login realizado com sucesso!');
 
-      navigate('/'); // Redireciona para a home após o login
+      const decodedToken = JSON.parse(atob(data.access.split('.')[1]));
+      if (decodedToken.user_type === 'contratante') {
+        navigate('/empregador/dashboard');
+      } else {
+        navigate('/vagas');
+      }
 
     } catch (error) {
       console.error('Erro no login:', error);
@@ -80,71 +81,78 @@ const LoginPage = () => {
     }
   };
 
-  // O JSX foi reconstruído para usar as SUAS classes CSS
   return (
     <div className="login-container">
       <div className="login-card">
+        
         <div className="login-header">
-          <h1>Bem-vindo!</h1>
-          <p>Faça login para continuar</p>
+          <h1>Bem-vindo de volta</h1>
+          <p>Faça login na sua conta</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form" noValidate>
           <div className="form-group">
-            <label htmlFor="email"><FaEnvelope className="input-icon" /> Email</label>
-            <div className="input-with-icon">
-              <input
-                id="email"
-                type="email"
-                name="email"
-                placeholder="exemplo@email.com"
-                value={formData.email}
-                onChange={handleChange}
-                className={errors.email ? 'error' : ''}
-              />
-            </div>
+            <label htmlFor="email">
+              <FaEnvelope className="input-icon" /> Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`form-input ${errors.email ? 'error' : ''}`}
+              placeholder="Digite seu email"
+              disabled={isLoading}
+            />
             {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="password"><FaLock className="input-icon" /> Senha</label>
-            <div className="input-with-icon">
-              <input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                className={errors.password ? 'error' : ''}
-              />
-            </div>
+            <label htmlFor="password">
+              <FaLock className="input-icon" /> Senha
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className={`form-input ${errors.password ? 'error' : ''}`}
+              placeholder="Digite sua senha"
+              disabled={isLoading}
+            />
             {errors.password && <span className="error-message">{errors.password}</span>}
+          </div>
+
+          <div className="form-options">
+            <label className="checkbox-container">
+              <input type="checkbox" />
+              <span className="checkmark"></span>
+              Lembrar-me
+            </label>
+            <a href="#forgot" className="forgot-password">Esqueci minha senha</a>
           </div>
 
           {errors.form && <span className="error-message form-error" style={{ textAlign: 'center', marginBottom: '15px' }}>{errors.form}</span>}
 
-          <button type="submit" className="login-button" disabled={isLoading}>
-            {isLoading ? <div className="loading-spinner" /> : 'Entrar na Conta'}
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={isLoading}
+          >
+            {isLoading ? <div className="loading-spinner"></div> : 'Entrar na Conta'}
           </button>
         </form>
 
-        {/* ========================================================== */}
-        {/* ALTERAÇÃO IMPLEMENTADA AQUI                                */}
-        {/* ========================================================== */}
         <div className="login-footer">
-          <p>Ainda não tem uma conta?</p>
-          <div className="signup-options">
-            <Link to="/cadastroa" className="signup-link">
-              Cadastre-se como Candidato
-            </Link>
-            <span>ou</span>
-            <Link to="/cadastroc" className="signup-link">
-              Cadastre-se como Contratante
-            </Link>
-          </div>
+            <p>Ainda não tem uma conta?</p>
+            <div className="signup-options">
+                <Link to="/cadastroa">Cadastre-se como Candidato</Link>
+                <span>ou</span>
+                <Link to="/cadastroc">Cadastre-se como Contratante</Link>
+            </div>
         </div>
-        {/* ========================================================== */}
 
         <div className="social-login">
           <p>Ou entre com</p>
@@ -153,9 +161,15 @@ const LoginPage = () => {
             <button className="social-button facebook" disabled={isLoading}><FaFacebook /> Facebook</button>
           </div>
         </div>
+        
+        {/* BOTÃO DE VOLTAR MOVIDO PARA O FINAL DO CARD */}
+        <Link to="/" className="back-button">
+          <FaArrowLeft /> Voltar para o Início
+        </Link>
+
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default LoginPage; 

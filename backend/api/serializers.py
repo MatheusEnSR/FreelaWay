@@ -40,11 +40,17 @@ class RegisterSerializer(serializers.ModelSerializer):
 # ======================================================================
 # CLASSE ALTERADA PARA ACEITAR PF E PJ
 # ======================================================================
+# backend/api/serializers.py
+
+# ... (mantenha os outros serializers e imports) ...
+
 class ContratanteRegisterSerializer(serializers.ModelSerializer):
-    # Definimos todos os campos que podem vir do frontend
-    first_name = serializers.CharField(write_only=True, required=True)
-    last_name = serializers.CharField(write_only=True, required=True)
+    # Campos que podem vir do frontend
     contractor_type = serializers.ChoiceField(choices=ContratanteProfile.CONTRACTOR_TYPE_CHOICES, write_only=True)
+
+    # TORNANDO ESTES CAMPOS OPCIONAIS NO NÍVEL DO SERIALIZER
+    first_name = serializers.CharField(write_only=True, required=False)
+    last_name = serializers.CharField(write_only=True, required=False)
     cpf = serializers.CharField(write_only=True, required=False, allow_blank=True)
     nome_empresa = serializers.CharField(write_only=True, required=False, allow_blank=True)
     cnpj = serializers.CharField(write_only=True, required=False, allow_blank=True)
@@ -53,51 +59,82 @@ class ContratanteRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'password', 'first_name', 'last_name', 'contractor_type', 'cpf', 'nome_empresa', 'cnpj')
         extra_kwargs = {'password': {'write_only': True}}
-    
-    # Validação para garantir que os campos corretos sejam enviados
+
+    # A VALIDAÇÃO GARANTE A LÓGICA CORRETA
     def validate(self, data):
-        if data.get('contractor_type') == 'PF' and not data.get('cpf'):
-            raise serializers.ValidationError({"cpf": "CPF é obrigatório para Pessoa Física."})
-        if data.get('contractor_type') == 'PJ' and (not data.get('nome_empresa') or not data.get('cnpj')):
-            raise serializers.ValidationError({"cnpj": "Nome da Empresa e CNPJ são obrigatórios para Pessoa Jurídica."})
+        if data.get('contractor_type') == 'PF':
+            if not data.get('cpf'):
+                raise serializers.ValidationError({"cpf": "CPF é obrigatório para Pessoa Física."})
+            if not data.get('first_name') or not data.get('last_name'):
+                raise serializers.ValidationError({"nome": "Nome e Sobrenome são obrigatórios para Pessoa Física."})
+
+        if data.get('contractor_type') == 'PJ':
+            if not data.get('nome_empresa') or not data.get('cnpj'):
+                raise serializers.ValidationError({"cnpj": "Nome da Empresa e CNPJ são obrigatórios para Pessoa Jurídica."})
+
         return data
 
     @transaction.atomic
     def create(self, validated_data):
-        # Separa os dados do Perfil dos dados do Usuário
         profile_data = {
             'contractor_type': validated_data.pop('contractor_type'),
             'cpf': validated_data.pop('cpf', None),
             'nome_empresa': validated_data.pop('nome_empresa', None),
             'cnpj': validated_data.pop('cnpj', None)
         }
-        
-        # Cria o Usuário
+
+        # Para o User, pegamos os dados que existem, com um valor padrão para PJ
+        user_first_name = validated_data.get('first_name', '')
+        user_last_name = validated_data.get('last_name', '')
+
         user = User.objects.create_user(
             username=validated_data['email'],
             email=validated_data['email'],
             password=validated_data['password'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            first_name=user_first_name,
+            last_name=user_last_name
         )
 
-        # Cria o Perfil do Contratante com os dados corretos
         ContratanteProfile.objects.create(user=user, **profile_data)
         return user
-
-# Serializer para exibir as Vagas (NÃO FOI ALTERADO)
+# Serializer para exibir as Vagas
 class VagaSerializer(serializers.ModelSerializer):
-    tags = serializers.StringRelatedField(many=True, read_only=True)
+    # Este campo exibe os nomes das tags (somente leitura)
+    tags_display = serializers.StringRelatedField(source='tags', many=True, read_only=True)
+
+    # Este campo aceita uma lista de nomes de tags ao criar/editar uma vaga
+    tags = serializers.ListField(
+        child=serializers.CharField(max_length=50),
+        write_only=True,
+        required=False
+    )
+
     nome_contratante = serializers.CharField(source='contratante.contratante_profile.nome_empresa', read_only=True)
 
     class Meta:
         model = Vaga
+        # Adicione 'tags_display' e remova o 'tags' original dos fields
         fields = [
             'id', 'titulo', 'local', 'salario', 'idioma', 
-            'descricao_breve', 'tags', 'nome_contratante', 'recomendada'
+            'descricao_breve', 'descricao_detalhada', 'tags_display', 'nome_contratante', 
+            'recomendada', 'tags', 'data_criacao' # Adicione o 'tags' de escrita
         ]
+        # Garante que alguns campos só apareçam na leitura
+        read_only_fields = ['id', 'nome_contratante', 'tags_display', 'data_criacao']
 
-# Serializer para exibir as Tags (NÃO FOI ALTERADO)
+    def create(self, validated_data):
+        # Tira as tags dos dados validados antes de criar a vaga
+        tag_names = validated_data.pop('tags', [])
+        vaga = Vaga.objects.create(**validated_data)
+
+        # Para cada nome de tag, pega o objeto Tag (ou cria se não existir)
+        for tag_name in tag_names:
+            tag, _ = Tag.objects.get_or_create(nome=tag_name.strip())
+            vaga.tags.add(tag)
+
+        return vaga
+
+# Serializer para exibir as Tags
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag

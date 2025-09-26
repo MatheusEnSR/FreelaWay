@@ -74,13 +74,12 @@ const Inicio = () => {
                   <h3>{vaga.titulo}</h3>
                   <p><strong>Local:</strong> {vaga.local}</p>
                   <p><strong>Salário:</strong> {vaga.salario}</p>
-                  <p className="vaga-breve">{vaga.descricao_breve}</p>
                 </div> {/* Fim da div */}
 
                 {/* Tags e botão ficam fora da nova div */}
                   <div className="tags-container">
-                    {vaga.tags && vaga.tags.map(tag => (
-                      <span key={tag} className="tag">{tag}</span>
+                    {vaga.tags_display && vaga.tags_display.map(tag => (
+                    <span key={tag} className="tag">{tag}</span>
                     ))}
                   </div>
 

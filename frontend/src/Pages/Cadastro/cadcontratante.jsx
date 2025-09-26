@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// 1. ADICIONAMOS 'Link' À IMPORTAÇÃO
+import { Link, useNavigate } from 'react-router-dom'; 
 import '../Login/login.css'; // Reutiliza o estilo do login
 import './cadastro.css'; // Estilos específicos para o cadastro
-import { FaBuilding, FaUserTie, FaIdCard, FaEnvelope, FaLock } from 'react-icons/fa';
+// 2. ADICIONAMOS O ÍCONE DE SETA
+import { FaBuilding, FaUserTie, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa'; 
 
 const CadastroContratante = () => {
     const navigate = useNavigate();
@@ -50,7 +52,7 @@ const CadastroContratante = () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/register/contratante/', {
+            const response = await fetch('/api/register/contratante/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -149,54 +151,15 @@ const CadastroContratante = () => {
                 <div className="login-footer">
                     <p>Já tem uma conta? <Link to="/login">Faça login</Link></p>
                 </div>
+
+                {/* 3. BOTÃO DE VOLTAR ADICIONADO AQUI */}
+                <Link to="/" className="back-button">
+                    <FaArrowLeft /> Voltar para o Início
+                </Link>
+                
             </div>
         </div>
     );
 };
 
 export default CadastroContratante;
-/*
- * ======================================================================
- * NOTAS SOBRE AS ALTERAÇÕES E ESTRUTURA (25/09/2025) *cv*
- * ======================================================================
- *
- * O que este arquivo faz:
- * ----------------------
- * Este componente renderiza um formulário de cadastro dinâmico para Contratantes.
- * Ele permite que o usuário escolha entre se cadastrar como Pessoa Física (PF) ou
- * Pessoa Jurídica (PJ), e o formulário se adapta à escolha.
- *
- * Principais Alterações Implementadas:
- * -----------------------------------
- *
- * 1.  Estado `contractorType` (useState):
- * - Foi criado um novo estado `const [contractorType, setContractorType]` para
- * controlar qual tipo de formulário está ativo ('PF' ou 'PJ').
- *
- * 2.  Estado `formData` Unificado:
- * - O estado `formData` foi modificado para incluir todos os campos
- * possíveis dos dois formulários (cpf, nome_empresa, cnpj), simplificando
- * o gerenciamento dos dados.
- *
- * 3.  Botões de Seleção (JSX):
- * - Uma nova `div` com a classe `form-type-selector` foi adicionada.
- * - Ela contém dois botões ('Pessoa Física' e 'Pessoa Jurídica') que usam o
- * evento `onClick` para chamar `setContractorType` e atualizar o estado,
- * controlando qual formulário é exibido.
- *
- * 4.  Renderização Condicional dos Campos (JSX):
- * - O coração da funcionalidade dinâmica. A sintaxe `{contractorType === 'PF' && ...}`
- * é usada para dizer ao React: "Mostre o campo de CPF SOMENTE SE o estado
- * `contractorType` for igual a 'PF'". O mesmo é feito para os campos de
- * 'PJ'.
- *
- * 5.  Payload Dinâmico no `handleSubmit`:
- * - A função `handleSubmit` agora constrói o objeto `payload` de forma
- * inteligente. Ela sempre envia os dados comuns (nome, email, etc.) mais o
- * `contractor_type`.
- * - Em seguida, ela adiciona os campos específicos (`cpf` ou `nome_empresa`/`cnpj`)
- * ao `payload` com base no valor do estado `contractorType` antes de
- * enviar os dados para a API do Django.
- *
- * ======================================================================
- */

@@ -1,3 +1,5 @@
+// frontend/src/Pages/CentralDoEmpregador/tabs/Candidatos.jsx
+
 import React from 'react';
 
 const Candidatos = () => {

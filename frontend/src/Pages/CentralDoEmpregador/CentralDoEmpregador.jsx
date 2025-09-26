@@ -1,159 +1,160 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './CentralDoEmpregador.css';
 import { FaHome, FaBullhorn, FaUsers, FaQuestionCircle, FaUserCircle } from 'react-icons/fa';
+import { AuthContext } from '../../context/AuthContext'; // Ajuste o caminho se necessário
+import api from '../../Services/api'; // Nosso Axios configurado
 
+// Importação dos componentes das abas
 import Inicio from './tabs/Inicio';
-import Anuncios from './tabs/Anuncios_temp';
+import Anuncios from './tabs/Anuncios';
 import Candidatos from './tabs/Candidatos';
 import Suporte from './tabs/Suporte';
 import Perfil from './tabs/Perfil';
 
 const CentralDoEmpregador = () => {
-  const [activeTab, setActiveTab] = useState('inicio');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState('inicio');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { authTokens } = useContext(AuthContext);
 
-  const [dadosEmpregador, setDadosEmpregador] = useState({
-    nome: "Nome do Empregador",
-    email: "contato@minhaempresa.com",
-    cnpj: "12.345.678/0001-99",
-    descricao: "Somos uma empresa focada em inovação e desenvolvimento de soluções digitais."
-  });
+    const [dadosEmpregador, setDadosEmpregador] = useState({});
+    const [vagas, setVagas] = useState([]);
+    const [isLoadingVagas, setIsLoadingVagas] = useState(true);
 
-  // Lista de vagas
-  const [vagas, setVagas] = useState([]);
+    useEffect(() => {
+        if (authTokens) {
+            // Busca dados do Perfil
+            api.get('/api/users/me/', {
+                headers: { Authorization: `Bearer ${authTokens.access}` }
+            }).then(res => {
+                const displayName = res.data.nome_empresa || `${res.data.first_name} ${res.data.last_name}`;
+                setDadosEmpregador({ ...res.data, nome: displayName });
+            }).catch(err => console.error("Erro ao buscar perfil:", err));
 
-  // Estado do formulário da vaga
-  const [novaVaga, setNovaVaga] = useState({
-    nome: "",
-    local: "",
-    salario: "",
-    idioma: "",
-    descricao: ""
-  });
+            // Busca as vagas do contratante
+            fetchVagas();
+        }
+    }, [authTokens]);
 
-  const handlePerfilSave = (novosDados) => {
-    setDadosEmpregador(dadosAntigos => ({ ...dadosAntigos, ...novosDados }));
-    alert('Perfil atualizado com sucesso!');
-  };
+    const fetchVagas = () => {
+    setIsLoadingVagas(true);
+    // Altere a URL para o novo endpoint que filtra por usuário
+    api.get('/api/vagas/meus-anuncios/', { // <-- CORREÇÃO AQUI
+        headers: { Authorization: `Bearer ${authTokens.access}` }
+    }).then(res => {
+        setVagas(res.data);
+    }).catch(err => console.error("Erro ao buscar vagas:", err))
+      .finally(() => setIsLoadingVagas(false));
+};
 
-  // Publicar vaga
-  const handlePublicarVaga = () => {
-    if (!novaVaga.nome || !novaVaga.local || !novaVaga.salario || !novaVaga.idioma || !novaVaga.descricao) {
-      alert("Preencha todos os campos antes de publicar.");
-      return;
-    }
+    const [novaVaga, setNovaVaga] = useState({
+        titulo: "", local: "", salario: "", idioma: "", descricao_breve: "", descricao_detalhada: "", tags: "", recomendada: false
+    });
+    
+    const handleNovaVagaChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setNovaVaga(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    };
 
-    setVagas([...vagas, novaVaga]);
-    setNovaVaga({ nome: "", local: "", salario: "", idioma: "", descricao: "" }); // limpa formulário
-    setIsModalOpen(false);
-    alert("Vaga publicada com sucesso!");
-  };
+    const handlePublicarVaga = async (e) => {
+        e.preventDefault();
+        const payload = {
+            ...novaVaga,
+            tags: novaVaga.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        };
+        
+        try {
+            await api.post('/api/vagas/', payload, {
+                headers: { Authorization: `Bearer ${authTokens.access}` }
+            });
+            alert("Vaga publicada com sucesso!");
+            setIsModalOpen(false);
+            setNovaVaga({ titulo: "", local: "", salario: "", idioma: "", descricao_breve: "", descricao_detalhada: "", tags: "", recomendada: false });
+            fetchVagas();
+        } catch (error) {
+            const errorMsg = error.response?.data ? JSON.stringify(error.response.data) : error.message;
+            console.error("Erro ao publicar vaga:", errorMsg);
+            alert(`Erro ao publicar vaga: ${errorMsg}`);
+        }
+    };
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'inicio': return <Inicio />;
-      case 'anuncios': return <Anuncios vagas={vagas} onPublicar={() => setIsModalOpen(true)} />;
-      case 'candidatos': return <Candidatos />;
-      case 'suporte': return <Suporte />;
-      case 'perfil': return <Perfil dados={dadosEmpregador} onSave={handlePerfilSave} />;
-      default: return <Inicio />;
-    }
-  };
+    const handlePerfilSave = (novosDados) => {
+        alert('Funcionalidade de salvar perfil a ser implementada.');
+    };
 
-  const navItems = [
-    { id: 'inicio', label: 'Início', icon: <FaHome /> },
-    { id: 'anuncios', label: 'Meus Anúncios', icon: <FaBullhorn /> },
-    { id: 'candidatos', label: 'Candidatos', icon: <FaUsers /> },
-    { id: 'suporte', label: 'Chamados e Ajuda', icon: <FaQuestionCircle /> }
-  ];
+    const renderContent = () => {
+        switch (activeTab) {
+            case 'inicio': return <Inicio />;
+            case 'anuncios': return <Anuncios vagas={vagas} isLoading={isLoadingVagas} onPublicar={() => setIsModalOpen(true)} />;
+            case 'candidatos': return <Candidatos />;
+            case 'suporte': return <Suporte />;
+            case 'perfil': return <Perfil dados={dadosEmpregador} onSave={handlePerfilSave} />;
+            default: return <Inicio />;
+        }
+    };
 
-  return (
-    <div className="dashboard-layout">
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-header">
-          <h3>Central do Empregador</h3>
+    const navItems = [
+        { id: 'inicio', label: 'Início', icon: <FaHome /> },
+        { id: 'anuncios', label: 'Meus Anúncios', icon: <FaBullhorn /> },
+        { id: 'candidatos', label: 'Candidatos', icon: <FaUsers /> },
+        { id: 'suporte', label: 'Chamados e Ajuda', icon: <FaQuestionCircle /> }
+    ];
+
+    // A CORREÇÃO PRINCIPAL FOI RESTAURAR SEU CÓDIGO JSX ABAIXO:
+    return (
+        <div className="dashboard-layout">
+            <aside className="dashboard-sidebar">
+                <div className="sidebar-header">
+                    <h3>Central do Empregador</h3>
+                </div>
+                <ul className="sidebar-nav">
+                    {navItems.map(item => (
+                        <li key={item.id} className={activeTab === item.id ? 'active' : ''}>
+                            <button onClick={() => setActiveTab(item.id)}>
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+                <div className="sidebar-footer">
+                    <button className="profile-preview-button" onClick={() => setActiveTab('perfil')}>
+                        <FaUserCircle className="profile-icon" />
+                        <div className="profile-info">
+                            <h4>{dadosEmpregador.nome || "Carregando..."}</h4>
+                            <p>Ver seu perfil</p>
+                        </div>
+                    </button>
+                </div>
+            </aside>
+            <main className="dashboard-content">
+                {renderContent()}
+            </main>
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-card">
+                        <h2>Publicar Nova Vaga</h2>
+                        <form onSubmit={handlePublicarVaga}>
+                            <input name="titulo" type="text" placeholder="Título da Vaga (ex: Desenvolvedor React)" value={novaVaga.titulo} onChange={handleNovaVagaChange} required />
+                            <input name="local" type="text" placeholder="Local (ex: Remoto)" value={novaVaga.local} onChange={handleNovaVagaChange} required />
+                            <input name="salario" type="text" placeholder="Salário (ex: R$ 5.000 - R$ 7.000)" value={novaVaga.salario} onChange={handleNovaVagaChange} />
+                            <input name="idioma" type="text" placeholder="Idiomas (ex: Português, Inglês)" value={novaVaga.idioma} onChange={handleNovaVagaChange} required />
+                            <textarea name="descricao_breve" placeholder="Descrição breve da vaga (1-2 frases)" value={novaVaga.descricao_breve} onChange={handleNovaVagaChange} required></textarea>
+                            <textarea name="descricao_detalhada" placeholder="Descrição detalhada (responsabilidades, etc)" value={novaVaga.descricao_detalhada} onChange={handleNovaVagaChange} required></textarea>
+                            <input name="tags" type="text" placeholder="Tags (separadas por vírgula: React, Python)" value={novaVaga.tags} onChange={handleNovaVagaChange} />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                                <input name="recomendada" type="checkbox" checked={novaVaga.recomendada} onChange={handleNovaVagaChange} id="recomendada-checkbox" />
+                                <label htmlFor="recomendada-checkbox">Marcar como vaga recomendada</label>
+                            </div>
+                            <div className="modal-buttons">
+                                <button type="button" onClick={() => setIsModalOpen(false)}>Cancelar</button>
+                                <button type="submit">Publicar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
-
-        <ul className="sidebar-nav">
-          {navItems.map(item => (
-            <li key={item.id} className={activeTab === item.id ? 'active' : ''}>
-              <button onClick={() => setActiveTab(item.id)}>
-                {item.icon}
-                <span>{item.label}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <div className="sidebar-footer">
-          <button className="profile-preview-button" onClick={() => setActiveTab('perfil')}>
-            <FaUserCircle className="profile-icon" />
-            <div className="profile-info">
-              <h4>{dadosEmpregador.nome}</h4>
-              <p>Ver seu perfil</p>
-            </div>
-          </button>
-        </div>
-      </aside>
-
-      <main className="dashboard-content">
-        {renderContent()}
-      </main>
-
-      {/* MODAL */}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            <h2>Publicar Nova Vaga</h2>
-
-            <input
-              type="text"
-              placeholder="Nome da Vaga"
-              value={novaVaga.nome}
-              onChange={(e) => setNovaVaga({ ...novaVaga, nome: e.target.value })}
-            />
-
-            <input
-              type="text"
-              placeholder="Local"
-              value={novaVaga.local}
-              onChange={(e) => setNovaVaga({ ...novaVaga, local: e.target.value })}
-            />
-
-            <input
-              type="text"
-              placeholder="Salário"
-              value={novaVaga.salario}
-              onChange={(e) => setNovaVaga({ ...novaVaga, salario: e.target.value })}
-            />
-
-            {/* Campo de idiomas */}
-            <select
-              value={novaVaga.idioma}
-              onChange={(e) => setNovaVaga({ ...novaVaga, idioma: e.target.value })}
-            >
-              <option value="" disabled>Selecione um idioma</option>
-              <option value="portugues">Português</option>
-              <option value="ingles">Inglês</option>
-              <option value="espanhol">Espanhol</option>
-              <option value="frances">Francês</option>
-            </select>
-
-            <textarea
-              placeholder="Descrição da vaga"
-              value={novaVaga.descricao}
-              onChange={(e) => setNovaVaga({ ...novaVaga, descricao: e.target.value })}
-            ></textarea>
-
-            <div className="modal-buttons">
-              <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
-              <button onClick={handlePublicarVaga}>Publicar</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default CentralDoEmpregador;

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLanguage, FaIdCard, FaEnvelope, FaLock } from 'react-icons/fa';
+import { useNavigate, Link } from 'react-router-dom'; // 1. ADICIONADO 'Link' À IMPORTAÇÃO
+import { FaUser, FaLanguage, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa'; // 2. ADICIONADO ÍCONE DE SETA
 
 // Lembre-se de ajustar o caminho para o seu arquivo CSS, se necessário
 import './cadastro.css'; 
+import '../Login/login.css'; // Importamos o CSS do login para aproveitar o estilo do botão de voltar
 
 const CadastroAplicante = () => {
   const [formData, setFormData] = useState({
@@ -26,19 +27,19 @@ const CadastroAplicante = () => {
     setIsLoading(true);
     console.log("--- Formulário enviado, iniciando processo ---");
 
-    // Mapeando os dados do formulário para o que a API do Django espera
     const payload = {
-      username: formData.email,   // Usando email como username
+      username: formData.email,
       email: formData.email,
-      password: formData.senha,   // O nome do campo no seu form é "senha"
-      first_name: formData.nome,  // O nome do campo no seu form é "nome"
-      last_name: "",              // Podemos enviar um sobrenome vazio por enquanto
+      password: formData.senha,
+      first_name: formData.nome,
+      last_name: "", // Podemos enviar um sobrenome vazio por enquanto
     };
 
     console.log(">>> PAYLOAD A SER ENVIADO:", payload);
 
     try {
-      const response = await fetch('/api/register/', { // Usando a URL relativa para o proxy do Vite
+      // Usando a URL correta para o cadastro de aplicante
+      const response = await fetch('http://127.0.0.1:8000/api/register/', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,6 +76,7 @@ const CadastroAplicante = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
+          {/* SEU FORMULÁRIO CONTINUA O MESMO AQUI */}
           <div className="form-group">
             <label>
               <FaUser className="input-icon" /> Nome Completo
@@ -154,6 +156,12 @@ const CadastroAplicante = () => {
             {isLoading ? <div className="loading-spinner"></div> : 'Cadastrar'}
           </button>
         </form>
+
+        {/* 3. ADICIONAMOS O BOTÃO DE VOLTAR AQUI */}
+        <Link to="/" className="back-button">
+          <FaArrowLeft /> Voltar para o Início
+        </Link>
+        
       </div>
     </div>
   );

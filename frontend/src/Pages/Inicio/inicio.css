@@ -282,14 +282,6 @@ footer {
   min-height: 250px; /* Garante uma altura mínima para todos os cards */
 }
 
-/* Estilo para a nova descrição breve */
-.vaga-breve {
-  margin-top: 12px; /* Adiciona um espaço acima da descrição */
-  font-style: italic;
-  color: #666; /* Um cinza um pouco mais claro */
-  font-size: 0.9rem;
-}
-
 /* Esta nova div vai crescer e ocupar o espaço vago */
 .card-content {
   flex-grow: 1; /* Faz esta área se expandir, empurrando o botão para baixo */

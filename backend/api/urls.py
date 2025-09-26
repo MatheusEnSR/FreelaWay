@@ -19,7 +19,6 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register_aplicante'),
     path('register/contratante/', ContratanteRegisterView.as_view(), name='register_contratante'),
     
-    # 2. ADICIONE ESTAS DUAS LINHAS PARA O LOGIN
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
