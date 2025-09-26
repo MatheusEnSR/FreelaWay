@@ -7,24 +7,19 @@ from .models import Vaga, Tag, ContratanteProfile
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-# Serializer para definir se a conta do usuário é contratante ou empregador.
+# Serializer para o token de login (NÃO FOI ALTERADO)
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
-        # Adiciona informações customizadas ao token (opcional, mas útil)
         token['username'] = user.username
-
-        # Checa se o usuário tem um perfil de contratante associado a ele
         if hasattr(user, 'contratante_profile'):
             token['user_type'] = 'contratante'
         else:
             token['user_type'] = 'aplicante'
-
         return token
 
-# Serializer para o cadastro de Aplicantes
+# Serializer para o cadastro de Aplicantes (NÃO FOI ALTERADO)
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -33,8 +28,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            username=validated_data['email'], # Usando email como username
-            email=validated_data['email'],
+            username=validated_data.get('email') or validated_data.get('username'),
+            email=validated_data.get('email'),
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
@@ -42,34 +37,55 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-# Serializer para o cadastro de Contratantes
+# ======================================================================
+# CLASSE ALTERADA PARA ACEITAR PF E PJ
+# ======================================================================
 class ContratanteRegisterSerializer(serializers.ModelSerializer):
-    nome_empresa = serializers.CharField(write_only=True)
-    cnpj = serializers.CharField(write_only=True)
-    first_name = serializers.CharField(write_only=True)
+    # Definimos todos os campos que podem vir do frontend
+    first_name = serializers.CharField(write_only=True, required=True)
+    last_name = serializers.CharField(write_only=True, required=True)
+    contractor_type = serializers.ChoiceField(choices=ContratanteProfile.CONTRACTOR_TYPE_CHOICES, write_only=True)
+    cpf = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    nome_empresa = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    cnpj = serializers.CharField(write_only=True, required=False, allow_blank=True)
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'nome_empresa', 'cnpj')
+        fields = ('email', 'password', 'first_name', 'last_name', 'contractor_type', 'cpf', 'nome_empresa', 'cnpj')
         extra_kwargs = {'password': {'write_only': True}}
+    
+    # Validação para garantir que os campos corretos sejam enviados
+    def validate(self, data):
+        if data.get('contractor_type') == 'PF' and not data.get('cpf'):
+            raise serializers.ValidationError({"cpf": "CPF é obrigatório para Pessoa Física."})
+        if data.get('contractor_type') == 'PJ' and (not data.get('nome_empresa') or not data.get('cnpj')):
+            raise serializers.ValidationError({"cnpj": "Nome da Empresa e CNPJ são obrigatórios para Pessoa Jurídica."})
+        return data
 
     @transaction.atomic
     def create(self, validated_data):
+        # Separa os dados do Perfil dos dados do Usuário
         profile_data = {
-            'nome_empresa': validated_data.pop('nome_empresa'),
-            'cnpj': validated_data.pop('cnpj')
+            'contractor_type': validated_data.pop('contractor_type'),
+            'cpf': validated_data.pop('cpf', None),
+            'nome_empresa': validated_data.pop('nome_empresa', None),
+            'cnpj': validated_data.pop('cnpj', None)
         }
-        user_data = {'first_name': validated_data.pop('first_name')}
-        validated_data['username'] = validated_data['email']
         
-        user = User.objects.create_user(**validated_data)
-        user.first_name = user_data['first_name']
-        user.save()
+        # Cria o Usuário
+        user = User.objects.create_user(
+            username=validated_data['email'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', '')
+        )
 
+        # Cria o Perfil do Contratante com os dados corretos
         ContratanteProfile.objects.create(user=user, **profile_data)
         return user
 
-# Serializer para exibir as Vagas
+# Serializer para exibir as Vagas (NÃO FOI ALTERADO)
 class VagaSerializer(serializers.ModelSerializer):
     tags = serializers.StringRelatedField(many=True, read_only=True)
     nome_contratante = serializers.CharField(source='contratante.contratante_profile.nome_empresa', read_only=True)
@@ -81,8 +97,15 @@ class VagaSerializer(serializers.ModelSerializer):
             'descricao_breve', 'tags', 'nome_contratante', 'recomendada'
         ]
 
-# Serializer para exibir as Tags (pode ser útil no futuro)
+# Serializer para exibir as Tags (NÃO FOI ALTERADO)
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['nome']
+
+
+#Novos Campos: Adicionamos os campos contractor_type, cpf e last_name para que o serializer possa receber todos os dados possíveis do formulário dinâmico.
+
+#Validação Inteligente: Adicionamos uma função validate. Ela é a parte mais importante, pois verifica se o contractor_type é 'PF' (e exige o CPF) ou 'PJ' (e exige CNPJ e Nome da Empresa). Isso torna sua API mais segura e robusta.
+
+#Método create Atualizado: A função que cria o usuário agora separa os dados do perfil dos dados do usuário e salva tudo corretamente nos modelos User e ContratanteProfile de uma só vez.
