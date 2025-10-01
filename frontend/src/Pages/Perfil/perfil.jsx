@@ -67,12 +67,14 @@ function Perfil() {
                 <span>Perfil</span>
               </button>
             </li>
-            <li className={abaAtiva === "conta" ? "ativo" : ""}>
+            <div className="conta">
+               <li className={abaAtiva === "conta" ? "ativo" : ""}>
               <button onClick={() => setAbaAtiva("conta")}>
                 <FaUserCircle />
                 <span>Conta</span>
               </button>
             </li>
+            </div>
           </ul>
 
           <div className="menu-footer">
@@ -88,7 +90,7 @@ function Perfil() {
         {/* Conteúdo principal */}
         <main className="conteudo-principal">
           {abaAtiva === "perfil" && (
-            <div className="card-perfil">
+            <form className="card-perfil">
               <h2>Perfil do Usuário</h2>
 
               {/* Foto de perfil */}
@@ -98,7 +100,9 @@ function Perfil() {
                 ) : (
                   <FaUserCircle className="icone-foto" />
                 )}
-                <input type="file" accept="image/*" onChange={handleFotoUpload} />
+                <div className="upload">
+                  <input className="img" type="file" accept="image/*" onChange={handleFotoUpload} />
+                </div>
               </div>
 
               <div className="form-group">
@@ -155,7 +159,7 @@ function Perfil() {
               <div className="form-actions">
                 <button onClick={salvarPerfil}>Salvar Perfil</button>
               </div>
-            </div>
+            </form>
           )}
 
           {abaAtiva === "conta" && (
@@ -196,7 +200,7 @@ function Perfil() {
         </main>
       </div>
 
-      <Footer />
+      <Footer/>
     </div>
   );
 }

@@ -43,7 +43,7 @@
 .menu-nav li button {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 58px;
   width: 100%;
   padding: 10px;
   cursor: pointer;
@@ -52,6 +52,7 @@
   border-radius: 6px;
   color: #333;
   font-size: 0.95rem;
+  margin-top: 20px;
   transition: background 0.2s;
 }
 
@@ -62,6 +63,7 @@
 .menu-nav li.ativo button {
   background-color: #2f855a;
   color: #fff;
+  margin-top: 40px;
 }
 
 /* Footer do menu lateral */
@@ -108,7 +110,7 @@
   background-color: #fff;
   padding: 30px;
   border-radius: 12px;
-  max-width: 700px;
+  width: 100%;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
@@ -168,6 +170,7 @@ textarea {
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+  
 }
 
 .foto-perfil {
@@ -185,4 +188,14 @@ textarea {
 
 .foto-perfil-container input[type="file"] {
   cursor: pointer;
+  width: 118px;
+}
+
+
+footer{
+  margin-top: 0;
+}
+
+.conta{
+  margin-top: 20px;
 }
