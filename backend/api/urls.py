@@ -4,23 +4,25 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
-    RegisterView, 
-    ContratanteRegisterView, 
+    UserRegisterView,
+    ProfileView,
     VagaViewSet,
-    MyTokenObtainPairView  # 1. Importe sua view de token
+    MyTokenObtainPairView,
+    ChangePasswordView  # NOVO: Importamos a view de troca de senha
 )
 
-# O Router continua igual, criando as URLs para o VagaViewSet
 router = DefaultRouter()
 router.register(r'vagas', VagaViewSet, basename='vaga')
 
 urlpatterns = [
-    # Rotas de Cadastro
-    path('register/', RegisterView.as_view(), name='register_aplicante'),
-    path('register/contratante/', ContratanteRegisterView.as_view(), name='register_contratante'),
+    # Rotas de Cadastro, Perfil e Vagas
+    path('register/', UserRegisterView.as_view(), name='user_register'),
+    path('profile/', ProfileView.as_view(), name='user_profile'),
     
+    # Rotas de Autenticação (Login e Troca de Senha)
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('change-password/', ChangePasswordView.as_view(), name='change_password'), # NOVO
     
     # Inclui as rotas geradas pelo router (/vagas/, etc.)
     path('', include(router.urls)),

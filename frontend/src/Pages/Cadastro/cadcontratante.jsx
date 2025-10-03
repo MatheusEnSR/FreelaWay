@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-// 1. ADICIONAMOS 'Link' À IMPORTAÇÃO
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
 import '../Login/login.css'; // Reutiliza o estilo do login
 import './cadastro.css'; // Estilos específicos para o cadastro
-// 2. ADICIONAMOS O ÍCONE DE SETA
-import { FaBuilding, FaUserTie, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa'; 
+import { FaBuilding, FaUserTie, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 
 const CadastroContratante = () => {
     const navigate = useNavigate();
@@ -34,12 +32,12 @@ const CadastroContratante = () => {
         setError('');
         setIsLoading(true);
 
-        // O payload agora só envia nome/sobrenome se for PF
         const payload = {
             username: formData.email,
             email: formData.email,
             password: formData.password,
-            contractor_type: contractorType,
+            user_type: 'contratante', // Enviamos o tipo de usuário principal
+            contractor_type: contractorType, // E o tipo de contratante
         };
 
         if (contractorType === 'PF') {
@@ -52,7 +50,10 @@ const CadastroContratante = () => {
         }
 
         try {
-            const response = await fetch('/api/register/contratante/', {
+            // ==========================================================
+            // ALTERAÇÃO FEITA AQUI: Corrigimos a URL para o endpoint unificado
+            // ==========================================================
+            const response = await fetch('http://127.0.0.1:8000/api/register/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -99,8 +100,6 @@ const CadastroContratante = () => {
 
                 <form onSubmit={handleSubmit} className="login-form">
 
-                    {/* --- ALTERAÇÃO APLICADA AQUI --- */}
-                    {/* Campos de Nome e Sobrenome agora só aparecem para Pessoa Física */}
                     {contractorType === 'PF' && (
                         <>
                             <div className="form-group">
@@ -117,7 +116,6 @@ const CadastroContratante = () => {
                         </>
                     )}
 
-                    {/* Se for Pessoa Jurídica, mostra os campos da Empresa */}
                     {contractorType === 'PJ' && (
                         <>
                             <div className="form-group">
@@ -131,7 +129,6 @@ const CadastroContratante = () => {
                         </>
                     )}
                     
-                    {/* Campos de Email e Senha aparecem para ambos */}
                     <div className="form-group">
                         <label><FaEnvelope className="input-icon" /> Email</label>
                         <input name="email" type="email" placeholder="Email de Contato" value={formData.email} onChange={handleChange} required />
@@ -152,7 +149,6 @@ const CadastroContratante = () => {
                     <p>Já tem uma conta? <Link to="/login">Faça login</Link></p>
                 </div>
 
-                {/* 3. BOTÃO DE VOLTAR ADICIONADO AQUI */}
                 <Link to="/" className="back-button">
                     <FaArrowLeft /> Voltar para o Início
                 </Link>

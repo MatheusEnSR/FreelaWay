@@ -1,201 +1,250 @@
-/* Reset interno */
-.menu-lateral * {
-  all: unset;
-  box-sizing: border-box;
-}
+/* --- NOVO perfil.css --- */
 
-/* Layout geral */
+/* --- Layout Geral da Página --- */
 .pagina-layout {
   display: flex;
-  min-height: calc(100vh - 70px);
+  background-color: #f0f2f5; /* Cor de fundo suave (cinza claro) */
+  min-height: calc(100vh - 130px); /* Ajuste com base na altura do seu Navbar e Footer */
 }
 
-/* Menu lateral */
+/* --- Menu Lateral (Sidebar) --- */
 .menu-lateral {
+  width: 240px;
+  background-color: #ffffff;
+  border-right: 1px solid #dfe4ea;
   display: flex;
   flex-direction: column;
-  width: 250px;
-  background-color: #fff;
-  padding: 20px;
-  position: fixed;
-  top: 70px;
-  height: calc(92vh - 70px);
-  font-family: Arial, sans-serif;
+  padding: 24px 0;
+}
+
+.menu-header {
+  padding: 0 24px 16px 24px;
+  border-bottom: 1px solid #dfe4ea;
 }
 
 .menu-header h3 {
-  margin: 0 0 20px 0;
+  margin: 0;
   font-size: 1.2rem;
-  color: #333;
+  color: #2d3436;
 }
 
 .menu-nav {
   list-style: none;
   padding: 0;
-  margin: 0;
-  flex-grow: 1;
-}
-
-.menu-nav li {
-  margin-bottom: 10px;
+  margin: 16px 0;
+  /* O reset 'all: unset' foi removido pois era muito agressivo */
 }
 
 .menu-nav li button {
-  display: flex;
-  align-items: center;
-  gap: 58px;
   width: 100%;
-  padding: 10px;
-  cursor: pointer;
+  padding: 12px 24px;
   border: none;
-  background-color: #e9ecef;
-  border-radius: 6px;
-  color: #333;
-  font-size: 0.95rem;
-  margin-top: 20px;
-  transition: background 0.2s;
+  background-color: transparent;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #636e72;
+  cursor: pointer;
+  display: flex; /* Adicionado para alinhar ícones (se houver) */
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
 }
 
 .menu-nav li button:hover {
-  background-color: #dee2e6;
+  background-color: #f0f2f5;
+  color: #00b894;
 }
 
 .menu-nav li.ativo button {
-  background-color: #2f855a;
-  color: #fff;
-  margin-top: 40px;
+  color: #00b894;
+  font-weight: 600;
+  background-color: #e6f7ee;
+  border-left-color: #00b894;
 }
 
-/* Footer do menu lateral */
-.menu-footer {
-  margin-top: auto;
-}
-
-.perfil-preview {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  padding: 8px;
-  background-color: #e9ecef;
-  border-radius: 6px;
-}
-
-.icone-perfil {
-  font-size: 2rem;
-  color: #2f855a;
-}
-
-.info-perfil h4 {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.info-perfil p {
-  margin: 0;
-  font-size: 0.75rem;
-  color: #666;
-}
-
-/* Conteúdo principal */
+/* --- Conteúdo Principal --- */
 .conteudo-principal {
-  margin-left: 250px;
-  flex: 1;
+  flex: 1; /* Faz o conteúdo ocupar o resto do espaço */
   padding: 40px;
-  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto; /* Centraliza o card de conteúdo */
 }
 
-/* Cards das abas */
-.card-perfil, .card-conta {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.card-form {
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #dfe4ea;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra mais suave */
 }
 
-.card-perfil h2, .card-conta h2 {
-  margin-bottom: 20px;
+.card-form h2 {
+  margin-top: 0;
+  font-size: 1.8rem;
+  color: #2d3436;
 }
 
-/* Formulários */
+.card-form p {
+  color: #636e72;
+  margin-bottom: 32px;
+}
+
+/* --- Estilos de Formulário Unificados --- */
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+.form-row .form-group {
+  flex: 1;
+}
+
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .form-group label {
   display: block;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 8px;
+  color: #2d3436;
+  font-size: 0.9rem;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
+  padding: 12px;
   border-radius: 8px;
+  border: 1px solid #dfe4ea;
   font-size: 1rem;
+  font-family: inherit;
+  background-color: #f8f9fa;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-textarea {
-  min-height: 80px;
-  resize: none;
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: #00b894;
+  box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.15);
+}
+
+.form-group input[readonly] {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 .form-actions {
-  margin-top: 20px;
+  margin-top: 32px;
   text-align: right;
 }
 
-.form-actions button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background-color: #2f855a;
-  color: #fff;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.form-actions button:hover {
-  background-color: #276749;
-}
-
-
+/* --- Interface de Upload de Foto Melhorada --- */
 .foto-perfil-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-  
+  margin-bottom: 32px;
 }
 
-.foto-perfil {
-  width: 80px;
-  height: 80px;
+.foto-preview-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.foto-perfil-preview, .foto-perfil-placeholder {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #2f855a;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.icone-foto {
-  font-size: 80px;
-  color: #2f855a;
+.foto-perfil-placeholder {
+  color: #dfe4ea;
+  background-color: #f8f9fa;
 }
 
-.foto-perfil-container input[type="file"] {
+.upload-foto-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  width: 118px;
+  opacity: 0; /* Começa invisível */
+  transition: opacity 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.foto-preview-wrapper:hover .upload-foto-label {
+  opacity: 1; /* Aparece no hover */
+}
+
+.upload-foto-label svg {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+/* Esconde o input de arquivo real */
+#upload-foto {
+  display: none;
+}
+
+/* Mensagens de erro/sucesso */
+.error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+}
+.success-message {
+  color: #2f855a;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 500;
 }
 
 
-footer{
-  margin-top: 0;
+/* --- Classes de Botão (reutilizadas para consistência) --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-
-.conta{
-  margin-top: 20px;
+.btn-primary {
+  background-color: #00b894;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #00a383;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 184, 148, 0.2);
 }

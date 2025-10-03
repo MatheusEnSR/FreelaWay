@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // 1. ADICIONADO 'Link' À IMPORTAÇÃO
-import { FaUser, FaLanguage, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa'; // 2. ADICIONADO ÍCONE DE SETA
-
-// Lembre-se de ajustar o caminho para o seu arquivo CSS, se necessário
+import { useNavigate, Link } from 'react-router-dom';
+import { FaUser, FaLanguage, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
+import '../Login/login.css'; 
 import './cadastro.css'; 
-import '../Login/login.css'; // Importamos o CSS do login para aproveitar o estilo do botão de voltar
 
 const CadastroAplicante = () => {
+  // O seu código useState, handleChange, etc. continua o mesmo
   const [formData, setFormData] = useState({
-    nome: '',
-    idioma: '',
+    first_name: '',
+    last_name: '',
     cpf: '',
     email: '',
-    senha: '',
+    password: '',
+    idiomas: '', 
   });
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -25,43 +26,41 @@ const CadastroAplicante = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("--- Formulário enviado, iniciando processo ---");
+    setError('');
 
+    // ==========================================================
+    // ALTERAÇÃO FEITA AQUI
+    // ==========================================================
     const payload = {
       username: formData.email,
       email: formData.email,
-      password: formData.senha,
-      first_name: formData.nome,
-      last_name: "", // Podemos enviar um sobrenome vazio por enquanto
+      password: formData.password,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      user_type: 'aplicante', // <-- ADICIONAMOS A ETIQUETA 'APLICANTE'
+      cpf: formData.cpf,      
     };
 
-    console.log(">>> PAYLOAD A SER ENVIADO:", payload);
-
     try {
-      // Usando a URL correta para o cadastro de aplicante
-      const response = await fetch('http://127.0.0.1:8000/api/register/', { 
+      // Usando a URL unificada
+      const response = await fetch('http://127.0.0.1:8000/api/register/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       
       const responseData = await response.json();
-      console.log("<<< RESPOSTA RECEBIDA DO SERVIDOR:", responseData);
 
       if (!response.ok) {
-        const errorMessages = Object.entries(responseData).map(([key, value]) => `${key}: ${value[0]}`).join('\n');
-        throw new Error(errorMessages);
+        const errorMessages = Object.values(responseData).flat().join('\n');
+        throw new Error(errorMessages || "Erro no cadastro");
       }
       
-      console.log("✅ SUCESSO! Cadastro realizado.");
       alert('Cadastro de aplicante realizado com sucesso!');
       navigate('/login');
 
-    } catch (error) {
-      console.error("❌ ERRO NA REQUISIÇÃO:", error);
-      alert(`Ocorreu um erro no cadastro:\n${error.message}`);
+    } catch (err) {
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -76,92 +75,86 @@ const CadastroAplicante = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
-          {/* SEU FORMULÁRIO CONTINUA O MESMO AQUI */}
           <div className="form-group">
-            <label>
-              <FaUser className="input-icon" /> Nome Completo
-            </label>
+            <label><FaUser className="input-icon" /> Nome Completo</label>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input 
+                type="text" 
+                name="first_name" 
+                value={formData.first_name} 
+                onChange={handleChange} 
+                placeholder='Seu nome' 
+                required 
+              />
+              <input 
+                type="text" 
+                name="last_name" 
+                value={formData.last_name} 
+                onChange={handleChange} 
+                placeholder='Seu sobrenome' 
+                required 
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label><FaLanguage className="input-icon" /> Idiomas</label>
             <input 
               type="text" 
-              name="nome" 
-              value={formData.nome} 
+              name="idiomas" 
+              value={formData.idiomas} 
               onChange={handleChange} 
-              className="form-input"
-              placeholder='Digite seu nome completo' 
+              placeholder='Ex: Português, Inglês' 
               required 
             />
           </div>
 
           <div className="form-group">
-            <label>
-              <FaLanguage className="input-icon" /> Idiomas
-            </label>
-            <input 
-              type="text" 
-              name="idioma" 
-              value={formData.idioma} 
-              onChange={handleChange} 
-              className="form-input"
-              placeholder='Ex: Português, Inglês, Espanhol' 
-              required 
-            />
-          </div>
-
-          <div className="form-group">
-            <label>
-              <FaIdCard className="input-icon" /> CPF
-            </label>
+            <label><FaIdCard className="input-icon" /> CPF</label>
             <input 
               type="text" 
               name="cpf" 
               value={formData.cpf} 
               onChange={handleChange} 
-              className="form-input"
               placeholder='Apenas números' 
               required 
             />
           </div>
 
           <div className="form-group">
-            <label>
-              <FaEnvelope className="input-icon" /> Email
-            </label>
+            <label><FaEnvelope className="input-icon" /> Email</label>
             <input 
               type="email" 
               name="email" 
               value={formData.email} 
               onChange={handleChange} 
-              className="form-input"
               placeholder='seu@email.com' 
               required 
             />
           </div>
 
           <div className="form-group">
-            <label>
-              <FaLock className="input-icon" /> Senha
-            </label>
+            <label><FaLock className="input-icon" /> Senha</label>
             <input 
               type="password" 
-              name="senha" 
-              value={formData.senha} 
-              onChange={handleChange} 
-              className="form-input"
+              name="password"
+              value={formData.password} 
+              onChange={handleChange}
               placeholder='Crie uma senha segura' 
               required 
             />
           </div>
+
+          {error && <p className="error-message" style={{textAlign: 'center'}}>{error}</p>}
 
           <button type="submit" className="login-button" disabled={isLoading}>
             {isLoading ? <div className="loading-spinner"></div> : 'Cadastrar'}
           </button>
         </form>
 
-        {/* 3. ADICIONAMOS O BOTÃO DE VOLTAR AQUI */}
         <Link to="/" className="back-button">
           <FaArrowLeft /> Voltar para o Início
         </Link>
-        
       </div>
     </div>
   );

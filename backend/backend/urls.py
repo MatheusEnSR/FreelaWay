@@ -2,22 +2,19 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from api.views import MyTokenObtainPairView, UserProfileView
-# (Se usarmos o refresh token, o TokenRefreshView continua vindo da biblioteca)
-from rest_framework_simplejwt.views import TokenRefreshView
 
+# 1. ADICIONE ESTAS DUAS IMPORTAÇÕES
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Inclui todas as URLs da 'api' (como /register/ e /vagas/)
+    # Esta linha já inclui TODAS as URLs do seu aplicativo 'api'
     path('api/', include('api.urls')),
-
-    # Rotas de Autenticação
-    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
-    # Rota para o perfil do usuário logado (estava faltando)
-    path('api/users/me/', UserProfileView.as_view(), name='user_profile'),
-
 ]
+
+# 2. ADICIONE ESTE BLOCO NO FINAL DO ARQUIVO
+# Isso serve os arquivos de mídia (fotos de perfil) em modo de desenvolvimento
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

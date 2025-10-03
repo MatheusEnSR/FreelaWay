@@ -2,41 +2,61 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-# Modelo para o perfil de um Contratante (AGORA SUPORTA PF e PJ)
-class ContratanteProfile(models.Model):
-    # Opções para o novo campo de tipo de contratante
+# --- NOVO MODELO DE PERFIL UNIFICADO ---
+# Este modelo substitui o antigo ContratanteProfile e servirá para TODOS os usuários.
+class Profile(models.Model):
+    USER_TYPE_CHOICES = (
+        ('aplicante', 'Aplicante'),
+        ('contratante', 'Contratante'),
+    )
     CONTRACTOR_TYPE_CHOICES = (
         ('PF', 'Pessoa Física'),
         ('PJ', 'Pessoa Jurídica'),
     )
+    STATUS_CHOICES = (
+        ('Disponível', 'Disponível'),
+        ('Indisponível', 'Indisponível'),
+    )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='contratante_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     
-    # --- ALTERAÇÃO FEITA AQUI ---
-    # Adicionado default='PJ' para resolver a questão da migração.
-    contractor_type = models.CharField(max_length=2, choices=CONTRACTOR_TYPE_CHOICES, default='PJ')
+    # Campo para diferenciar os tipos de usuário principais
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='aplicante')
     
-    # Campos de Pessoa Jurídica (agora opcionais)
+    # Campos específicos para Contratante
+    contractor_type = models.CharField(max_length=2, choices=CONTRACTOR_TYPE_CHOICES, blank=True, null=True)
+    cpf = models.CharField(max_length=11, unique=True, blank=True, null=True)
     nome_empresa = models.CharField(max_length=255, blank=True, null=True)
     cnpj = models.CharField(max_length=14, unique=True, blank=True, null=True)
 
-    # Novo campo para Pessoa Física
-    cpf = models.CharField(max_length=11, unique=True, blank=True, null=True)
+    # Novos campos para a página de perfil (servem para todos)
+    bio = models.TextField(blank=True, null=True)
+    especializacoes = models.CharField(max_length=255, blank=True, null=True)
+    tags = models.CharField(max_length=255, blank=True, null=True, help_text="Tags separadas por vírgula")
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Disponível')
+    foto_perfil = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
-        if self.contractor_type == 'PJ' and self.nome_empresa:
-            return self.nome_empresa
-        return self.user.get_full_name() or self.user.username
+        return f'{self.user.username} - {self.user_type}'
 
-# Modelo para as Tags das vagas (NÃO FOI ALTERADO)
+# --- SINAIS PARA CRIAR/SALVAR O PERFIL AUTOMATICAMENTE ---
+# Isso garante que todo usuário novo tenha um perfil associado
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
+
+
+# --- SEUS OUTROS MODELOS (NÃO FORAM ALTERADOS) ---
 class Tag(models.Model):
     nome = models.CharField(max_length=50, unique=True)
-
     def __str__(self):
         return self.nome
 
-# Modelo para as Vagas (NÃO FOI ALTERADO)
 class Vaga(models.Model):
     titulo = models.CharField(max_length=255)
     contratante = models.ForeignKey(User, on_delete=models.CASCADE, related_name='vagas')
@@ -51,42 +71,3 @@ class Vaga(models.Model):
 
     def __str__(self):
         return self.titulo
-
-# ======================================================================
-# NOTAS SOBRE AS ALTERAÇÕES E ESTRUTURA (25/09/2025) *cv*
-# ======================================================================
-#
-# O que este arquivo faz:
-# ----------------------
-# Este arquivo define a "planta" do nosso banco de dados. Cada classe
-# representa uma tabela e cada variável dentro da classe representa uma
-# coluna nessa tabela.
-#
-# -- Classe ContratanteProfile --
-#
-# Propósito: Armazena informações adicionais para usuários que são
-# contratantes. Foi projetada para lidar tanto com Pessoas Físicas (PF)
-# quanto Pessoas Jurídicas (PJ).
-#
-# Alterações realizadas:
-# 1.  `contractor_type`: Foi adicionado um novo campo de texto para guardar
-#     a escolha do usuário no momento do cadastro ('PF' ou 'PJ').
-#     - `default='PJ'`: Adicionamos este valor padrão para que o Django
-#       saiba o que colocar neste campo para os usuários contratantes
-#       que já existiam no banco de dados antes da mudança. Isso resolve
-#       o problema que apareceu ao rodar o `makemigrations`.
-#
-# 2.  `cpf`: Foi adicionado um campo de texto para guardar o CPF, que será
-#     usado apenas se o `contractor_type` for 'PF'.
-#
-# 3.  Campos Opcionais (`nome_empresa`, `cnpj`): Foram marcados como
-#     opcionais (`blank=True, null=True`) porque um contratante PF não
-#     terá essas informações. O mesmo foi feito para o `cpf`, já que
-#     um contratante PJ não o terá.
-#
-# -- Classes Tag e Vaga --
-#
-# Propósito: Estas classes não foram alteradas. Elas continuam a definir
-# a estrutura para as vagas e as tags (palavras-chave) associadas a elas.
-#
-# ======================================================================
