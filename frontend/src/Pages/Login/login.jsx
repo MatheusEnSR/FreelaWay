@@ -58,6 +58,8 @@ const LoginPage = () => {
       });
 
       const data = await response.json();
+      
+console.log("Resposta do Backend (/api/token/):", data);
 
       if (!response.ok) {
         throw new Error(data.detail || 'Credenciais inválidas.');

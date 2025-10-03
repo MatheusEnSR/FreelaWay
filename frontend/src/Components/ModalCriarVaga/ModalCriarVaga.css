@@ -1,0 +1,85 @@
+/* src/components/ModalCriarVaga/ModalCriarVaga.css */
+
+/* Estilos para a seção de uploads e tags */
+.upload-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.upload-section .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upload-section label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.upload-section input[type="file"] {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Estilos para a seção de blocos personalizados */
+.blocos-container {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.bloco-personalizado {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background-color: #f9fafb;
+}
+
+.bloco-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #f1f3f5;
+    border-radius: 8px 8px 0 0;
+}
+
+.drag-handle {
+    cursor: grab;
+    color: #868e96;
+}
+
+.bloco-header input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: 1rem;
+}
+.bloco-header input:focus {
+    outline: none;
+}
+
+.bloco-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #e03131;
+    font-size: 1.1rem;
+}
+
+.bloco-body {
+    padding: 10px;
+}
+
+/* Estilo para o editor ReactQuill */
+.quill {
+    background-color: #fff;
+}

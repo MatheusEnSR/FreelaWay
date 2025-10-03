@@ -150,7 +150,7 @@
   align-items: center;
   gap: 8px;
   background-color: var(--primary-color);
-  color: white;
+  color: rgb(58, 201, 118);
   border: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -161,6 +161,26 @@
 }
 .btn-primary:hover {
   background-color: var(--secondary-color);
+}
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent; 
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500; 
+  color: var(--primary-color); 
+  transition: all 0.2s ease; 
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color); 
+  color: #fff; 
+  border-color: var(--primary-color); 
 }
 
 .anuncios-lista {
@@ -176,11 +196,11 @@
   background-color: var(--card-bg);
   padding: 16px 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(148, 228, 124, 0.05);
   transition: box-shadow 0.2s;
 }
 .anuncio-item:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(93, 209, 132, 0.08);
 }
 
 .anuncio-info h4 {
@@ -277,88 +297,189 @@
   margin-top: 30px;
   text-align: right;
 }
-/* Fundo do modal com blur */
+/* --- Estilos do Modal de Criação de Vaga --- */
+
+/* Fundo escurecido com blur */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(5px); /* blur no fundo */
-  background: rgba(0, 0, 0, 0.4); /* escurece levemente */
+  background: rgba(10, 25, 20, 0.4); /* Tom de verde escuro semi-transparente */
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto; /* Permite rolagem se o modal for maior que a tela */
 }
 
-/* Card centralizado */
+/* Card principal do modal */
 .modal-card {
-  background: white;
-  padding: 25px 30px;
+  background: var(--card-bg, #ffffff);
   border-radius: 12px;
-  width: 450px;
-  max-width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px; /* Modal mais largo para comportar o formulário */
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-out;
+  margin: auto; /* Centraliza verticalmente quando há rolagem */
 }
 
-.modal-card h2 {
-  margin: 0 0 10px 0;
-  text-align: center;
+/* Animação de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.modal-card input,
-.modal-card textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+/* Cabeçalho do Modal */
+.modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem; /* 24px */
+  color: var(--text-dark);
+}
+
+/* Corpo do Modal (onde fica o formulário) */
+.modal-body {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Espaço entre o formulário e a pré-visualização */
+}
+
+/* Grid para organizar os campos do formulário */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
+  gap: 20px;
+}
+
+/* Grupo de um campo de formulário (label + input) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Estilo para campos que ocupam a largura total do grid */
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 0.9rem; /* 14px */
+  color: var(--text-dark);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
   width: 100%;
-  font-size: 14px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem; /* 16px */
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.modal-card textarea {
-  min-height: 100px;
-  resize: none;
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(45, 87, 66, 0.15); /* Sombra de foco verde clara */
 }
 
-.modal-buttons {
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Estilo para o checkbox */
+.checkbox-group {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -10px; /* Pequeno ajuste de espaço */
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  height: 1.1em;
+  width: 1.1em;
+  accent-color: var(--primary-color);
+}
+
+.checkbox-group label {
+  font-weight: 400; /* Texto normal, não negrito */
+}
+
+/* Área de Pré-visualização da Vaga */
+.job-preview {
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.job-preview h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+}
+
+.job-preview p {
+  margin: 4px 0;
+  color: var(--text-medium);
+  font-size: 0.9rem;
+}
+
+.job-preview strong {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* Rodapé do Modal com os botões */
+.modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 12px;
+  padding: 20px 30px;
+  background-color: #f9fafb; /* Fundo levemente diferente */
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 12px 12px;
 }
 
-.modal-buttons button {
-  padding: 8px 16px;
+/* Reutilizando e adaptando os botões que você já tem */
+.modal-footer .btn-primary,
+.modal-footer .btn-secondary {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+}
+
+/* Botão de Cancelar (novo estilo) */
+.btn-tertiary {
+  background: transparent;
   border: none;
-  border-radius: 5px;
+  color: var(--text-medium);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.modal-buttons button:first-child {
-  background: #ccc;
-}
-
-.modal-buttons button:last-child {
-  background: #4CAF50;
-  color: white;
-}
-
-/* Animação de fade-in do modal */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-.modal-card select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 100%;
-  font-size: 14px;
-  background: white;
-  cursor: pointer;
+.btn-tertiary:hover {
+  background-color: var(--light-bg);
 }

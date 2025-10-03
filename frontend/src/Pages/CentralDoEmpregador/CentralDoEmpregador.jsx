@@ -1,8 +1,10 @@
+// src/Pages/CentralDoEmpregador/CentralDoEmpregador.jsx
+
 import React, { useState, useEffect, useContext } from 'react';
 import './CentralDoEmpregador.css';
 import { FaHome, FaBullhorn, FaUsers, FaQuestionCircle, FaUserCircle } from 'react-icons/fa';
-import { AuthContext } from '../../context/AuthContext'; // Ajuste o caminho se necessário
-import api from '../../Services/api'; // Nosso Axios configurado
+import { AuthContext } from '../../context/AuthContext';
+import api from '../../Services/api';
 
 // Importação dos componentes das abas
 import Inicio from './tabs/Inicio';
@@ -10,6 +12,9 @@ import Anuncios from './tabs/Anuncios';
 import Candidatos from './tabs/Candidatos';
 import Suporte from './tabs/Suporte';
 import Perfil from './tabs/Perfil';
+
+// Importação do novo componente de modal
+import ModalCriarVaga from '../../Components/ModalCriarVaga/ModalCriarVaga';
 
 const CentralDoEmpregador = () => {
     const [activeTab, setActiveTab] = useState('inicio');
@@ -36,45 +41,13 @@ const CentralDoEmpregador = () => {
     }, [authTokens]);
 
     const fetchVagas = () => {
-    setIsLoadingVagas(true);
-    // Altere a URL para o novo endpoint que filtra por usuário
-    api.get('/api/vagas/meus-anuncios/', { // <-- CORREÇÃO AQUI
-        headers: { Authorization: `Bearer ${authTokens.access}` }
-    }).then(res => {
-        setVagas(res.data);
-    }).catch(err => console.error("Erro ao buscar vagas:", err))
-      .finally(() => setIsLoadingVagas(false));
-};
-
-    const [novaVaga, setNovaVaga] = useState({
-        titulo: "", local: "", salario: "", idioma: "", descricao_breve: "", descricao_detalhada: "", tags: "", recomendada: false
-    });
-    
-    const handleNovaVagaChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setNovaVaga(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-    };
-
-    const handlePublicarVaga = async (e) => {
-        e.preventDefault();
-        const payload = {
-            ...novaVaga,
-            tags: novaVaga.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
-        };
-        
-        try {
-            await api.post('/api/vagas/', payload, {
-                headers: { Authorization: `Bearer ${authTokens.access}` }
-            });
-            alert("Vaga publicada com sucesso!");
-            setIsModalOpen(false);
-            setNovaVaga({ titulo: "", local: "", salario: "", idioma: "", descricao_breve: "", descricao_detalhada: "", tags: "", recomendada: false });
-            fetchVagas();
-        } catch (error) {
-            const errorMsg = error.response?.data ? JSON.stringify(error.response.data) : error.message;
-            console.error("Erro ao publicar vaga:", errorMsg);
-            alert(`Erro ao publicar vaga: ${errorMsg}`);
-        }
+        setIsLoadingVagas(true);
+        api.get('/api/vagas/meus-anuncios/', {
+            headers: { Authorization: `Bearer ${authTokens.access}` }
+        }).then(res => {
+            setVagas(res.data);
+        }).catch(err => console.error("Erro ao buscar vagas:", err))
+          .finally(() => setIsLoadingVagas(false));
     };
 
     const handlePerfilSave = (novosDados) => {
@@ -99,7 +72,6 @@ const CentralDoEmpregador = () => {
         { id: 'suporte', label: 'Chamados e Ajuda', icon: <FaQuestionCircle /> }
     ];
 
-    // A CORREÇÃO PRINCIPAL FOI RESTAURAR SEU CÓDIGO JSX ABAIXO:
     return (
         <div className="dashboard-layout">
             <aside className="dashboard-sidebar">
@@ -129,29 +101,13 @@ const CentralDoEmpregador = () => {
             <main className="dashboard-content">
                 {renderContent()}
             </main>
+
+            {/* O modal agora é renderizado através do novo componente, de forma limpa */}
             {isModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-card">
-                        <h2>Publicar Nova Vaga</h2>
-                        <form onSubmit={handlePublicarVaga}>
-                            <input name="titulo" type="text" placeholder="Título da Vaga (ex: Desenvolvedor React)" value={novaVaga.titulo} onChange={handleNovaVagaChange} required />
-                            <input name="local" type="text" placeholder="Local (ex: Remoto)" value={novaVaga.local} onChange={handleNovaVagaChange} required />
-                            <input name="salario" type="text" placeholder="Salário (ex: R$ 5.000 - R$ 7.000)" value={novaVaga.salario} onChange={handleNovaVagaChange} />
-                            <input name="idioma" type="text" placeholder="Idiomas (ex: Português, Inglês)" value={novaVaga.idioma} onChange={handleNovaVagaChange} required />
-                            <textarea name="descricao_breve" placeholder="Descrição breve da vaga (1-2 frases)" value={novaVaga.descricao_breve} onChange={handleNovaVagaChange} required></textarea>
-                            <textarea name="descricao_detalhada" placeholder="Descrição detalhada (responsabilidades, etc)" value={novaVaga.descricao_detalhada} onChange={handleNovaVagaChange} required></textarea>
-                            <input name="tags" type="text" placeholder="Tags (separadas por vírgula: React, Python)" value={novaVaga.tags} onChange={handleNovaVagaChange} />
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-                                <input name="recomendada" type="checkbox" checked={novaVaga.recomendada} onChange={handleNovaVagaChange} id="recomendada-checkbox" />
-                                <label htmlFor="recomendada-checkbox">Marcar como vaga recomendada</label>
-                            </div>
-                            <div className="modal-buttons">
-                                <button type="button" onClick={() => setIsModalOpen(false)}>Cancelar</button>
-                                <button type="submit">Publicar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                <ModalCriarVaga 
+                    onClose={() => setIsModalOpen(false)}
+                    onSaveSuccess={fetchVagas}
+                />
             )}
         </div>
     );
