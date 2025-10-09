@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useI18n } from "../../i18n/useI18n.jsx"; 
 import Navbar from "../../Components/NavBar/navbar.jsx"; 
 import Footer from "../../Components/Footer/footer.jsx"; 
 import Card from "../../Components/Card/card.jsx"; 
@@ -12,7 +13,10 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // 2. Função para buscar os dados da API
+  // 2. Acessa a função de tradução
+  const { t } = useI18n();
+
+  // 3. Função para buscar os dados da API
   const fetchVagas = async (term = '') => {
     setIsLoading(true);
     let url = '/api/vagas/';
@@ -31,12 +35,12 @@ function Home() {
     }
   };
 
-  // 3. Busca inicial de todas as vagas quando a página carrega
+  // 4. Busca inicial de todas as vagas quando a página carrega
   useEffect(() => {
     fetchVagas();
-  }, []); // O array vazio [] garante que rode apenas uma vez
+  }, []); 
 
-  // 4. Função de busca que agora chama a API
+  // 5. Função de busca que agora chama a API
   const handleSearch = (e) => {
     e.preventDefault();
     fetchVagas(searchTerm);
@@ -46,12 +50,14 @@ function Home() {
     <main>
       <Navbar />
       <section className="hero-section">
-        <h1>Vagas</h1>
-        <p>Conectando profissionais comprometidos com o futuro.</p>
+        {/* Traduzindo título e subtítulo */}
+        <h1>{t('jobs')}</h1> 
+        <p>{t('banner_title')}</p> 
         <form className="hero-pesquisa" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Buscar por cargo, habilidade ou local..."
+            // Traduzindo placeholder
+            placeholder={t('home_search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -61,20 +67,24 @@ function Home() {
 
       <div className="home-content">
         <aside className="sidebar-left">
+          {/* O componente FiltroCard precisará ser atualizado separadamente */}
           <FiltroCard />
         </aside>
         
         <section className="main-content">
           <div className="card-wrapper">
-            {/* 5. Renderização dinâmica dos cards */}
+            {/* 6. Renderização dinâmica dos cards */}
             {isLoading ? (
-              <p>Carregando vagas...</p>
+              // Traduzindo status de carregamento
+              <p>{t('loading_jobs')}</p>
             ) : vagas.length > 0 ? (
               vagas.map(vaga => (
+                // O componente Card precisará ser atualizado separadamente
                 <Card key={vaga.id} vaga={vaga} />
               ))
             ) : (
-              <p>Nenhuma vaga encontrada para sua busca.</p>
+              // Traduzindo mensagem de não encontrado
+              <p>{t('jobs_not_found')}</p>
             )}
           </div>
         </section>

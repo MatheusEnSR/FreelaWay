@@ -3,53 +3,38 @@ import React, { useState } from "react";
 import Logo from '../../Assets/Logo/Logo.png';
 import { Link, useLocation } from "react-router-dom";
 
+// 1. IMPORTAR O HOOK DE INTERNACIONALIZAÇÃO
+// Altere o caminho conforme a sua estrutura de pastas
+import { useI18n } from '../../i18n/useI18n.jsx'; 
+
 // Ícones do react
-import { VscAccount, VscClose, VscChevronDown, VscMenu  } from "react-icons/vsc";
+import { VscAccount, VscClose, VscChevronDown, VscMenu } from "react-icons/vsc";
 import { TfiBag } from "react-icons/tfi";
 import { TfiIdBadge } from "react-icons/tfi";
 import { SlUser } from "react-icons/sl";
 
 function NavBar() {
+  // 2. USAR O HOOK PARA ACESSAR O IDIOMA ATUAL E AS FUNÇÕES
+  // 'language' é o idioma ativo (ex: 'PT-BR'), 't' é a função de tradução, 'changeLanguage' é para trocar.
+  const { language, t, changeLanguage } = useI18n(); 
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('PT-BR');
+  // REMOVIDO: const [selectedLanguage, setSelectedLanguage] = useState('PT-BR');
   const location = useLocation();
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const closeSidebar = () => setSidebarOpen(false);
   const toggleLanguageDropdown = () => setLanguageOpen(!languageOpen);
 
-  // Função para traduzir texto usando LibreTranslate
-  const traduzirTexto = async (texto, idiomaDestino) => {
-    try {
-      const res = await fetch('https://libretranslate.de/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          q: texto,
-          source: 'pt',  // idioma original
-          target: idiomaDestino,
-          format: 'text'
-        })
-      });
-      const data = await res.json();
-      return data.translatedText;
-    } catch (err) {
-      console.error("Erro ao traduzir:", err);
-      return texto;
-    }
-  };
+  // REMOVIDO: As funções 'traduzirTexto' e o fetch, pois o Context faz o trabalho.
 
-  const selectLanguage = async (lang) => {
-    setSelectedLanguage(lang);
+  const selectLanguage = (lang) => {
+    // 3. CHAMA A FUNÇÃO GLOBAL para mudar o estado do idioma
+    changeLanguage(lang); 
     setLanguageOpen(false);
 
-    // Aqui você pode traduzir textos principais do site
-    // Exemplo: traduzindo "Início" para o idioma selecionado
-    const textoTraduzido = await traduzirTexto("Início", lang.toLowerCase());
-    console.log("Texto traduzido:", textoTraduzido);
-
-    // Depois você pode guardar isso em Context ou State global
+    // Agora, todo o site será atualizado automaticamente
   };
 
   return (
@@ -60,22 +45,26 @@ function NavBar() {
         </Link>
 
         <nav className="navbar-links">
+          {/* 4. USANDO t() para traduzir os links */}
           <Link to="/" className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>
-            Início
+            {t('home')} {/* Assume-se que 'home' está no seu JSON */}
           </Link>
           <Link to="/vagas" className={location.pathname === '/vagas' ? 'nav-link active' : 'nav-link'}>
-            Vagas
+            {t('jobs')} {/* Assume-se que 'jobs' (vagas) está no seu JSON */}
           </Link>
         </nav>
 
         <div className="language-selector">
           <button className="language-toggle" onClick={toggleLanguageDropdown}>
-            {selectedLanguage}
+            {/* 5. MOSTRA O IDIOMA ATUAL (do Context) */}
+            {language} 
             <VscChevronDown className={languageOpen ? 'chevron rotated' : 'chevron'} />
           </button>
           
           {languageOpen && (
             <div className="language-dropdown">
+              {/* 6. PASSANDO OS CÓDIGOS DE IDIOMA PARA A FUNÇÃO selectLanguage */}
+              <button onClick={() => selectLanguage('PT-BR')}>Português</button>
               <button onClick={() => selectLanguage('EN')}>English</button>
               <button onClick={() => selectLanguage('ES')}>Español</button>
               <button onClick={() => selectLanguage('FR')}>Français</button>
@@ -90,19 +79,21 @@ function NavBar() {
 
       <div className={`sidebar ${sidebarOpen ? "aberto" : ""}`}>
         <button className="fechar" onClick={closeSidebar}><VscClose /></button>
-        <h3>Menu</h3>
+        {/* 7. TRADUZINDO O TÍTULO DO MENU */}
+        <h3>{t('menu')}</h3> 
         <ul>
           <li>
-            <Link to="/login"><VscAccount /> Login</Link>
+            <Link to="/login"><VscAccount /> {t('login')}</Link>
           </li>
           <li>
-            <Link to="/perfil"><SlUser />Perfil</Link>
+            <Link to="/perfil"><SlUser />{t('profile')}</Link>
           </li>
           <li>
-            <Link to="/vagas"><TfiBag />Vagas</Link>
+            <Link to="/vagas"><TfiBag />{t('jobs')}</Link>
           </li>
           <li>
-            <Link to="/login"><TfiIdBadge />Central do Contratante</Link>
+            {/* TRADUZINDO 'Central do Contratante' */}
+            <Link to="/login"><TfiIdBadge />{t('employer_center')}</Link>
           </li>
         </ul> 
       </div>
