@@ -1,4 +1,4 @@
-/*frontend/src/Pages/CentralDoEmpregador/CentralDoEmpregador.css*/
+/* frontend/src/Pages/CentralDoEmpregador/CentralDoEmpregador.css */
 
 .dashboard-layout {
   display: flex;
@@ -68,9 +68,89 @@
   border-left: 4px solid var(--primary-color);
 }
 
+/* --- Seção do botão de tradução --- */
+.sidebar-language {
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Container principal do seletor */
+#language-selector-sidebar { /* <<< CORRIGIDO AQUI */
+  position: relative;
+  width: 100%;
+}
+
+/* Botão visível */
+.language-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-toggle:hover {
+  background-color: #f0f7f4;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Ícone da setinha */
+.language-toggle .chevron {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.language-toggle .rotated {
+  transform: rotate(180deg);
+}
+
+/* Dropdown com as opções */
+.language-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  z-index: 10;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.language-dropdown button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-dropdown button:hover {
+  background-color: #e6f7ee;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* --- Rodapé da Sidebar --- */
 .sidebar-footer {
   padding: 20px;
-  margin-top: auto;
+  margin-top: 50px;
   border-top: 1px solid var(--border-color);
 }
 
@@ -111,7 +191,7 @@
   margin-bottom: 24px;
 }
 
-/* --- Cards de Estatística (usados em Inicio.jsx) --- */
+/* --- Cards de Estatística --- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -137,7 +217,7 @@
   margin: 0;
 }
 
-/* --- Estilos para a página de Anúncios --- */
+/* --- Anúncios --- */
 .content-header {
   display: flex;
   justify-content: space-between;
@@ -159,6 +239,7 @@
   cursor: pointer;
   transition: background-color 0.2s;
 }
+
 .btn-primary:hover {
   background-color: var(--secondary-color);
 }
@@ -199,6 +280,7 @@
   box-shadow: 0 2px 4px rgba(148, 228, 124, 0.05);
   transition: box-shadow 0.2s;
 }
+
 .anuncio-item:hover {
   box-shadow: 0 4px 12px rgba(93, 209, 132, 0.08);
 }
@@ -207,6 +289,7 @@
   margin: 0 0 8px 0;
   font-weight: 600;
 }
+
 .anuncio-info p {
   margin: 0;
   display: flex;
@@ -215,7 +298,7 @@
   color: var(--text-medium);
 }
 
-/* Reutilizando a classe status-badge que já deve existir */
+/* Status */
 .status-badge {
   padding: 4px 10px;
   border-radius: 999px;
@@ -224,32 +307,17 @@
   text-transform: capitalize;
   white-space: nowrap;
 }
+
 .status-ativa { background-color: rgba(34, 197, 94, 0.1); color: #15803d; }
 .status-pausada { background-color: rgba(249, 115, 22, 0.1); color: #b45309; }
 .status-encerrada { background-color: rgba(107, 114, 128, 0.1); color: #4b5563; }
-
 
 .anuncio-acoes {
   display: flex;
   gap: 12px;
 }
-.btn-secondary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--light-bg);
-  border: 1px solid var(--border-color);
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.btn-secondary:hover {
-  background-color: #e9e9e9;
-}
 
-
-/* --- Estilos para o link do Perfil --- */
+/* Perfil */
 .profile-preview-button {
   display: flex;
   align-items: center;
@@ -264,78 +332,35 @@
   text-align: left;
 }
 
-
-/* --- Estilos para a página de Perfil --- */
-.profile-form {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 700px;
-}
-.form-group {
-  margin-bottom: 20px;
-}
-.form-group label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: 'Inter', sans-serif;
-}
-.form-group input:read-only {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-.form-actions {
-  margin-top: 30px;
-  text-align: right;
-}
-/* --- Estilos do Modal de Criação de Vaga --- */
-
-/* Fundo escurecido com blur */
+/* --- Modal de Criação de Vaga --- */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(10, 25, 20, 0.4); /* Tom de verde escuro semi-transparente */
+  background: rgba(10, 25, 20, 0.4);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 20px;
-  overflow-y: auto; /* Permite rolagem se o modal for maior que a tela */
+  overflow-y: auto;
 }
 
-/* Card principal do modal */
 .modal-card {
   background: var(--card-bg, #ffffff);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 900px; /* Modal mais largo para comportar o formulário */
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   animation: fadeIn 0.3s ease-out;
-  margin: auto; /* Centraliza verticalmente quando há rolagem */
+  margin: auto;
 }
 
-/* Animação de entrada */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Cabeçalho do Modal */
 .modal-header {
   padding: 20px 30px;
   border-bottom: 1px solid var(--border-color);
@@ -343,40 +368,36 @@
 
 .modal-header h2 {
   margin: 0;
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
   color: var(--text-dark);
 }
 
-/* Corpo do Modal (onde fica o formulário) */
 .modal-body {
   padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 30px; /* Espaço entre o formulário e a pré-visualização */
+  gap: 30px;
 }
 
-/* Grid para organizar os campos do formulário */
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-/* Grupo de um campo de formulário (label + input) */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* Estilo para campos que ocupam a largura total do grid */
 .col-span-2 {
   grid-column: span 2;
 }
 
 .form-group label {
   font-weight: 500;
-  font-size: 0.9rem; /* 14px */
+  font-size: 0.9rem;
   color: var(--text-dark);
 }
 
@@ -387,7 +408,7 @@
   padding: 12px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
   font-family: 'Inter', sans-serif;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -397,7 +418,7 @@
 .form-group select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(45, 87, 66, 0.15); /* Sombra de foco verde clara */
+  box-shadow: 0 0 0 3px rgba(45, 87, 66, 0.15);
 }
 
 .form-group textarea {
@@ -405,13 +426,12 @@
   resize: vertical;
 }
 
-/* Estilo para o checkbox */
 .checkbox-group {
   grid-column: span 2;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: -10px; /* Pequeno ajuste de espaço */
+  margin-top: -10px;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -422,10 +442,9 @@
 }
 
 .checkbox-group label {
-  font-weight: 400; /* Texto normal, não negrito */
+  font-weight: 400;
 }
 
-/* Área de Pré-visualização da Vaga */
 .job-preview {
   border: 1px dashed var(--border-color);
   border-radius: 8px;
@@ -449,25 +468,22 @@
   font-weight: 500;
 }
 
-/* Rodapé do Modal com os botões */
 .modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   padding: 20px 30px;
-  background-color: #f9fafb; /* Fundo levemente diferente */
+  background-color: #f9fafb;
   border-top: 1px solid var(--border-color);
   border-radius: 0 0 12px 12px;
 }
 
-/* Reutilizando e adaptando os botões que você já tem */
 .modal-footer .btn-primary,
 .modal-footer .btn-secondary {
   padding: 10px 20px;
   font-size: 0.95rem;
 }
 
-/* Botão de Cancelar (novo estilo) */
 .btn-tertiary {
   background: transparent;
   border: none;
@@ -482,4 +498,10 @@
 
 .btn-tertiary:hover {
   background-color: var(--light-bg);
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

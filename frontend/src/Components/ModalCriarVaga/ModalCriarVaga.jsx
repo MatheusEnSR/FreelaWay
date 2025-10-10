@@ -1,5 +1,3 @@
-// src/components/ModalCriarVaga/ModalCriarVaga.jsx
-
 import React, { useState } from 'react';
 import api from '../../Services/api';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,26 +6,25 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './ModalCriarVaga.css';
 import { FaTrash, FaGripVertical } from 'react-icons/fa';
+import { useI18n } from '../../i18n/useI18n'; // 1. Importar o hook
 
 const ModalCriarVaga = ({ onClose, onSaveSuccess }) => {
-    // ESTADOS PARA OS CAMPOS BÁSICOS
+    const { t } = useI18n(); // 2. Usar o hook
+
     const [vagaData, setVagaData] = useState({
         titulo: "", local: "", salario: "", idioma: "", descricao_breve: "", descricao_detalhada: "", recomendada: false
     });
-
-    // ESTADOS PARA OS RECURSOS AVANÇADOS
     const [logoFile, setLogoFile] = useState(null);
     const [capaFile, setCapaFile] = useState(null);
     const [tags, setTags] = useState('');
     const [blocos, setBlocos] = useState([]);
 
-    // --- MANIPULADORES ---
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setVagaData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     };
     const adicionarBloco = () => {
-        if (blocos.length >= 4) return alert("Máximo de 4 seções atingido.");
+        if (blocos.length >= 4) return alert(t('max_sections_alert')); // Traduzido
         setBlocos([...blocos, { id: uuidv4(), titulo: '', conteudo: '' }]);
     };
     const removerBloco = (id) => setBlocos(blocos.filter(b => b.id !== id));
@@ -42,7 +39,6 @@ const ModalCriarVaga = ({ onClose, onSaveSuccess }) => {
         setBlocos(items);
     };
 
-    // --- FUNÇÃO FINAL DE SUBMISSÃO ---
     const handleSubmit = async (status) => {
         const formData = new FormData();
         Object.keys(vagaData).forEach(key => formData.append(key, vagaData[key]));
@@ -56,73 +52,71 @@ const ModalCriarVaga = ({ onClose, onSaveSuccess }) => {
             await api.post('/api/vagas/', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            alert('Vaga salva com sucesso!');
+            alert(t('job_saved_success_alert')); // Traduzido
             onSaveSuccess();
             onClose();
         } catch (error) {
             console.error("Erro ao salvar vaga:", error.response?.data);
-            alert(`Erro ao salvar vaga: ${JSON.stringify(error.response?.data)}`);
+            alert(`${t('job_saved_error_alert')}: ${JSON.stringify(error.response?.data)}`); // Traduzido
         }
     };
 
+    // 3. Traduzir todos os textos da interface
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-card" onClick={(e) => e.stopPropagation()}>
                 <form onSubmit={(e) => { e.preventDefault(); handleSubmit('publicada'); }}>
-                    <div className="modal-header"><h2>Publicar Nova Vaga</h2></div>
+                    <div className="modal-header"><h2>{t('publish_new_job_title')}</h2></div>
                     <div className="modal-body">
                         
-                        {/* --- CAMPOS RESTAURADOS --- */}
                         <div className="form-grid">
                             <div className="form-group col-span-2">
-                                <label htmlFor="titulo">Título da Vaga</label>
-                                <input type="text" id="titulo" name="titulo" placeholder="Ex: Desenvolvedor(a) React Sênior" value={vagaData.titulo} onChange={handleChange} required />
+                                <label htmlFor="titulo">{t('job_title_label')}</label>
+                                <input type="text" id="titulo" name="titulo" placeholder={t('job_title_placeholder')} value={vagaData.titulo} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="local">Local</label>
-                                <input type="text" id="local" name="local" placeholder="Ex: Remoto ou São Paulo, SP" value={vagaData.local} onChange={handleChange} required />
+                                <label htmlFor="local">{t('location_label')}</label>
+                                <input type="text" id="local" name="local" placeholder={t('location_placeholder')} value={vagaData.local} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="salario">Faixa salarial (opcional)</label>
-                                <input type="text" id="salario" name="salario" placeholder="Ex: R$ 5.000 - R$ 7.000" value={vagaData.salario} onChange={handleChange} />
+                                <label htmlFor="salario">{t('salary_range_label')}</label>
+                                <input type="text" id="salario" name="salario" placeholder={t('salary_range_placeholder')} value={vagaData.salario} onChange={handleChange} />
                             </div>
                             <div className="form-group col-span-2">
-                                <label htmlFor="idioma">Idiomas</label>
-                                <input type="text" id="idioma" name="idioma" placeholder="Ex: Inglês Avançado, Espanhol Básico" value={vagaData.idioma} onChange={handleChange} required/>
+                                <label htmlFor="idioma">{t('languages_label')}</label>
+                                <input type="text" id="idioma" name="idioma" placeholder={t('languages_placeholder')} value={vagaData.idioma} onChange={handleChange} required/>
                             </div>
                             <div className="form-group col-span-2">
-                                <label htmlFor="descricao_breve">Resumo da vaga</label>
-                                <textarea id="descricao_breve" name="descricao_breve" placeholder="Uma breve descrição que chame a atenção do candidato." value={vagaData.descricao_breve} onChange={handleChange} required></textarea>
+                                <label htmlFor="descricao_breve">{t('job_summary_label')}</label>
+                                <textarea id="descricao_breve" name="descricao_breve" placeholder={t('job_summary_placeholder')} value={vagaData.descricao_breve} onChange={handleChange} required></textarea>
                             </div>
                             <div className="form-group col-span-2">
-                                <label htmlFor="descricao_detalhada">Descrição completa</label>
-                                <textarea id="descricao_detalhada" name="descricao_detalhada" placeholder="Detalhe as responsabilidades, requisitos e benefícios da vaga." value={vagaData.descricao_detalhada} onChange={handleChange} required></textarea>
+                                <label htmlFor="descricao_detalhada">{t('job_full_description_label')}</label>
+                                <textarea id="descricao_detalhada" name="descricao_detalhada" placeholder={t('job_full_description_placeholder')} value={vagaData.descricao_detalhada} onChange={handleChange} required></textarea>
                             </div>
                             <div className="form-group col-span-2">
-                                <label htmlFor="tags">Tags (separadas por vírgula)</label>
-                                <input type="text" id="tags" name="tags" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Ex: React, Python, AWS, Metodologia Ágil" />
+                                <label htmlFor="tags">{t('tags')}</label>
+                                <input type="text" id="tags" name="tags" value={tags} onChange={(e) => setTags(e.target.value)} placeholder={t('exemplo_tags')} />
                             </div>
                              <div className="checkbox-group col-span-2">
                                 <input type="checkbox" id="recomendada" name="recomendada" checked={vagaData.recomendada} onChange={handleChange} />
-                                <label htmlFor="recomendada">Marcar como vaga recomendada</label>
+                                <label htmlFor="recomendada">{t('mark_as_recommended_label')}</label>
                             </div>
                         </div>
 
-                        {/* --- CAMPOS DE UPLOAD --- */}
                         <div className="upload-section">
                             <div className="form-group">
-                                <label htmlFor="logo_empresa">Logo da Empresa</label>
+                                <label htmlFor="logo_empresa">{t('company_logo_label')}</label>
                                 <input type="file" id="logo_empresa" name="logo_empresa" onChange={(e) => setLogoFile(e.target.files[0])} />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="imagem_capa">Imagem de Capa (Opcional)</label>
+                                <label htmlFor="imagem_capa">{t('cover_image_label')}</label>
                                 <input type="file" id="imagem_capa" name="imagem_capa" onChange={(e) => setCapaFile(e.target.files[0])} />
                             </div>
                         </div>
 
-                        {/* --- SEÇÃO DE BLOCOS PERSONALIZADOS --- */}
                         <div className="blocos-container">
-                            <h3>Seções Personalizadas (Arraste para reordenar)</h3>
+                            <h3>{t('custom_sections_title')}</h3>
                             <DragDropContext onDragEnd={handleDragEnd}>
                                 <Droppable droppableId="blocos">
                                     {(provided) => (
@@ -133,7 +127,7 @@ const ModalCriarVaga = ({ onClose, onSaveSuccess }) => {
                                                         <div className="bloco-personalizado" ref={provided.innerRef} {...provided.draggableProps}>
                                                             <div className="bloco-header">
                                                                 <span className="drag-handle" {...provided.dragHandleProps}><FaGripVertical /></span>
-                                                                <input type="text" placeholder="Título da Seção" value={bloco.titulo} onChange={(e) => atualizarBloco(bloco.id, 'titulo', e.target.value)} />
+                                                                <input type="text" placeholder={t('section_title_placeholder')} value={bloco.titulo} onChange={(e) => atualizarBloco(bloco.id, 'titulo', e.target.value)} />
                                                                 <button type="button" onClick={() => removerBloco(bloco.id)}><FaTrash /></button>
                                                             </div>
                                                             <div className="bloco-body">
@@ -148,23 +142,22 @@ const ModalCriarVaga = ({ onClose, onSaveSuccess }) => {
                                     )}
                                 </Droppable>
                             </DragDropContext>
-                            <button type="button" onClick={adicionarBloco} style={{ marginTop: '10px' }}>+ Adicionar Seção</button>
+                            <button type="button" onClick={adicionarBloco} style={{ marginTop: '10px' }}>{t('add_section_button')}</button>
                         </div>
 
-                        {/* --- PRÉ-VISUALIZAÇÃO RESTAURADA --- */}
                         <div className="job-preview">
-                            <h4>Pré-visualização do anúncio</h4>
-                            <p><strong>Título:</strong> {vagaData.titulo || "Ainda não informado..."}</p>
-                            <p><strong>Local:</strong> {vagaData.local || "Ainda não informado..."}</p>
-                            <p><strong>Salário:</strong> {vagaData.salario || "Ainda não informado..."}</p>
-                            <p><strong>Resumo:</strong> {vagaData.descricao_breve || "O resumo da sua vaga aparecerá aqui..."}</p>
+                            <h4>{t('ad_preview_title')}</h4>
+                            <p><strong>{t('preview_label_title')}:</strong> {vagaData.titulo || t('not_informed_yet_text')}</p>
+                            <p><strong>{t('preview_label_location')}:</strong> {vagaData.local || t('not_informed_yet_text')}</p>
+                            <p><strong>{t('preview_label_salary')}:</strong> {vagaData.salario || t('not_informed_yet_text')}</p>
+                            <p><strong>{t('preview_label_summary')}:</strong> {vagaData.descricao_breve || t('summary_preview_placeholder')}</p>
                         </div>
                     </div>
 
                     <div className="modal-footer">
-                        <button type="button" className="btn-tertiary" onClick={onClose}>Cancelar</button>
-                        <button type="button" className="btn-secondary" onClick={() => handleSubmit('rascunho')}>Salvar Rascunho</button>
-                        <button type="submit" className="btn-primary">Publicar Vaga</button>
+                        <button type="button" className="btn-tertiary" onClick={onClose}>{t('cancel_button')}</button>
+                        <button type="button" className="btn-secondary" onClick={() => handleSubmit('rascunho')}>{t('save_draft_button')}</button>
+                        <button type="submit" className="btn-primary">{t('publish_job_button')}</button>
                     </div>
                 </form>
             </div>
