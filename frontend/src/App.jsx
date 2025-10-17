@@ -27,7 +27,7 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/vagas" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/card" element={<CardPage />} />
+            <Route path="/card1" element={<CardPage />} />
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/cadastroc" element={<CadastroContratante />} />
             <Route path="/cadastroa" element={<CadastroAplicante />} />

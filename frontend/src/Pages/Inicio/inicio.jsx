@@ -96,7 +96,7 @@ const Inicio = () => {
                     ))}
                   </div>
 
-                <Link to={`/vaga/${vaga.id}`} className="btn-candidatar">
+                <Link to={`/card${vaga.id}`} className="btn-candidatar">
                     {/* 8. TRADUÇÃO DO BOTÃO */}
                     {t('more_details_button')}
                   </Link>
