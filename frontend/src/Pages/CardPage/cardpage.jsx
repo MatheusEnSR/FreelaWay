@@ -1,62 +1,90 @@
-import React from "react";
-import Navbar from "../../Components/NavBar/navbar.jsx"; 
-import Footer from "../../Components/Footer/footer.jsx"; 
-import { Link, useLocation } from "react-router-dom";
-import './cardpage.css'
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import './cardpage.css';
+
+// REMOVIDO: As importações de Navbar e Footer foram removidas daqui.
+// import Navbar from "../../Components/NavBar/navbar.jsx"; 
+// import Footer from "../../Components/Footer/footer.jsx"; 
 
 function CardPage() {
-  const location = useLocation();
-  const { vaga } = location.state || {}; // pega os dados da vaga
+    // A lógica agora busca os dados da vaga usando o ID da URL.
+    const { id } = useParams();
+    const [vaga, setVaga] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  return (
-    <main>
-      <Navbar />
-      
-      
-      
+    useEffect(() => {
+        const fetchVagaDetalhes = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/api/vagas/${id}/`);
+                if (!response.ok) {
+                    throw new Error('Vaga não encontrada.');
+                }
+                const data = await response.json();
+                setVaga(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    <div className="cardpage-container">
-  {/* Card lateral - Criador da vaga */}
-  <div className="client-info">
-    <div className="client-card">
-      <div className="client-avatar"></div>
-      <div className="client-details">
-        
-        <h3>{vaga?.criador || "Criador da vaga"}</h3>
-        {vaga?.local && <p><strong>Local:</strong> {vaga.local}</p>}
-        {vaga?.idioma && <p><strong>Idioma:</strong> {vaga.idioma}</p>}
-        {vaga?.salario && <p><strong>Salário:</strong> {vaga.salario}</p>}
-        {vaga?.dataPublicacao && <p><strong>Publicado em:</strong> {vaga.dataPublicacao}</p>}
-        {vaga?.dataFechamento && <p><strong>Fecha em:</strong> {vaga.dataFechamento}</p>}
-        
-      </div>
-    </div>
-  </div>
+        fetchVagaDetalhes();
+    }, [id]);
 
-  {/* Card central - Descrição da vaga */}
-  <div className="project-detail">
-    <div className="project-header">
-      <h1>{vaga?.titulo}</h1>
-    </div>
-    
-    <div className="project-meta">
-    </div>
-    
-    <div className="project-description">
-      {vaga?.detalhada && <p><strong>Descrição:</strong> {vaga.detalhada}</p>}
-    </div>
+    if (isLoading) {
+        return <div className="cardpage-container"><p>Carregando detalhes da vaga...</p></div>;
+    }
 
-    <button className="btn-card">Candidatar-se</button>
-  </div>
-</div>
+    if (error) {
+        return <div className="cardpage-container"><p>Erro: {error}</p></div>;
+    }
 
+    if (!vaga) {
+        return <div className="cardpage-container"><p>Vaga não encontrada.</p></div>;
+    }
 
-      {/* Botão voltar */}
-      <Link to="/" className="btn-voltar">← Voltar para Início</Link>
+    // O 'return' agora não inclui Navbar ou Footer
+    return (
+        <>
+            <div className="cardpage-container">
+                {/* Card lateral - Criador da vaga */}
+                <div className="client-info">
+                    <div className="client-card">
+                        <div className="client-avatar"></div>
+                        <div className="client-details">
+                            <h3>{vaga.nome_contratante || "Criador da vaga"}</h3>
+                            <p><strong>Local:</strong> {vaga.local}</p>
+                            <p><strong>Idioma:</strong> {vaga.idioma}</p>
+                            <p><strong>Salário:</strong> {vaga.salario}</p>
+                        </div>
+                    </div>
+                     {/* Botão voltar movido para o card lateral para melhor posicionamento */}
+                    <Link to="/vagas" className="btn-voltar">← Voltar para Vagas</Link>
+                </div>
 
-      <Footer />
-    </main>
-  );
+                {/* Card central - Descrição da vaga */}
+                <div className="project-detail">
+                    <div className="project-header">
+                        <h1>{vaga.titulo}</h1>
+                    </div>
+                    
+                    <div className="project-description">
+                        <p>{vaga.descricao_detalhada || vaga.descricao_breve}</p>
+                    </div>
+
+                    <div className="tags-container">
+                        {vaga.tags && vaga.tags.map((tag, index) => (
+                            <span key={index} className="tag">{tag}</span>
+                        ))}
+                    </div>
+
+                    <button className="btn-candidatar">Candidatar-se</button>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default CardPage;

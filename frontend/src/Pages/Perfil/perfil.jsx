@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { FaUserCircle, FaCamera } from "react-icons/fa";
 import "./perfil.css";
 import { AuthContext } from "../../context/AuthContext";
-import Navbar from "../../Components/NavBar/navbar.jsx";
-import Footer from "../../Components/Footer/footer.jsx";
-
 // Importa o hook de tradução
 import { useI18n } from "../../i18n/useI18n.jsx";
 
+// REMOVIDO: As importações da Navbar e do Footer foram removidas daqui.
+// import Navbar from "../../Components/NavBar/navbar.jsx";
+// import Footer from "../../Components/Footer/footer.jsx";
+
 function Perfil() {
-  const { t } = useI18n(); // pega a função de tradução
+  const { t } = useI18n();
   const [abaAtiva, setAbaAtiva] = useState("perfil");
   const { authTokens, logoutUser } = useContext(AuthContext);
 
@@ -115,116 +116,114 @@ function Perfil() {
     }
   };
 
+  // REMOVIDO: A div "principal" e as chamadas <Navbar /> e <Footer />
   return (
-    <div className="principal">
-      <Navbar />
-      <div className="pagina-layout">
-        <aside className="menu-lateral">
-          <div className="menu-header">
-            <h3>{t("configuracoes") || "Configurações"}</h3>
-          </div>
-          <ul className="menu-nav">
-            <li className={abaAtiva === "perfil" ? "ativo" : ""}>
-              <button onClick={() => setAbaAtiva("perfil")}>{t("perfil") || "Perfil"}</button>
-            </li>
-            <li className={abaAtiva === "conta" ? "ativo" : ""}>
-              <button onClick={() => setAbaAtiva("conta")}>{t("conta") || "Conta"}</button>
-            </li>
-          </ul>
-        </aside>
+    <div className="pagina-layout">
+      <aside className="menu-lateral">
+        <div className="menu-header">
+          <h3>{t("configuracoes") || "Configurações"}</h3>
+        </div>
+        <ul className="menu-nav">
+          <li className={abaAtiva === "perfil" ? "ativo" : ""}>
+            <button onClick={() => setAbaAtiva("perfil")}>{t("perfil") || "Perfil"}</button>
+          </li>
+          <li className={abaAtiva === "conta" ? "ativo" : ""}>
+            <button onClick={() => setAbaAtiva("conta")}>{t("conta") || "Conta"}</button>
+          </li>
+        </ul>
+      </aside>
 
-        <main className="conteudo-principal">
-          {abaAtiva === "perfil" && (
-            <form className="card-form" onSubmit={salvarPerfil}>
-              <h2>{t("seu_perfil_publico") || "Seu Perfil Público"}</h2>
-              <p>{t("informacoes_visiveis") || "Estas informações serão visíveis para outros usuários em seu perfil."}</p>
+      <main className="conteudo-principal">
+        {abaAtiva === "perfil" && (
+          <form className="card-form" onSubmit={salvarPerfil}>
+            <h2>{t("seu_perfil_publico") || "Seu Perfil Público"}</h2>
+            <p>{t("informacoes_visiveis") || "Estas informações serão visíveis para outros usuários em seu perfil."}</p>
 
-              <div className="foto-perfil-container">
-                <div className="foto-preview-wrapper">
-                  {perfil.foto_perfil ? (
-                    <img src={perfil.foto_perfil} alt="Pré-visualização" className="foto-perfil-preview" />
-                  ) : (
-                    <FaUserCircle className="foto-perfil-placeholder" />
-                  )}
-                  <label htmlFor="upload-foto" className="upload-foto-label">
-                    <FaCamera />
-                    <span>{t("alterar_foto") || "Alterar"}</span>
-                  </label>
-                  <input id="upload-foto" type="file" accept="image/*" onChange={handleImagemChange} />
-                </div>
+            <div className="foto-perfil-container">
+              <div className="foto-preview-wrapper">
+                {perfil.foto_perfil ? (
+                  <img src={perfil.foto_perfil} alt="Pré-visualização" className="foto-perfil-preview" />
+                ) : (
+                  <FaUserCircle className="foto-perfil-placeholder" />
+                )}
+                <label htmlFor="upload-foto" className="upload-foto-label">
+                  <FaCamera />
+                  <span>{t("alterar_foto") || "Alterar"}</span>
+                </label>
+                <input id="upload-foto" type="file" accept="image/*" onChange={handleImagemChange} />
               </div>
+            </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label>{t("nome") || "Nome"}</label>
-                  <input type="text" name="first_name" value={perfil.first_name || ''} onChange={handlePerfilChange} />
-                </div>
-                <div className="form-group">
-                  <label>{t("sobrenome") || "Sobrenome"}</label>
-                  <input type="text" name="last_name" value={perfil.last_name || ''} onChange={handlePerfilChange} />
-                </div>
-              </div>
-
+            <div className="form-row">
               <div className="form-group">
-                <label>{t("bio") || "Bio"}</label>
-                <textarea name="bio" placeholder={t("bio_placeholder") || "Fale um pouco sobre você..."} value={perfil.bio || ''} onChange={handlePerfilChange} />
-              </div>
-
-              <div className="form-group">
-                <label>{t("especializacoes") || "Especializações"}</label>
-                <input type="text" name="especializacoes" placeholder={t("exemplo_especializacoes") || "Ex: Desenvolvedor Frontend, UX Designer"} value={perfil.especializacoes || ''} onChange={handlePerfilChange} />
-              </div>
-
-              <div className="form-group">
-                <label>{t("tags") || "Tags (separadas por vírgula)"}</label>
-                <input type="text" name="tags" placeholder={t("exemplo_tags") || "Ex: React, JavaScript, Figma"} value={perfil.tags || ''} onChange={handlePerfilChange} />
-              </div>
-
-              <div className="form-group">
-                <label>{t("status") || "Status"}</label>
-                <select name="status" value={perfil.status || t("disponivel") || 'Disponível'} onChange={handlePerfilChange}>
-                  <option value="Disponível">{t("disponivel") || "Disponível"}</option>
-                  <option value="Indisponível">{t("indisponivel") || "Indisponível"}</option>
-                </select>
-              </div>
-
-              <div className="form-actions">
-                <button type="submit" className="btn btn-primary">{t("salvar_perfil") || "Salvar Perfil"}</button>
-              </div>
-            </form>
-          )}
-
-          {abaAtiva === "conta" && (
-            <form className="card-form" onSubmit={salvarConta}>
-              <h2>{t("configuracoes_conta") || "Configurações da Conta"}</h2>
-              <p>{t("mensagem_alterar_conta") || "Altere suas informações de acesso. Lembre-se que o email não pode ser alterado."}</p>
-
-              <div className="form-group">
-                  <label>{t("email") || "Email"}</label>
-                  <input type="email" value={perfil.email || ''} readOnly disabled />
+                <label>{t("nome") || "Nome"}</label>
+                <input type="text" name="first_name" value={perfil.first_name || ''} onChange={handlePerfilChange} />
               </div>
               <div className="form-group">
-                  <label>{t("senha_atual") || "Senha Atual"}</label>
-                  <input type="password" name="senha_atual" value={conta.senha_atual} onChange={handleContaChange} required />
+                <label>{t("sobrenome") || "Sobrenome"}</label>
+                <input type="text" name="last_name" value={perfil.last_name || ''} onChange={handlePerfilChange} />
               </div>
+            </div>
+
+            <div className="form-group">
+              <label>{t("bio") || "Bio"}</label>
+              <textarea name="bio" placeholder={t("bio_placeholder") || "Fale um pouco sobre você..."} value={perfil.bio || ''} onChange={handlePerfilChange} />
+            </div>
+
+            {/* CORRIGIDO: O texto do placeholder agora está em uma única linha */}
+            <div className="form-group">
+              <label>{t("especializacoes") || "Especializações"}</label>
+              <input type="text" name="especializacoes" placeholder={t("exemplo_especializacoes") || "Ex: Desenvolvedor Frontend, UX Designer"} value={perfil.especializacoes || ''} onChange={handlePerfilChange} />
+            </div>
+
+            <div className="form-group">
+              <label>{t("tags") || "Tags (separadas por vírgula)"}</label>
+              <input type="text" name="tags" placeholder={t("exemplo_tags") || "Ex: React, JavaScript, Figma"} value={perfil.tags || ''} onChange={handlePerfilChange} />
+            </div>
+
+            <div className="form-group">
+              <label>{t("status") || "Status"}</label>
+              <select name="status" value={perfil.status || t("disponivel") || 'Disponível'} onChange={handlePerfilChange}>
+                <option value="Disponível">{t("disponivel") || "Disponível"}</option>
+                <option value="Indisponível">{t("indisponivel") || "Indisponível"}</option>
+              </select>
+            </div>
+
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary">{t("salvar_perfil") || "Salvar Perfil"}</button>
+            </div>
+          </form>
+        )}
+
+        {abaAtiva === "conta" && (
+          <form className="card-form" onSubmit={salvarConta}>
+            <h2>{t("configuracoes_conta") || "Configurações da Conta"}</h2>
+            <p>{t("mensagem_alterar_conta") || "Altere suas informações de acesso. Lembre-se que o email não pode ser alterado."}</p>
+
+            <div className="form-group">
+                <label>{t("email") || "Email"}</label>
+                <input type="email" value={perfil.email || ''} readOnly disabled />
+            </div>
+            <div className="form-group">
+                <label>{t("senha_atual") || "Senha Atual"}</label>
+                <input type="password" name="senha_atual" value={conta.senha_atual} onChange={handleContaChange} required />
+            </div>
+            <div className="form-group">
+                <label>{t("nova_senha") || "Nova Senha"}</label>
+                <input type="password" name="nova_senha" value={conta.nova_senha} onChange={handleContaChange} required />
+            </div>
               <div className="form-group">
-                  <label>{t("nova_senha") || "Nova Senha"}</label>
-                  <input type="password" name="nova_senha" value={conta.nova_senha} onChange={handleContaChange} required />
-              </div>
-                <div className="form-group">
-                  <label>{t("confirmar_nova_senha") || "Confirmar Nova Senha"}</label>
-                  <input type="password" name="confirmar_nova_senha" value={conta.confirmar_nova_senha} onChange={handleContaChange} required />
-              </div>
-              {contaError && <p className="error-message">{contaError}</p>}
-              {contaSuccess && <p className="success-message">{contaSuccess}</p>}
-              <div className="form-actions">
-                  <button type="submit" className="btn btn-primary">{t("alterar_senha") || "Alterar Senha"}</button>
-              </div>
-            </form>
-          )}
-        </main>
-      </div>
-      <Footer />
+                <label>{t("confirmar_nova_senha") || "Confirmar Nova Senha"}</label>
+                <input type="password" name="confirmar_nova_senha" value={conta.confirmar_nova_senha} onChange={handleContaChange} required />
+            </div>
+            {contaError && <p className="error-message">{contaError}</p>}
+            {contaSuccess && <p className="success-message">{contaSuccess}</p>}
+            <div className="form-actions">
+                <button type="submit" className="btn btn-primary">{t("alterar_senha") || "Alterar Senha"}</button>
+            </div>
+          </form>
+        )}
+      </main>
     </div>
   );
 }

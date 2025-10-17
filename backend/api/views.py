@@ -1,7 +1,7 @@
 # backend/api/views.py
 
 from django.contrib.auth.models import User
-from rest_framework import generics, viewsets, filters, status # Adicionado 'status'
+from rest_framework import generics, viewsets, filters, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -10,10 +10,11 @@ from .serializers import (
     UserRegisterSerializer,
     VagaSerializer,
     ProfileSerializer,
-    ChangePasswordSerializer # NOVO: Importamos o serializer de troca de senha
+    ChangePasswordSerializer
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer
+from .filters import VagaFilter # 1. Importamos a nova classe de filtro
 
 # View de Token (não foi alterada)
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -36,9 +37,7 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user.profile
 
-# ==========================================================
-# NOVA VIEW PARA TROCA DE SENHA
-# ==========================================================
+# View para Troca de Senha (não foi alterada)
 class ChangePasswordView(generics.UpdateAPIView):
     """
     Endpoint para que um usuário logado possa trocar sua própria senha.
@@ -51,28 +50,33 @@ class ChangePasswordView(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         user = self.request.user
 
-        # Verifica se a senha antiga está correta
         if not user.check_password(serializer.data.get("old_password")):
             return Response({"old_password": ["Senha atual incorreta."]}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Define a nova senha (o set_password já faz o hash de segurança)
         user.set_password(serializer.data.get("new_password"))
         user.save()
         
         return Response({"detail": "Senha atualizada com sucesso."}, status=status.HTTP_200_OK)
 
 
-# ViewSet de Vagas (não foi alterada)
+# ======================================================================
+# ViewSet de Vagas (ATUALIZADA com o novo sistema de filtros)
+# ======================================================================
 class VagaViewSet(viewsets.ModelViewSet):
     """
-    ViewSet para Vagas, agora permitindo criar, editar e deletar vagas,
-    além das ações customizadas.
+    ViewSet para Vagas, agora com filtros avançados.
     """
     queryset = Vaga.objects.all().order_by('-data_criacao')
     serializer_class = VagaSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['titulo', 'descricao_breve', 'tags__nome', 'local']
+    
+    # 2. Conectamos a nossa classe de filtro
+    filterset_class = VagaFilter 
 
+    # 3. As linhas abaixo não são mais necessárias, o `django-filter` cuida disso
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['titulo', 'descricao_breve', 'tags__nome', 'local']
+
+    # O resto da ViewSet continua exatamente igual
     def get_permissions(self):
         if self.action in ['list', 'retrieve', 'recomendadas']:
             self.permission_classes = [AllowAny]

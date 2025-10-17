@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// Importação do Provider de Internacionalização
 import { I18nProvider } from './i18n/i18nContext.jsx'; 
 import ProtectedRoute from './utils/ProtectedRoute.jsx';
+
+// Componentes de Layout
+import Navbar from './Components/NavBar/navbar.jsx';
+import Footer from './Components/Footer/footer.jsx';
 
 // Páginas
 import Home from './Pages/Home/home.jsx';
@@ -14,29 +17,36 @@ import CadastroAplicante from './Pages/Cadastro/cadaplicante.jsx';
 import CadastroContratante from './Pages/Cadastro/cadcontratante.jsx';
 import CentralDoEmpregador from './Pages/CentralDoEmpregador/CentralDoEmpregador.jsx';
 
-// Lembre-se que o componente NavBar deve ser renderizado aqui ou dentro de um
-// componente de Layout que seja filho do I18nProvider, para que ele tenha acesso ao Contexto.
-
 function App() {
   return (
     <Router>
-      {/* 1. ENVOLVER TODA A ÁREA DE CONTEÚDO COM O I18nProvider */}
       <I18nProvider>
+        {/* Adicionamos a Navbar aqui para que ela apareça em todas as páginas */}
+        <Navbar />
+
         <main>
           <Routes>
             <Route path="/" element={<Inicio />} />
             <Route path="/vagas" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/card1" element={<CardPage />} />
+            
+            {/* ========================================================== */}
+            {/* ALTERAÇÃO FEITA AQUI: A rota agora é dinâmica             */}
+            {/* ========================================================== */}
+            <Route path="/card/:id" element={<CardPage />} />
+
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/cadastroc" element={<CadastroContratante />} />
             <Route path="/cadastroa" element={<CadastroAplicante />} />
             <Route path="/empregador/dashboard" element={
               <ProtectedRoute role="contratante">
                 <CentralDoEmpregador/>
-            </ProtectedRoute>} />
+              </ProtectedRoute>} />
           </Routes>
         </main>
+
+        {/* Adicionamos o Footer aqui para consistência */}
+        <Footer />
       </I18nProvider>
     </Router>
   );

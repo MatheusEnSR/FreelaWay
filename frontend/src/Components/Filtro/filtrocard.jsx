@@ -1,76 +1,81 @@
 import React from "react";
 import "./filtrocard.css";
-// Importar o hook de internacionalização
-import { useI18n } from "../../i18n/useI18n.jsx"; 
 
-function FiltroCard() {
-  // Acessar a função de tradução
-  const { t } = useI18n();
+// --- ALTERAÇÃO 1: O componente agora aceita 'props' ---
+// Desestruturamos para pegar 'filtros' e 'onFiltroChange' diretamente.
+function FiltroCard({ filtros, onFiltroChange }) {
 
   return (
     <div className="filtro-container">
-      {/* Título */}
-      <h3 className="filtro-title">{t('filter_title')}</h3>
+      <h3 className="filtro-title">Filtros</h3>
+
+      {/* --- ALTERAÇÃO 2: Cada campo agora é "controlado" pelo componente pai --- */}
 
       {/* Filtrar por Categoria */}
       <div className="filtro-item">
-        <label htmlFor="cat">{t('filter_category_label')}</label>
-        <select id="cat">
-          <option>{t('filter_category_all')}</option>
-          <option>{t('category_tech')}</option>
-          <option>{t('category_design')}</option>
-          <option>{t('category_marketing')}</option>
+        <label htmlFor="tags">Filtrar por Categoria</label>
+        <select 
+          id="tags"
+          name="tags" // O 'name' deve ser igual à chave no estado 'filtros'
+          value={filtros.tags} // O valor exibido vem do estado 'filtros'
+          onChange={onFiltroChange} // Ao mudar, chama a função do componente pai
+        >
+          <option value="">Todas as Categorias</option>
+          <option value="tecnologia">Tecnologia</option>
+          <option value="design">Design</option>
+          <option value="marketing">Marketing</option>
         </select>
       </div>
 
       {/* Filtrar por Localização */}
       <div className="filtro-item">
-        <label htmlFor="loc">{t('filter_location_label')}</label>
-        <select id="loc">
-          <option>{t('filter_location_all')}</option>
-          {/* As opções de localização ('Belém, PA', 'Manaus, AM') são dados. 
-              Geralmente, localizações específicas não são traduzidas, mas mantidas como estão. */}
-          <option>Belém, PA</option>
-          <option>Manaus, AM</option>
+        <label htmlFor="local">Filtrar por Localização</label>
+        <select 
+          id="local"
+          name="local"
+          value={filtros.local}
+          onChange={onFiltroChange}
+        >
+          <option value="">Todas as Localizações</option>
+          <option value="Belém">Belém</option>
+          <option value="Manaus">Manaus</option>
+          <option value="Remoto">Remoto</option>
         </select>
       </div>
 
-      {/* Filtrar por Idiomas (Tipo 1) - Presumi que era a mesma lista de tipos de trabalho */}
+      {/* Filtrar por Idiomas */}
       <div className="filtro-item">
-        <label htmlFor="lang">{t('filter_language_label')}</label>
-        <select id="lang">
-          <option>{t('filter_type_all')}</option>
-          {/* Idiomas */}
-          <option>{t('language_portuguese')}</option>
-          <option>{t('language_french')}</option>
-          <option>{t('language_spanish')}</option>
+        <label htmlFor="idioma">Filtrar por Idiomas</label>
+        <select 
+          id="idioma"
+          name="idioma"
+          value={filtros.idioma}
+          onChange={onFiltroChange}
+        >
+          <option value="">Todos os Idiomas</option>
+          <option value="Português">Português</option>
+          <option value="Inglês">Inglês</option>
+          <option value="Espanhol">Espanhol</option>
         </select>
       </div>
-
-      {/* Tipo de Trabalho (Tipo 2) */}
-      <div className="filtro-item">
-        <label htmlFor="tipo">{t('filter_work_type_label')}</label>
-        <select id="tipo">
-          <option>{t('filter_type_all')}</option>
-          {/* Tipos */}
-          <option>{t('work_type_remote')}</option>
-          <option>{t('work_type_hybrid')}</option>
-          <option>{t('work_type_onsite')}</option>
-        </select>
-      </div>
-
-
+      
       {/* Orçamento (Range) */}
       <div className="filtro-item">
-        <label>{t('filter_budget_label')}</label>
-        <input type="range" min="0" max="10000" defaultValue="5000" />
+        <label htmlFor="max_salario">Orçamento (até R$)</label>
+        <input 
+          type="range"
+          id="max_salario"
+          name="max_salario"
+          min="0" 
+          max="10000" 
+          step="500"
+          value={filtros.max_salario} // O valor do slider vem do estado
+          onChange={onFiltroChange} // Ao mudar, avisa o pai
+        />
         <div className="filtro-range-values">
-          {/* Unidades monetárias são mantidas, mas o texto ao redor pode ser traduzido, 
-              ou as moedas podem ser dinâmicas se o sistema i18n for mais complexo. 
-              Aqui, mantemos 'R$' como texto fixo, mas se fosse uma chave (ex: t('currency_symbol')) 
-              seria melhor. */}
           <span>R$ 0</span>
-          <span>R$ 10.000</span>
+          {/* O valor máximo agora é dinâmico */}
+          <span>R$ {filtros.max_salario}</span>
         </div>
       </div>
     </div>
