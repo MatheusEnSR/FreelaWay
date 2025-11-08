@@ -83,3 +83,37 @@
 .quill {
     background-color: #fff;
 }
+
+/* Adicione isto ao final de ModalCriarVaga.css */
+
+.tags-selection-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  min-height: 50px;
+}
+
+.tag-option {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.tag-option:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.tag-option.selected {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}

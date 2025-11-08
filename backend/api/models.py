@@ -7,6 +7,8 @@ from django.dispatch import receiver
 
 # --- NOVO MODELO DE PERFIL UNIFICADO ---
 # Este modelo substitui o antigo ContratanteProfile e servirá para TODOS os usuários.
+
+
 class Profile(models.Model):
     USER_TYPE_CHOICES = (
         ('aplicante', 'Aplicante'),
@@ -46,9 +48,10 @@ class Profile(models.Model):
 # Isso garante que todo usuário novo tenha um perfil associado
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+    # Usamos get_or_create.
+    # Se o perfil existir, ele apenas o obtém.
+    # Se não existir (como no caso do seu 'admin'), ele o cria.
+    Profile.objects.get_or_create(user=instance)
 
 
 # --- SEUS OUTROS MODELOS (NÃO FORAM ALTERADOS) ---

@@ -10,10 +10,13 @@ from .serializers import (
     UserRegisterSerializer,
     VagaSerializer,
     ProfileSerializer,
-    ChangePasswordSerializer
+    ChangePasswordSerializer,
+
+    MyTokenObtainPairSerializer
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import MyTokenObtainPairSerializer
+from .models import Tag # Adicione Tag aos imports do models
+from .serializers import TagSerializer # Adicione TagSerializer aos imports
 from .filters import VagaFilter # 1. Importamos a nova classe de filtro
 
 # View de Token (não foi alterada)
@@ -58,17 +61,21 @@ class ChangePasswordView(generics.UpdateAPIView):
         
         return Response({"detail": "Senha atualizada com sucesso."}, status=status.HTTP_200_OK)
 
+class TagListView(generics.ListAPIView):
+    queryset = Tag.objects.all().order_by('nome')
+    serializer_class = TagSerializer
+    permission_classes = [AllowAny]
 
 # ======================================================================
 # ViewSet de Vagas (ATUALIZADA com o novo sistema de filtros)
-# ======================================================================
+# ======================================================================   
 class VagaViewSet(viewsets.ModelViewSet):
     """
     ViewSet para Vagas, agora com filtros avançados.
     """
     queryset = Vaga.objects.all().order_by('-data_criacao')
     serializer_class = VagaSerializer
-    
+    permission_classes = [AllowAny] # Permite que qualquer um veja as tags
     # 2. Conectamos a nossa classe de filtro
     filterset_class = VagaFilter 
 

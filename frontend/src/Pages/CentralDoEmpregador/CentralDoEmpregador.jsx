@@ -34,7 +34,7 @@ const CentralDoEmpregador = () => {
   useEffect(() => {
     if (authTokens) {
       // Busca dados do Perfil
-      api.get('/api/users/me/', {
+      api.get('/api/profile/', {
         headers: { Authorization: `Bearer ${authTokens.access}` }
       }).then(res => {
         const displayName = res.data.nome_empresa || `${res.data.first_name} ${res.data.last_name}`;

@@ -81,21 +81,39 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 # Serializer de Vagas (a classe que estava faltando)
 class VagaSerializer(serializers.ModelSerializer):
-    tags = serializers.StringRelatedField(many=True, read_only=True)
+    # Campo para EXIBIR as tags (somente leitura)
+    tags_display = serializers.StringRelatedField(source='tags', many=True, read_only=True)
+    
+    # NOVO CAMPO: Para RECEBER os IDs das tags ao criar/editar
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True, 
+        queryset=Tag.objects.all(), 
+        write_only=True,
+        required=False # Torna opcional enviar tags
+    )
+    
     nome_contratante = serializers.CharField(source='contratante.profile.nome_empresa', read_only=True, allow_null=True)
 
     class Meta:
         model = Vaga
         fields = [
             'id', 'titulo', 'local', 'salario', 'idioma', 
-            'descricao_breve', 'tags', 'nome_contratante', 'recomendada'
+            'descricao_breve', 'descricao_detalhada', # Adicionei a desc detalhada
+            'tags_display', # Campo de leitura
+            'nome_contratante', 'recomendada', 'data_criacao',
+            'tags' # Campo de escrita
         ]
+        read_only_fields = ['id', 'nome_contratante', 'tags_display', 'data_criacao']
 
+    # O create agora é mais simples. O DRF lida com as tags
+    def create(self, validated_data):
+        return super().create(validated_data)
+    
 # Serializer de Tags
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['nome']
+        fields = ['id', 'nome'] # ALTERAÇÃO: Adicionado 'id'
 
 # Serializer para troca de senha
 class ChangePasswordSerializer(serializers.Serializer):

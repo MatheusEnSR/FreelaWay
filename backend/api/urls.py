@@ -8,6 +8,7 @@ from .views import (
     ProfileView,
     VagaViewSet,
     MyTokenObtainPairView,
+    TagListView,
     ChangePasswordView  # NOVO: Importamos a view de troca de senha
 )
 
@@ -23,7 +24,8 @@ urlpatterns = [
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('change-password/', ChangePasswordView.as_view(), name='change_password'), # NOVO
-    
+    path('tags/', TagListView.as_view(), name='tag-list'),
+
     # Inclui as rotas geradas pelo router (/vagas/, etc.)
     path('', include(router.urls)),
 ]
