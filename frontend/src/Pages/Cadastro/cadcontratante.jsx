@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../Login/login.css'; // Reutiliza o estilo do login
 import './cadastro.css'; // Estilos específicos para o cadastro
 import { FaBuilding, FaUserTie, FaIdCard, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
+import { useI18n } from '../../i18n/useI18n.jsx'; // Importando useI18n
 
 const CadastroContratante = () => {
+    const { t } = useI18n(); // Inicializando a função de tradução
     const navigate = useNavigate();
     
     // Mudei o padrão inicial para 'PJ' para refletir a mudança mais comum
@@ -36,8 +38,8 @@ const CadastroContratante = () => {
             username: formData.email,
             email: formData.email,
             password: formData.password,
-            user_type: 'contratante', // Enviamos o tipo de usuário principal
-            contractor_type: contractorType, // E o tipo de contratante
+            user_type: 'contratante',
+            contractor_type: contractorType,
         };
 
         if (contractorType === 'PF') {
@@ -50,9 +52,6 @@ const CadastroContratante = () => {
         }
 
         try {
-            // ==========================================================
-            // ALTERAÇÃO FEITA AQUI: Corrigimos a URL para o endpoint unificado
-            // ==========================================================
             const response = await fetch('http://127.0.0.1:8000/api/register/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -62,10 +61,10 @@ const CadastroContratante = () => {
             const data = await response.json();
             if (!response.ok) {
                 const errorMessages = Object.values(data).flat().join(' ');
-                throw new Error(errorMessages || 'Falha no cadastro.');
+                throw new Error(errorMessages || t('error_registration_failed'));
             }
 
-            alert('Cadastro de contratante realizado com sucesso!');
+            alert(t('alert_employer_registration_success'));
             navigate('/login');
 
         } catch (err) {
@@ -79,8 +78,8 @@ const CadastroContratante = () => {
         <div className="login-container">
             <div className="login-card">
                 <div className="login-header">
-                    <h1>Cadastro de Contratante</h1>
-                    <p>Encontre os melhores profissionais para seus projetos.</p>
+                    <h1>{t('register_employer_title')}</h1>
+                    <p>{t('register_employer_subtitle')}</p>
                 </div>
 
                 <div className="form-type-selector">
@@ -88,13 +87,13 @@ const CadastroContratante = () => {
                         type="button"
                         className={contractorType === 'PF' ? 'active' : ''} 
                         onClick={() => setContractorType('PF')}>
-                        Pessoa Física
+                        {t('contractor_type_pf')}
                     </button>
                     <button 
                         type="button"
                         className={contractorType === 'PJ' ? 'active' : ''} 
                         onClick={() => setContractorType('PJ')}>
-                        Pessoa Jurídica
+                        {t('contractor_type_pj')}
                     </button>
                 </div>
 
@@ -103,54 +102,54 @@ const CadastroContratante = () => {
                     {contractorType === 'PF' && (
                         <>
                             <div className="form-group">
-                                <label><FaUserTie className="input-icon" /> Nome Completo</label>
+                                <label><FaUserTie className="input-icon" /> {t('label_full_name')}</label>
                                 <div style={{ display: 'flex', gap: '10px' }}>
-                                    <input name="first_name" type="text" placeholder="Seu Nome" value={formData.first_name} onChange={handleChange} required />
-                                    <input name="last_name" type="text" placeholder="Seu Sobrenome" value={formData.last_name} onChange={handleChange} required />
+                                    <input name="first_name" type="text" placeholder={t('placeholder_first_name')} value={formData.first_name} onChange={handleChange} required />
+                                    <input name="last_name" type="text" placeholder={t('placeholder_last_name')} value={formData.last_name} onChange={handleChange} required />
                                 </div>
                             </div>
                              <div className="form-group">
-                               <label><FaIdCard className="input-icon" /> CPF</label>
-                               <input name="cpf" type="text" placeholder="Apenas números" value={formData.cpf} onChange={handleChange} required />
-                            </div>
+                               <label><FaIdCard className="input-icon" /> {t('label_cpf')}</label>
+                               <input name="cpf" type="text" placeholder={t('placeholder_numbers_only')} value={formData.cpf} onChange={handleChange} required />
+                             </div>
                         </>
                     )}
 
                     {contractorType === 'PJ' && (
                         <>
                             <div className="form-group">
-                                <label><FaBuilding className="input-icon" /> Nome da Empresa</label>
-                                <input name="nome_empresa" type="text" placeholder="Nome da sua empresa" value={formData.nome_empresa} onChange={handleChange} required />
+                                <label><FaBuilding className="input-icon" /> {t('label_company_name')}</label>
+                                <input name="nome_empresa" type="text" placeholder={t('placeholder_company_name')} value={formData.nome_empresa} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
-                                <label><FaIdCard className="input-icon" /> CNPJ</label>
-                                <input name="cnpj" type="text" placeholder="Apenas números" value={formData.cnpj} onChange={handleChange} required />
+                                <label><FaIdCard className="input-icon" /> {t('label_cnpj')}</label>
+                                <input name="cnpj" type="text" placeholder={t('placeholder_numbers_only')} value={formData.cnpj} onChange={handleChange} required />
                             </div>
                         </>
                     )}
                     
                     <div className="form-group">
-                        <label><FaEnvelope className="input-icon" /> Email</label>
-                        <input name="email" type="email" placeholder="Email de Contato" value={formData.email} onChange={handleChange} required />
+                        <label><FaEnvelope className="input-icon" /> {t('label_email')}</label>
+                        <input name="email" type="email" placeholder={t('placeholder_contact_email')} value={formData.email} onChange={handleChange} required />
                     </div>
                     
                     <div className="form-group">
-                        <label><FaLock className="input-icon" /> Senha</label>
-                        <input name="password" type="password" placeholder="Crie uma senha segura" value={formData.password} onChange={handleChange} required />
+                        <label><FaLock className="input-icon" /> {t('label_password')}</label>
+                        <input name="password" type="password" placeholder={t('placeholder_create_secure_password')} value={formData.password} onChange={handleChange} required />
                     </div>
 
                     {error && <p className="error-message">{error}</p>}
                     <button type="submit" className="login-button" disabled={isLoading}>
-                        {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+                        {isLoading ? t('button_registering') : t('button_register')}
                     </button>
                 </form>
 
                 <div className="login-footer">
-                    <p>Já tem uma conta? <Link to="/login">Faça login</Link></p>
+                    <p>{t('text_already_have_account')} <Link to="/login">{t('link_login_here')}</Link></p>
                 </div>
 
                 <Link to="/" className="back-button">
-                    <FaArrowLeft /> Voltar para o Início
+                    <FaArrowLeft /> {t('link_back_to_home')}
                 </Link>
                 
             </div>
