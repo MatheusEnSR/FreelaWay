@@ -75,7 +75,7 @@
   "loading_text": "Loading...",
   "view_profile_link": "View your profile",
 
- "manage_your_ads_title": "Manage your Ads",
+"manage_your_ads_title": "Manage your Ads",
 "publish_new_job_button": "Publish New Job",
 "loading_your_ads": "Loading your ads...",
 "no_ads_published_yet": "You haven't published any jobs yet :( Click on 'Publish New Job' to get started!",
@@ -130,5 +130,19 @@
 "summary_preview_placeholder": "Your job summary will appear here...",
 "cancel_button": "Cancel",
 "save_draft_button": "Save Draft",
-"publish_job_button": "Publish Job"
+"publish_job_button": "Publish Job",
+
+
+  "loading_job_details": "Loading job details...",
+  "error": "Error",
+  "job_not_found": "Job not found.",
+  "job_creator": "Job creator",
+  "location": "Location",
+  "language": "Language",
+  "salary": "Salary",
+  "back_to_jobs": "Back to Jobs",
+  "apply": "Apply"
 }
+
+
+

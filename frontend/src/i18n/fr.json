@@ -130,5 +130,16 @@
 "summary_preview_placeholder": "Le résumé de votre offre apparaîtra ici...",
 "cancel_button": "Annuler",
 "save_draft_button": "Enregistrer le brouillon",
-"publish_job_button": "Publier l'offre"
+"publish_job_button": "Publier l'offre",
+
+
+  "loading_job_details": "Chargement des détails du poste...",
+  "error": "Erreur",
+  "job_not_found": "Poste introuvable.",
+  "job_creator": "Créateur du poste",
+  "location": "Localisation",
+  "language": "Langue",
+  "salary": "Salaire",
+  "back_to_jobs": "Retour aux postes",
+  "apply": "Postuler"
 }

@@ -129,5 +129,16 @@
 "summary_preview_placeholder": "El resumen de su vacante aparecerá aquí...",
 "cancel_button": "Cancelar",
 "save_draft_button": "Guardar Borrador",
-"publish_job_button": "Publicar Vacante"
+"publish_job_button": "Publicar Vacante",
+
+
+  "loading_job_details": "Cargando detalles del puesto...",
+  "error": "Error",
+  "job_not_found": "Puesto no encontrado.",
+  "job_creator": "Creador del puesto",
+  "location": "Ubicación",
+  "language": "Idioma",
+  "salary": "Salario",
+  "back_to_jobs": "Volver a Puestos",
+  "apply": "Aplicar"
 }

@@ -130,5 +130,16 @@
 "summary_preview_placeholder": "O resumo da sua vaga aparecerá aqui...",
 "cancel_button": "Cancelar",
 "save_draft_button": "Salvar Rascunho",
-"publish_job_button": "Publicar Vaga"
+"publish_job_button": "Publicar Vaga",
+
+
+  "loading_job_details": "Carregando detalhes da vaga...",
+  "error": "Erro",
+  "job_not_found": "Vaga não encontrada.",
+  "job_creator": "Criador da vaga",
+  "location": "Local",
+  "language": "Idioma",
+  "salary": "Salário",
+  "back_to_jobs": "← Voltar para Vagas",
+  "apply": "Candidatar-se"
 }
